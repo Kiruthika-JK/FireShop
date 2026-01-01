@@ -1,8 +1,8 @@
-import { Product } from "@/lib/types/product"
+import { ProductModel } from "@/lib/features/product/domain/models/ProductModel"
 import { ProductCard } from "@/components/ProductCard"
 
 interface ProductGridProps {
-    products: Product[]
+    products: ProductModel[]
 }
 
 export function ProductGrid({ products }: ProductGridProps) {

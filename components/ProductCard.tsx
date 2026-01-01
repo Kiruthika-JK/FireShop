@@ -5,10 +5,11 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useCartStore } from '@/lib/stores/cart-store'
 import { cn } from '@/lib/utils'
-import { Product } from '@/lib/types/product'
+import { ProductModel } from '@/lib/features/product/domain/models/ProductModel'
+import { formatProductPrice } from '@/lib/features/product/domain/formatting'
 
 interface ProductCardProps {
-    product: Product
+    product: ProductModel
     className?: string
 }
 
@@ -38,7 +39,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
     }
 
     return (
-        <Card className={cn("overflow-hidden hover:shadow-lg transition-shadow bg-slate-50 border-input", className)}>
+        <Card className={cn("overflow-hidden hover:shadow-lg transition-shadow bg-slate-50 border-input p-0", className)}>
             <div className="flex flex-row sm:flex-col h-full bg-[#EAEBF0] rounded-xl p-2 sm:p-0 gap-4 sm:gap-0 items-center sm:items-stretch">
                 {/* Image Container - Fixed size on mobile to match design, full width on desktop */}
                 <div className="relative shrink-0 w-[100px] h-[100px] sm:w-full sm:h-48 bg-[#D9D9D9] flex items-center justify-center text-gray-500 rounded-lg sm:rounded-none overflow-hidden">
@@ -57,8 +58,8 @@ export function ProductCard({ product, className }: ProductCardProps) {
                     <div className="flex flex-col gap-1 text-left">
                         <h3 className="font-semibold text-slate-800 text-base sm:text-lg">{product.name}</h3>
                         <div className="flex items-center gap-2 text-sm sm:text-base">
-                            <span className="text-gray-500 line-through">₹{product.originalPrice.toFixed(1)}</span>
-                            <span className="text-green-600 font-bold">₹{product.price.toFixed(1)}</span>
+                            <span className="text-gray-500 line-through">₹{formatProductPrice(product.originalPrice)}</span>
+                            <span className="text-green-600 font-bold">₹{formatProductPrice(product.price)}</span>
                         </div>
                     </div>
 

@@ -1,8 +1,12 @@
-import { PRODUCTS } from '@/lib/data/products'
 import { ProductGrid } from '@/components/home/ProductGrid'
 import { PromoBanner } from '@/components/home/PromoBanner'
+import { ProductRepo } from '@/lib/features/product/data/repos/ProductRepo'
+import { CheckoutFloatingBar } from '@/components/home/CheckoutFloatingBar'
 
 export default function ProductListPage() {
+  const productRepo = new ProductRepo()
+  const products = productRepo.getProducts()
+
   return (
     <main className="min-h-screen bg-slate-50 pb-20">
       {/* Header matching the image style */}
@@ -13,7 +17,8 @@ export default function ProductListPage() {
       </div>
 
       <PromoBanner />
-      <ProductGrid products={PRODUCTS} />
+      <ProductGrid products={products} />
+      <CheckoutFloatingBar />
     </main>
   )
 }
