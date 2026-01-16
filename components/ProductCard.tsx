@@ -1,6 +1,8 @@
 'use client'
 
+import { useRef } from 'react'
 import { Plus, Minus } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useCartStore } from '@/lib/features/cart/store'
@@ -14,6 +16,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, className, variant = 'purchase' }: ProductCardProps) {
+    const router = useRouter()
     const { items, addItem, updateQuantity, removeItem } = useCartStore()
     const cartItem = items.find((i) => i.productId === product.id)
     const quantity = cartItem ? cartItem.quantity : 0
@@ -25,9 +28,33 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
             price: product.price,
             originalPrice: product.originalPrice,
             quantity: 1,
-            image: product.image
+            thumbnail: product.thumbnail
         })
     }
+
+    const timerRef = useRef<any>(null);
+    const isLongPress = useRef(false);
+
+    const handleLongPressStart = () => {
+        isLongPress.current = false;
+        timerRef.current = setTimeout(() => {
+            isLongPress.current = true;
+            removeItem(product.id);
+        }, 600);
+    };
+
+    const handleLongPressEnd = () => {
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+        }
+    };
+
+    const handleDecrementClick = () => {
+        if (isLongPress.current) {
+            return;
+        }
+        handleDecrement();
+    };
 
     const handleDecrement = () => {
         if (quantity > 0) {
@@ -63,10 +90,10 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
         <Card className={mergeClasses("overflow-hidden hover:shadow-lg transition-shadow bg-slate-50 border-input p-0", className)}>
             <div className="flex flex-row sm:flex-col h-full bg-[#EAEBF0] rounded-xl p-2 sm:p-0 gap-4 sm:gap-0 items-center sm:items-stretch">
                 {/* Image Container */}
-                <div className="relative shrink-0 w-[100px] h-[100px] sm:w-full sm:h-48 bg-[#D9D9D9] flex items-center justify-center text-gray-500 rounded-lg sm:rounded-none overflow-hidden">
-                    {product.image ? (
+                <div className="relative shrink-0 w-[100px] h-[100px] sm:w-full sm:h-48 bg-[#D9D9D9] flex items-center justify-center text-gray-500 rounded-lg sm:rounded-none overflow-hidden cursor-pointer" onClick={() => router.push(`/product/${product.id}/preview`)}>
+                    {product.thumbnail ? (
                         <img
-                            src={product.image}
+                            src={product.thumbnail}
                             alt={product.name}
                             className="w-full h-full object-cover"
                         />
@@ -90,8 +117,13 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
                                     <Button
                                         variant="outline"
                                         size="icon"
-                                        className="h-8 w-8 rounded-full border-slate-400 bg-transparent hover:bg-slate-200 text-slate-700"
-                                        onClick={handleDecrement}
+                                        className="h-8 w-8 rounded-full border-slate-400 bg-transparent hover:bg-slate-200 text-slate-700 select-none"
+                                        onClick={handleDecrementClick}
+                                        onMouseDown={handleLongPressStart}
+                                        onMouseUp={handleLongPressEnd}
+                                        onMouseLeave={handleLongPressEnd}
+                                        onTouchStart={handleLongPressStart}
+                                        onTouchEnd={handleLongPressEnd}
                                         disabled={quantity === 0}
                                     >
                                         <Minus className="h-4 w-4" />

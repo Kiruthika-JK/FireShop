@@ -32,7 +32,8 @@ export default function CartPage() {
                                         name: item.name,
                                         price: item.price,
                                         originalPrice: item.originalPrice || item.price,
-                                        image: item.image
+                                        thumbnail: item.thumbnail,
+                                        previews: [] // Cart items might not need previews, or we can fetch them if needed. For now empty to satisfy type.
                                     }
 
                                     return (
@@ -67,7 +68,7 @@ export default function CartPage() {
                                     </div>
                                 </div>
                                 <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg mt-6 transition-colors shadow-sm">
-                                    Checkout
+                                    Order
                                 </button>
                             </div>
                         </div>

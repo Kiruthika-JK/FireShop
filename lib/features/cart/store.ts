@@ -7,7 +7,7 @@ export interface CartItem {
   price: number
   originalPrice?: number
   quantity: number
-  image?: string
+  thumbnail?: string;
 }
 
 import { formatPrice } from '@/lib/utils'
