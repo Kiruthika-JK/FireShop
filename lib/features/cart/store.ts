@@ -5,11 +5,12 @@ export interface CartItem {
   productId: string
   name: string
   price: number
+  originalPrice?: number
   quantity: number
   image?: string
 }
 
-import { formatCartTotal } from '@/lib/features/product/domain/formatting'
+import { formatPrice } from '@/lib/utils'
 
 export interface CartStore {
   items: CartItem[]
@@ -19,6 +20,7 @@ export interface CartStore {
   clearCart: () => void
   total: number
   formattedTotal: string
+  discount: number
 }
 
 export const useCartStore = create<CartStore>()(
@@ -27,6 +29,7 @@ export const useCartStore = create<CartStore>()(
       items: [],
       total: 0,
       formattedTotal: '0.00',
+      discount: 0,
       addItem: (item) => {
         const items = get().items
         const existingItem = items.find((i) => i.productId === item.productId)
@@ -62,7 +65,7 @@ export const useCartStore = create<CartStore>()(
           }
         }
       },
-      clearCart: () => set({ items: [], total: 0, formattedTotal: '0.00' }),
+      clearCart: () => set({ items: [], total: 0, formattedTotal: '0.00', discount: 0 }),
     }),
     {
       name: 'cart-storage',
@@ -72,8 +75,15 @@ export const useCartStore = create<CartStore>()(
 
 function calculateCartState(items: CartItem[]) {
   const total = items.reduce((total, item) => total + item.price * item.quantity, 0)
+  const originalTotal = items.reduce((total, item) => {
+    // Handle legacy items that don't have originalPrice
+    const itemOriginalPrice = item.originalPrice ?? item.price
+    return total + itemOriginalPrice * item.quantity
+  }, 0)
+  const discount = originalTotal - total
   return {
     total,
-    formattedTotal: formatCartTotal(total)
+    formattedTotal: formatPrice(total),
+    discount
   }
 }
