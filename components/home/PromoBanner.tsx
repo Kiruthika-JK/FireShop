@@ -1,6 +1,6 @@
 export function PromoBanner() {
     return (
-        <div className="container mx-auto px-4 mt-4">
+        <div className="container mx-auto px-4">
             <div className="w-full rounded-xl overflow-hidden shadow-sm">
                 <img
                     src="/images/banner.png"

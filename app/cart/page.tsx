@@ -10,10 +10,6 @@ export default function CartPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 pb-64 lg:pb-12">
-            {/* Header */}
-            <div className="bg-[#E0E7FF] px-4 py-6 sticky top-0 z-10 shadow-sm">
-                <h1 className="text-xl font-semibold text-slate-800 text-center">My Cart</h1>
-            </div>
 
             <div className="container mx-auto px-4 py-8">
                 {items.length === 0 ? (
