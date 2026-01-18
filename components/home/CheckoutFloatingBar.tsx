@@ -26,7 +26,7 @@ export function CheckoutFloatingBar() {
                     onClick={handleCheckout}
                     className="bg-[#E0E7FF] hover:bg-[#C7D2FE] text-slate-800 font-semibold rounded-full px-8 h-auto text-base"
                 >
-                    Checkout
+                    Cart
                 </Button>
             </div>
         </div>

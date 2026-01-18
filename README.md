@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FireShop 🛒
 
-## Getting Started
+E-commerce platform built with Next.js, Firebase, and TypeScript.
 
-First, run the development server:
+## 🚀 Quick Start for Developers
 
+### Prerequisites
+- Node.js 20+ and npm
+- Git
+
+### Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd FireShop
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment is ready!**
+   - `.env` is already committed with production Firebase config
+   - No manual setup needed - just run the app
+
+4. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+5. **Open** [http://localhost:3000](http://localhost:3000)
+
+### Optional: Local Environment Overrides
+
+If you need to override settings locally:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local
+# Edit .env.local with your personal settings
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📁 Environment Configuration
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+.env            ✅ Committed - Production config (team-shared)
+.env.staging    ✅ Committed - Staging config (future)
+.env.example    ✅ Committed - Template
+.env.local      ❌ Gitignored - Local overrides & secrets
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Why is `.env` committed?**
+- Firebase client keys are **public by design** (secured via Firebase Security Rules)
+- Enables zero-setup for new team members
+- Private repo = safe to share configuration
 
-## Learn More
+📖 **Full details:** See [docs/environment-setup.md](docs/environment-setup.md)
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Available Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev              # Start development server
+npm run dev:staging      # Start with staging config
+npm run build            # Build for production
+npm run build:staging    # Build with staging config
+npm run start            # Start production server
+npm run lint             # Run ESLint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🏗️ Project Structure
 
-## Deploy on Vercel
+```
+app/                    # Next.js App Router pages
+components/             # Reusable React components
+lib/                    # Utilities, config, features
+  ├── config.ts         # Centralized configuration
+  ├── firebase.ts       # Firebase initialization
+  └── features/         # Feature-based architecture
+      ├── cart/         # Cart management (Zustand)
+      └── product/      # Product domain logic
+docs/                   # Documentation
+public/                 # Static assets
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔐 Security
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Client-side keys**: Exposed to browser (normal for Firebase)
+- **Security enforced by**: Firebase Security Rules & App Check
+- **Server secrets**: Store in `.env.local` (gitignored) without `NEXT_PUBLIC_` prefix
+
+## 📚 Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Backend**: Firebase (Auth, Firestore)
+- **State Management**: Zustand
+- **UI Components**: Radix UI + shadcn/ui
+
+## 🌍 Deployment
+
+### Vercel (Recommended)
+1. Import project to Vercel
+2. Environment variables auto-detected from `.env`
+3. Deploy!
+
+### Other Platforms
+Set environment variables from `.env` in your platform's dashboard.
+
+## 📖 Documentation
+
+- [Environment Setup Guide](docs/environment-setup.md)
+- [Android vs Next.js Comparison](docs/android_vs_nexjs.md)
+- [Tech Stack Decisions](docs/ecommerce_tech_stack.md)
+
+## 🤝 Contributing
+
+1. Create a feature branch
+2. Make your changes
+3. Test locally with `npm run dev`
+4. Submit a PR
+
+---
+
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).

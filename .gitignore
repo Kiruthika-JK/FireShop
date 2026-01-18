@@ -31,8 +31,12 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files
+# .env - committed for team sharing (public Firebase keys)
+# .env.staging - committed for staging config
+# .env.example - committed as template
+.env*.local
+.env.local
 
 # vercel
 .vercel

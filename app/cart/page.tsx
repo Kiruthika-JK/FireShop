@@ -1,11 +1,13 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useCartStore } from '@/lib/features/cart/store'
 import { formatPrice } from '@/lib/utils'
 import { ProductCard } from '@/components/ProductCard'
 import { ProductModel } from '@/lib/features/product/domain/models/ProductModel'
 
 export default function CartPage() {
+    const router = useRouter()
     const { items, total, discount } = useCartStore()
 
     return (
@@ -63,8 +65,11 @@ export default function CartPage() {
                                         <span className="text-xl font-bold text-green-600">₹{formatPrice(total)}</span>
                                     </div>
                                 </div>
-                                <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg mt-6 transition-colors shadow-sm">
-                                    Order
+                                <button
+                                    onClick={() => router.push('/checkout')}
+                                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg mt-6 transition-colors shadow-sm cursor-pointer"
+                                >
+                                    Checkout
                                 </button>
                             </div>
                         </div>
@@ -100,8 +105,11 @@ export default function CartPage() {
                         </div>
 
                         {/* Place Order Button */}
-                        <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg mt-3 transition-colors">
-                            Place Order
+                        <button
+                            onClick={() => router.push('/checkout')}
+                            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg mt-3 transition-colors cursor-pointer"
+                        >
+                            Checkout
                         </button>
                     </div>
                 </div>

@@ -48,7 +48,7 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/" className="text-white hover:text-primary transition-colors font-medium">
+            <Link href="/orders" className="text-white hover:text-primary transition-colors font-medium cursor-pointer">
               Orders
             </Link>
             <Link href="#" className="text-white hover:text-primary transition-colors font-medium">
@@ -60,7 +60,7 @@ export function Navbar() {
 
             {user ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="focus:outline-none">
+                <DropdownMenuTrigger className="focus:outline-none cursor-pointer">
                   <Avatar>
                     <AvatarImage src={user.photoURL || undefined} alt={user.displayName || "User"} />
                     <AvatarFallback className="bg-primary text-black font-bold">
@@ -86,7 +86,7 @@ export function Navbar() {
               </DropdownMenu>
             ) : (
               <LoginModal>
-                <button className="bg-primary text-black px-5 py-2 rounded-full font-bold hover:bg-primary/90 transition-colors">
+                <button className="bg-primary text-black px-5 py-2 rounded-full font-bold hover:bg-primary/90 transition-colors cursor-pointer">
                   Login / Signup
                 </button>
               </LoginModal>
@@ -95,7 +95,7 @@ export function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button onClick={toggleMenu} className="text-white focus:outline-none">
+            <button onClick={toggleMenu} className="text-white focus:outline-none cursor-pointer">
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
               </svg>
@@ -108,7 +108,7 @@ export function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-black border-t border-gray-800">
           <div className="flex flex-col px-4 py-4 space-y-4">
-            <Link href="/" className="text-white hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
+            <Link href="/orders" className="text-white hover:text-primary font-medium cursor-pointer" onClick={() => setIsOpen(false)}>
               Orders
             </Link>
             <Link href="#" className="text-white hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
@@ -133,7 +133,7 @@ export function Navbar() {
                     logout();
                     setIsOpen(false);
                   }}
-                  className="text-red-500 font-medium flex items-center gap-2"
+                  className="text-red-500 font-medium flex items-center gap-2 cursor-pointer"
                 >
                   <LogOut className="h-4 w-4" />
                   Log out
@@ -141,7 +141,7 @@ export function Navbar() {
               </div>
             ) : (
               <LoginModal>
-                <button className="text-primary font-bold w-full text-left" onClick={() => setIsOpen(false)}>
+                <button className="text-primary font-bold w-full text-left cursor-pointer" onClick={() => setIsOpen(false)}>
                   Login / Signup
                 </button>
               </LoginModal>
