@@ -11,7 +11,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 19.99,
-            price: 14.99
+            price: 14.99,
+            discountPercent: 25,
+            outOfStock: false
         },
         {
             id: '2',
@@ -22,7 +24,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 29.99,
-            price: 24.99
+            price: 24.99,
+            discountPercent: 17,
+            outOfStock: false
         },
         {
             id: '3',
@@ -33,7 +37,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 49.99,
-            price: 39.99
+            price: 39.99,
+            discountPercent: 20,
+            outOfStock: false
         },
         {
             id: '4',
@@ -44,7 +50,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 24.99,
-            price: 19.99
+            price: 19.99,
+            discountPercent: 20,
+            outOfStock: false
         },
         {
             id: '5',
@@ -55,7 +63,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 24.99,
-            price: 19.99
+            price: 19.99,
+            discountPercent: 20,
+            outOfStock: false
         },
         {
             id: '6',
@@ -66,7 +76,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 39.99,
-            price: 29.99
+            price: 29.99,
+            discountPercent: 25,
+            outOfStock: false
         },
         {
             id: '7',
@@ -77,7 +89,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 99.99,
-            price: 79.99
+            price: 79.99,
+            discountPercent: 20,
+            outOfStock: false
         },
         {
             id: '8',
@@ -88,7 +102,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 499.99,
-            price: 399.99
+            price: 399.99,
+            discountPercent: 20,
+            outOfStock: false
         },
         {
             id: '9',
@@ -99,7 +115,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 149.99,
-            price: 119.99
+            price: 119.99,
+            discountPercent: 20,
+            outOfStock: false
         },
         {
             id: '10',
@@ -110,7 +128,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 199.99,
-            price: 159.99
+            price: 159.99,
+            discountPercent: 20,
+            outOfStock: false
         },
         {
             id: '11',
@@ -121,7 +141,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 59.99,
-            price: 49.99
+            price: 49.99,
+            discountPercent: 17,
+            outOfStock: false
         },
         {
             id: '12',
@@ -132,7 +154,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 99.99,
-            price: 79.99
+            price: 79.99,
+            discountPercent: 20,
+            outOfStock: false
         },
         {
             id: '13',
@@ -143,7 +167,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 49.99,
-            price: 39.99
+            price: 39.99,
+            discountPercent: 20,
+            outOfStock: false
         },
         {
             id: '14',
@@ -154,7 +180,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 89.99,
-            price: 69.99
+            price: 69.99,
+            discountPercent: 22,
+            outOfStock: false
         },
         {
             id: '15',
@@ -165,7 +193,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 199.99,
-            price: 149.99
+            price: 149.99,
+            discountPercent: 25,
+            outOfStock: false
         },
         {
             id: '16',
@@ -176,7 +206,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 499.99,
-            price: 399.99
+            price: 399.99,
+            discountPercent: 20,
+            outOfStock: false
         },
         {
             id: '17',
@@ -187,7 +219,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 799.99,
-            price: 649.99
+            price: 649.99,
+            discountPercent: 19,
+            outOfStock: false
         },
         {
             id: '18',
@@ -198,7 +232,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 9.99,
-            price: 7.99
+            price: 7.99,
+            discountPercent: 20,
+            outOfStock: false
         },
         {
             id: '19',
@@ -209,7 +245,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 129.99,
-            price: 99.99
+            price: 99.99,
+            discountPercent: 23,
+            outOfStock: false
         },
         {
             id: '20',
@@ -220,7 +258,9 @@ export class StaticProductsDs {
                 'https://www.w3schools.com/html/mov_bbb.mp4'
             ],
             originalPrice: 149.99,
-            price: 119.99
+            price: 119.99,
+            discountPercent: 20,
+            outOfStock: false
         }
     ];
 }

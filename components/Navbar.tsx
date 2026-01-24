@@ -18,7 +18,7 @@ import { LogOut, User as UserIcon } from "lucide-react";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, isAdmin, logout } = useAuth();
   const pathname = usePathname();
 
   // Hide Navbar on Product Preview page
@@ -51,12 +51,15 @@ export function Navbar() {
             <Link href="/orders" className="text-white hover:text-primary transition-colors font-medium cursor-pointer">
               Orders
             </Link>
-            <Link href="#" className="text-white hover:text-primary transition-colors font-medium">
-              Refer
-            </Link>
+            {user && isAdmin && (
+              <Link href="/inventory" className="text-white hover:text-primary transition-colors font-medium cursor-pointer">
+                Inventory
+              </Link>
+            )}
             <Link href="/contact" className="text-white hover:text-primary transition-colors font-medium">
               Contact Us
             </Link>
+
 
             {user ? (
               <DropdownMenu>
@@ -111,12 +114,15 @@ export function Navbar() {
             <Link href="/orders" className="text-white hover:text-primary font-medium cursor-pointer" onClick={() => setIsOpen(false)}>
               Orders
             </Link>
-            <Link href="#" className="text-white hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
-              Refer
-            </Link>
+            {user && isAdmin && (
+              <Link href="/inventory" className="text-white hover:text-primary font-medium cursor-pointer" onClick={() => setIsOpen(false)}>
+                Inventory
+              </Link>
+            )}
             <Link href="/contact" className="text-white hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
               Contact Us
             </Link>
+
             {user ? (
               <div className="flex flex-col gap-2 border-t border-gray-800 pt-2">
                 <div className="flex items-center gap-3 py-2">

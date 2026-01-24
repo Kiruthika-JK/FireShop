@@ -7,24 +7,48 @@ import {
     signOut,
     User
 } from "firebase/auth";
-import { auth, googleProvider } from "./firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, googleProvider, firestore } from "./firebase";
 
 interface AuthContextType {
     user: User | null;
     loading: boolean;
+    isAdmin: boolean;
     loginWithGoogle: () => Promise<void>;
     logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    // Check if user is admin by direct document lookup (email as document ID)
+    const checkAdminStatus = async (email: string) => {
+        try {
+            const adminDocRef = doc(firestore, "admins", email);
+            const adminDoc = await getDoc(adminDocRef);
+            return adminDoc.exists();
+        } catch (error) {
+            console.error("Error checking admin status", error);
+            return false;
+        }
+    };
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             setUser(user);
+
+            if (user?.email) {
+                const adminStatus = await checkAdminStatus(user.email);
+                setIsAdmin(adminStatus);
+            } else {
+                setIsAdmin(false);
+            }
+
             setLoading(false);
         });
 
@@ -43,6 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const logout = async () => {
         try {
             await signOut(auth);
+            setIsAdmin(false);
         } catch (error) {
             console.error("Error signing out", error);
             throw error;
@@ -50,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, loginWithGoogle, logout }}>
+        <AuthContext.Provider value={{ user, loading, isAdmin, loginWithGoogle, logout }}>
             {children}
         </AuthContext.Provider>
     );

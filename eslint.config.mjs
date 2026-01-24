@@ -16,6 +16,27 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  // Project-specific code style rules
+  {
+    files: ["**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      // 4-space indentation across TS/JS/JSX/TSX
+      indent: ["error", 4, { SwitchCase: 1 }],
+      // Keep parameters on one line unless too long; wrap consistently when needed
+      "function-paren-newline": ["error", "consistent"],
+      "function-call-argument-newline": ["error", "consistent"],
+      // Soft max line length to encourage wrapping only when necessary
+      "max-len": [
+        "warn",
+        {
+          code: 120,
+          ignoreStrings: true,
+          ignoreTemplateLiterals: true,
+          ignoreComments: true,
+        },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;
