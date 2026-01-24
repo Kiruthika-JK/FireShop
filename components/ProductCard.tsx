@@ -87,8 +87,8 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
     )
 
     return (
-        <Card className={mergeClasses("overflow-hidden hover:shadow-lg transition-shadow bg-slate-50 border-input p-0", className)}>
-            <div className="flex flex-row sm:flex-col h-full bg-[#EAEBF0] rounded-xl p-2 sm:p-0 gap-4 sm:gap-0 items-center sm:items-stretch">
+        <Card className={mergeClasses("overflow-hidden hover:shadow-lg transition-shadow bg-white border-input p-0", className)}>
+            <div className="flex flex-row sm:flex-col h-full bg-white rounded-xl p-2 sm:p-0 gap-4 sm:gap-0 items-center sm:items-stretch">
                 {/* Image Container */}
                 <div className="relative shrink-0 w-[100px] h-[100px] sm:w-full sm:h-48 bg-[#D9D9D9] flex items-center justify-center text-gray-500 rounded-lg sm:rounded-none overflow-hidden cursor-pointer" onClick={() => router.push(`/product/${product.id}/preview`)}>
                     {product.thumbnail ? (

@@ -53,7 +53,7 @@ export default function OrdersPage() {
                         {mockOrders.map((order) => (
                             <Card
                                 key={order.id}
-                                className="p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                                className="p-6 hover:shadow-lg transition-shadow cursor-pointer bg-white"
                                 onClick={() => router.push(`/orders/${order.id}`)}
                             >
                                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">

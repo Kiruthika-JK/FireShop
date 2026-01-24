@@ -48,14 +48,14 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/orders" className="text-white hover:text-primary transition-colors font-medium cursor-pointer">
-              Orders
-            </Link>
             {user && isAdmin && (
               <Link href="/inventory" className="text-white hover:text-primary transition-colors font-medium cursor-pointer">
                 Inventory
               </Link>
             )}
+            <Link href="/orders" className="text-white hover:text-primary transition-colors font-medium cursor-pointer">
+              Orders
+            </Link>
             <Link href="/contact" className="text-white hover:text-primary transition-colors font-medium">
               Contact Us
             </Link>
@@ -111,14 +111,14 @@ export function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-black border-t border-gray-800">
           <div className="flex flex-col px-4 py-4 space-y-4">
-            <Link href="/orders" className="text-white hover:text-primary font-medium cursor-pointer" onClick={() => setIsOpen(false)}>
-              Orders
-            </Link>
             {user && isAdmin && (
               <Link href="/inventory" className="text-white hover:text-primary font-medium cursor-pointer" onClick={() => setIsOpen(false)}>
                 Inventory
               </Link>
             )}
+            <Link href="/orders" className="text-white hover:text-primary font-medium cursor-pointer" onClick={() => setIsOpen(false)}>
+              Orders
+            </Link>
             <Link href="/contact" className="text-white hover:text-primary font-medium" onClick={() => setIsOpen(false)}>
               Contact Us
             </Link>
