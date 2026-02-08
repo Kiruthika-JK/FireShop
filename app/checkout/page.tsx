@@ -1,8 +1,13 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useCartStore } from '@/lib/features/cart/store'
+import { useCustomerInfoStore } from '@/lib/features/checkout/customer-info-store'
+import { auth, firestore } from '@/lib/firebase'
+import { doc, setDoc } from 'firebase/firestore'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 import { CustomerInfoSection } from '@/components/checkout/CustomerInfoSection'
 import { OrderInfoSection } from '@/components/checkout/OrderInfoSection'
 import { PayViaSection } from '@/components/checkout/PayViaSection'
@@ -10,7 +15,12 @@ import { OrderItemsSection } from '@/components/checkout/OrderItemsSection'
 
 export default function CheckoutPage() {
     const router = useRouter()
-    const { items } = useCartStore()
+    const { customerInfo, isComplete } = useCustomerInfoStore()
+    const { total } = useCartStore()
+    const { items, clearCart } = useCartStore()
+    const [isProcessing, setIsProcessing] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const [showErrorDialog, setShowErrorDialog] = useState(false)
 
     // Redirect to cart if no items
     useEffect(() => {
@@ -18,6 +28,76 @@ export default function CheckoutPage() {
             router.push('/cart')
         }
     }, [items.length, router])
+
+    const generateOrderId = (uid: string) => {
+        const now = new Date()
+        const pad = (n: number) => n.toString().padStart(2, '0')
+        const timestamp = `${now.getFullYear().toString().slice(-2)}${pad(now.getMonth() + 1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`
+        return `${uid}-${timestamp}`
+    }
+
+    const handleConfirmOrder = async () => {
+        try {
+            setError(null)
+
+            // 1. Auth Check
+            const user = auth.currentUser
+            if (!user) {
+                // For now, simple alert or let them know payment happens via WhatsApp anyway
+                // But requirements said "fetch email from login info", so we must enforce login.
+                setError('Please login to place an order.')
+                setShowErrorDialog(true)
+                return
+            }
+
+            // 2. Validation
+            if (!isComplete()) {
+                setError('Please complete all customer information fields.')
+                setShowErrorDialog(true)
+                return
+            }
+
+            setIsProcessing(true)
+
+            // 3. ID Generation
+            const orderId = generateOrderId(user.uid)
+
+            // 4. Data Preparation
+            const orderData = {
+                id: orderId,
+                totalPrice: total,
+                products: items.map(item => ({
+                    name: item.name,
+                    quantity: item.quantity,
+                    discountedPrice: item.price // Assuming price in cart is discounted/final
+                })),
+                customerInfo: {
+                    name: customerInfo.name,
+                    mobileNo: customerInfo.mobileNumber,
+                    emailId: user.email || '',
+                    address: customerInfo.fullAddress,
+                    city: customerInfo.city,
+                    pincode: customerInfo.pincode
+                },
+                createdAt: new Date().toISOString(),
+                status: 'Ordered' // Good practice to have status
+            }
+
+            // 5. Upload to Firestore
+            await setDoc(doc(firestore, 'orders', orderId), orderData)
+
+            // 6. Clear Cart & Navigate
+            clearCart()
+            router.push('/orders')
+
+        } catch (err) {
+            console.error('Order placement failed:', err)
+            setError('Failed to place order. Please check your internet connection and try again.')
+            setShowErrorDialog(true)
+        } finally {
+            setIsProcessing(false)
+        }
+    }
 
     if (items.length === 0) {
         return (
@@ -65,10 +145,18 @@ export default function CheckoutPage() {
                                 </div>
 
                                 <button
-                                    onClick={() => router.push('/orders')}
-                                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors cursor-pointer shadow-sm"
+                                    onClick={handleConfirmOrder}
+                                    disabled={isProcessing}
+                                    className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-colors cursor-pointer shadow-sm flex items-center justify-center"
                                 >
-                                    Confirm Order
+                                    {isProcessing ? (
+                                        <>
+                                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                                            Processing...
+                                        </>
+                                    ) : (
+                                        'Confirm Order'
+                                    )}
                                 </button>
                             </div>
                         </div>
@@ -85,14 +173,38 @@ export default function CheckoutPage() {
                         </div>
 
                         <button
-                            onClick={() => router.push('/orders')}
-                            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors cursor-pointer shadow-sm"
+                            onClick={handleConfirmOrder}
+                            disabled={isProcessing}
+                            className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-colors cursor-pointer shadow-sm flex items-center justify-center"
                         >
-                            Confirm Order
+                            {isProcessing ? (
+                                <>
+                                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                                    Processing...
+                                </>
+                            ) : (
+                                'Confirm Order'
+                            )}
                         </button>
                     </div>
                 </div>
             </div>
+
+            {/* Error Dialog */}
+            <Dialog open={showErrorDialog} onOpenChange={setShowErrorDialog}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogDescription className="pt-2">
+                            {error}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button onClick={() => setShowErrorDialog(false)}>
+                            Try Again
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }

@@ -5,6 +5,10 @@ export function mergeClasses(...inputs: ClassValue[]) {
   return tailwindMerge(clsx(inputs))
 }
 
+export function cn(...inputs: ClassValue[]) {
+  return mergeClasses(...inputs)
+}
+
 export function formatPrice(price: number): string {
   return price.toFixed(2);
 }

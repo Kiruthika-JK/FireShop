@@ -9,21 +9,29 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    
     // Products: Read for all, Write for admins only
     match /products/{productId} {
       allow read: if true;
       allow write: if isAdmin();
     }
-    
+
     // Admins: Read for authenticated, Write never
     match /admins/{adminId} {
-      allow read: if request.auth != null;
+      allow read: if isAuthorisedUser();
       allow write: if false;
     }
-    
+
+    // All other collections: allow read & write for logged-in users
+    match /{collection}/{docId} {
+      allow read, write: if isAuthorisedUser();
+    }
+
+    function isAuthorisedUser() {
+      return request.auth != null
+    }
+
     function isAdmin() {
-      return request.auth != null && 
+      return isAuthorisedUser() &&
              exists(/databases/$(database)/documents/admins/$(request.auth.email));
     }
   }
@@ -39,12 +47,16 @@ rules_version = '2';
 
 service firebase.storage {
   match /b/{bucket}/o {
-    
     // Products: Read for all, Write for admins only
     match /products/{productId}/{fileName} {
       allow read: if true;
       allow write: if request.auth != null && 
                      firestore.exists(/databases/(default)/documents/admins/$(request.auth.email));
+    }
+
+    // All other files: allow read & write for logged-in users
+    match /{allOtherPaths=**} {
+      allow read, write: if request.auth != null;
     }
   }
 }

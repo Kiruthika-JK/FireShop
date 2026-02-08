@@ -10,23 +10,11 @@ export function PayViaSection() {
     const { total } = useCartStore()
     const { customerInfo } = useCustomerInfoStore()
 
-    // Generate timestamp in yyMMddHHmmss format
-    const generateTimestamp = () => {
-        const now = new Date()
-        const yy = now.getFullYear().toString().slice(-2)
-        const MM = (now.getMonth() + 1).toString().padStart(2, '0')
-        const dd = now.getDate().toString().padStart(2, '0')
-        const HH = now.getHours().toString().padStart(2, '0')
-        const mm = now.getMinutes().toString().padStart(2, '0')
-        const ss = now.getSeconds().toString().padStart(2, '0')
-        return `${yy}${MM}${dd}${HH}${mm}${ss}`
-    }
-
     // Generate UPI payment URL
     const generateUPIUrl = () => {
-        const pa = '7639464976@ybl'
-        const pn = encodeURIComponent(customerInfo.name || 'Customer')
-        const tn = generateTimestamp()
+        const pa = '7639464976-6@ybl'
+        const pn = encodeURIComponent(customerInfo.name)
+        const tn = `${customerInfo.mobileNumber} - Rs ${total.toFixed(2)}`
         const am = total.toFixed(2)
         const cu = 'INR'
 
