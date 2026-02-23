@@ -334,7 +334,27 @@ export default function InventoryPage() {
                                     className={`group relative flex flex-row md:flex-col bg-white overflow-hidden hover:shadow-lg transition-shadow border-2 ${isDirty ? 'border-amber-400' : 'border-transparent'}`}
                                 >
                                     {/* Image Section */}
-                                    <div className="relative w-[100px] h-[100px] md:w-full md:h-48 shrink-0 bg-gray-100 flex items-center justify-center">
+                                    <div
+                                        className="relative w-[100px] h-[100px] md:w-full md:h-48 shrink-0 bg-gray-100 flex items-center justify-center cursor-pointer"
+                                        onClick={() => {
+                                            const existingUrls = product.previews?.filter(p => !item.fileChanges?.deletedPreviews?.includes(p)) || [];
+                                            const newUrls = item.fileChanges?.newPreviews?.map(p => window.URL.createObjectURL(p.file)) || [];
+                                            let allUrls = [...existingUrls, ...newUrls];
+
+                                            if (allUrls.length === 0) {
+                                                const fallbackThumbnail = item.fileChanges?.thumbnail ? window.URL.createObjectURL(item.fileChanges.thumbnail) : product.thumbnail;
+                                                if (fallbackThumbnail) {
+                                                    allUrls = [fallbackThumbnail];
+                                                }
+                                            }
+
+                                            if (allUrls.length > 0) {
+                                                const params = new URLSearchParams();
+                                                allUrls.forEach(url => params.append('url', url));
+                                                router.push(`/product/${product.id}/preview?${params.toString()}`);
+                                            }
+                                        }}
+                                    >
                                         {/* Thumbnail / Icon */}
                                         {item.fileChanges?.thumbnail ? (
                                             <div className="w-full h-full flex items-center justify-center text-xs text-gray-500 bg-gray-200">New Img</div>

@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useRef, useEffect, use } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useRef, use } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { X } from 'lucide-react'
-import { StaticProductsDs } from '@/lib/features/product/data/sources/StaticProductsDs'
 import { mergeClasses } from '@/lib/utils'
 
 interface ProductPreviewPageProps {
@@ -11,19 +10,16 @@ interface ProductPreviewPageProps {
 }
 
 export default function ProductPreviewPage({ params }: ProductPreviewPageProps) {
+    // We still have the `id` from params but we don't strictly need it for data fetching anymore
     const { id } = use(params)
     const router = useRouter()
-    const product = StaticProductsDs.PRODUCTS.find((p) => p.id === id)
+    const searchParams = useSearchParams()
 
-    // State for tracking active index
+    // Read all 'url' parameters
+    const previews = searchParams.getAll('url')
+
     const [activeIndex, setActiveIndex] = useState(0)
     const scrollContainerRef = useRef<HTMLDivElement>(null)
-
-    if (!product) {
-        return <div className="h-screen w-screen flex items-center justify-center bg-black text-white">Product not found</div>
-    }
-
-    const { previews } = product
 
     // Handle scroll to update active index
     const handleScroll = () => {
@@ -34,7 +30,21 @@ export default function ProductPreviewPage({ params }: ProductPreviewPageProps) 
         }
     }
 
-    const isVideo = (url: string) => url.toLowerCase().endsWith('.mp4')
+    const isVideo = (url: string) => url.toLowerCase().endsWith('.mp4') || url.toLowerCase().endsWith('.webm')
+
+    if (!previews || previews.length === 0) {
+        return (
+            <div className="h-screen w-screen flex flex-col items-center justify-center bg-black text-white relative">
+                <button
+                    onClick={() => router.back()}
+                    className="absolute top-6 left-6 z-50 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors backdrop-blur-sm"
+                >
+                    <X className="w-6 h-6" />
+                </button>
+                <p>No previews available</p>
+            </div>
+        )
+    }
 
     return (
         <div className="relative h-screen w-screen bg-black overflow-hidden">

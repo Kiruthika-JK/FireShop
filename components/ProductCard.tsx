@@ -90,7 +90,20 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
         <Card className={mergeClasses("overflow-hidden hover:shadow-lg transition-shadow bg-white border-input p-0", className)}>
             <div className="flex flex-row sm:flex-col h-full bg-white rounded-xl p-2 sm:p-0 gap-4 sm:gap-0 items-center sm:items-stretch">
                 {/* Image Container */}
-                <div className="relative shrink-0 w-[100px] h-[100px] sm:w-full sm:h-48 bg-[#D9D9D9] flex items-center justify-center text-gray-500 rounded-lg sm:rounded-none overflow-hidden cursor-pointer" onClick={() => router.push(`/product/${product.id}/preview`)}>
+                <div
+                    className="relative shrink-0 w-[100px] h-[100px] sm:w-full sm:h-48 bg-[#D9D9D9] flex items-center justify-center text-gray-500 rounded-lg sm:rounded-none overflow-hidden cursor-pointer"
+                    onClick={() => {
+                        const urlsToPass = product.previews && product.previews.length > 0
+                            ? product.previews
+                            : (product.thumbnail ? [product.thumbnail] : []);
+
+                        if (urlsToPass.length > 0) {
+                            const params = new URLSearchParams()
+                            urlsToPass.forEach(url => params.append('url', url))
+                            router.push(`/product/${product.id}/preview?${params.toString()}`)
+                        }
+                    }}
+                >
                     {product.thumbnail ? (
                         <img
                             src={product.thumbnail}
