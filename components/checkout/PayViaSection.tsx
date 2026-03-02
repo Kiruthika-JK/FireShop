@@ -1,21 +1,30 @@
 'use client'
 
-import { useCartStore } from '@/lib/features/cart/store'
-import { useCustomerInfoStore } from '@/lib/features/checkout/customer-info-store'
 import { Card } from '@/components/ui/card'
 import { QRCodeSVG } from 'qrcode.react'
 import { formatPrice } from '@/lib/utils'
 
-export function PayViaSection() {
-    const { total } = useCartStore()
-    const { customerInfo } = useCustomerInfoStore()
+export interface PayViaCustomerModel {
+    name: string;
+    mobileNumber: string;
+}
 
+interface PayViaSectionProps {
+    amount: number;
+    customer?: PayViaCustomerModel;
+}
+
+export function PayViaSection({ amount, customer }: PayViaSectionProps) {
     // Generate UPI payment URL
     const generateUPIUrl = () => {
         const pa = '7639464976-6@ybl'
-        const pn = encodeURIComponent(customerInfo.name)
-        const tn = `${customerInfo.mobileNumber} - Rs ${total.toFixed(2)}`
-        const am = total.toFixed(2)
+        const pn = customer?.name ? encodeURIComponent(customer.name) : 'Ganishkhasri Crackers'
+        // If customer exists, format "Number - Rs Amount", else just "Rs Amount"
+        const tnText = customer?.mobileNumber
+            ? `${customer.mobileNumber} - Rs ${amount.toFixed(2)}`
+            : `Order Payment - Rs ${amount.toFixed(2)}`
+        const tn = encodeURIComponent(tnText)
+        const am = amount.toFixed(2)
         const cu = 'INR'
 
         return `upi://pay?pa=${pa}&pn=${pn}&tn=${tn}&am=${am}&cu=${cu}`
@@ -39,7 +48,7 @@ export function PayViaSection() {
 
                 <div className="text-center">
                     <p className="text-sm text-gray-600 mb-1">Scan QR code to pay</p>
-                    <p className="text-lg font-bold text-green-600">₹{formatPrice(total)}</p>
+                    <p className="text-lg font-bold text-green-600">₹{formatPrice(amount)}</p>
                 </div>
 
                 <div className="text-xs text-gray-500 text-center max-w-[240px]">

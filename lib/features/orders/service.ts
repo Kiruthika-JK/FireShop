@@ -100,5 +100,46 @@ export const OrderService = {
             lastDoc: snapshot.docs[snapshot.docs.length - 1] || null,
             hasMore: snapshot.docs.length === PAGE_LIMIT
         };
+    },
+
+    async getOrderById(orderId: string): Promise<Order | null> {
+        try {
+            const { doc, getDoc } = await import("firebase/firestore");
+            const orderRef = doc(firestore, ORDERS_COLLECTION, orderId);
+            const snapshot = await getDoc(orderRef);
+
+            if (!snapshot.exists()) {
+                return null;
+            }
+
+            const data = snapshot.data();
+            return {
+                id: snapshot.id,
+                ...data,
+                createdAt: data.createdAt instanceof Timestamp
+                    ? data.createdAt.toDate().toISOString()
+                    : data.createdAt || new Date().toISOString()
+            } as Order;
+        } catch (error) {
+            console.error("Error fetching order details:", error);
+            return null;
+        }
+    },
+
+    async updateOrderStatus(orderId: string, status: OrderStatus, comment?: string): Promise<void> {
+        try {
+            const { doc, updateDoc } = await import("firebase/firestore");
+            const orderRef = doc(firestore, ORDERS_COLLECTION, orderId);
+
+            const updateData: any = { status };
+            if (comment) {
+                updateData.adminComment = comment; // Note: We might want to track history later, but simple field for now
+            }
+
+            await updateDoc(orderRef, updateData);
+        } catch (error) {
+            console.error("Error updating order status:", error);
+            throw error;
+        }
     }
 };

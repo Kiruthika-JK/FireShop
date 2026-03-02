@@ -1,11 +1,17 @@
-export type OrderStatus = 'Ordered' | 'Ready to Ship' | 'Shipped' | 'Delivered' | 'Canceled';
+export enum OrderStatus {
+    Ordered = 'Ordered',
+    ReadyToShip = 'Ready to Ship',
+    Shipped = 'Shipped',
+    Delivered = 'Delivered',
+    Canceled = 'Canceled'
+}
 
 export const ORDER_STATUSES: OrderStatus[] = [
-    'Ordered',
-    'Ready to Ship',
-    'Shipped',
-    'Delivered',
-    'Canceled'
+    OrderStatus.Ordered,
+    OrderStatus.ReadyToShip,
+    OrderStatus.Shipped,
+    OrderStatus.Delivered,
+    OrderStatus.Canceled
 ];
 
 export interface OrderItem {

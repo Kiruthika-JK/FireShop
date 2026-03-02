@@ -113,12 +113,12 @@ export default function OrdersPage() {
     // Render Helpers
     const getStatusColor = (status: string) => {
         switch (status) {
-            case 'Delivered': return 'bg-green-100 text-green-800 border-green-200'
-            case 'Shipped': return 'bg-blue-100 text-blue-800 border-blue-200'
-            case 'Ready to Ship': return 'bg-purple-100 text-purple-800 border-purple-200'
+            case OrderStatus.Delivered: return 'bg-green-100 text-green-800 border-green-200'
+            case OrderStatus.Shipped: return 'bg-blue-100 text-blue-800 border-blue-200'
+            case OrderStatus.ReadyToShip: return 'bg-purple-100 text-purple-800 border-purple-200'
             case 'Confirmed': return 'bg-indigo-100 text-indigo-800 border-indigo-200' // Legacy?
-            case 'Ordered': return 'bg-amber-100 text-amber-800 border-amber-200'
-            case 'Canceled': return 'bg-red-100 text-red-800 border-red-200'
+            case OrderStatus.Ordered: return 'bg-amber-100 text-amber-800 border-amber-200'
+            case OrderStatus.Canceled: return 'bg-red-100 text-red-800 border-red-200'
             default: return 'bg-gray-100 text-gray-800 border-gray-200'
         }
     }
@@ -137,8 +137,13 @@ export default function OrdersPage() {
 
     if (authLoading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin" /></div>
 
+    useEffect(() => {
+        if (!authLoading && !user) {
+            router.push('/')
+        }
+    }, [authLoading, user, router])
+
     if (!user) {
-        router.push('/')
         return null
     }
 

@@ -12,6 +12,7 @@ import { CustomerInfoSection } from '@/components/checkout/CustomerInfoSection'
 import { OrderInfoSection } from '@/components/checkout/OrderInfoSection'
 import { PayViaSection } from '@/components/checkout/PayViaSection'
 import { OrderItemsSection } from '@/components/checkout/OrderItemsSection'
+import { OrderStatus } from '@/lib/features/orders/types'
 
 export default function CheckoutPage() {
     const router = useRouter()
@@ -29,11 +30,11 @@ export default function CheckoutPage() {
         }
     }, [items.length, router])
 
-    const generateOrderId = (uid: string) => {
+    const generateOrderId = () => {
         const now = new Date()
         const pad = (n: number) => n.toString().padStart(2, '0')
         const timestamp = `${now.getFullYear().toString().slice(-2)}${pad(now.getMonth() + 1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`
-        return `${uid}-${timestamp}`
+        return timestamp
     }
 
     const handleConfirmOrder = async () => {
@@ -60,7 +61,7 @@ export default function CheckoutPage() {
             setIsProcessing(true)
 
             // 3. ID Generation
-            const orderId = generateOrderId(user.uid)
+            const orderId = generateOrderId()
 
             // 4. Data Preparation
             const orderData = {
@@ -80,7 +81,7 @@ export default function CheckoutPage() {
                     pincode: customerInfo.pincode
                 },
                 createdAt: new Date().toISOString(),
-                status: 'Ordered' // Good practice to have status
+                status: OrderStatus.Ordered
             }
 
             // 5. Upload to Firestore
@@ -122,7 +123,7 @@ export default function CheckoutPage() {
 
                         {/* QR Code - Mobile Only (3rd position) */}
                         <div className="lg:hidden">
-                            <PayViaSection />
+                            <PayViaSection amount={total} customer={{ name: customerInfo.name, mobileNumber: customerInfo.mobileNumber }} />
                         </div>
 
                         {/* Order Items - Full width on desktop, after QR on mobile */}
@@ -134,7 +135,7 @@ export default function CheckoutPage() {
                     {/* Right Column - QR Code & Confirm Order (Desktop Only) */}
                     <div className="hidden lg:block lg:col-span-1">
                         <div className="sticky top-24 space-y-6">
-                            <PayViaSection />
+                            <PayViaSection amount={total} customer={{ name: customerInfo.name, mobileNumber: customerInfo.mobileNumber }} />
 
                             {/* Confirm Order Section - Desktop */}
                             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
