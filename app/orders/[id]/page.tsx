@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { OrderService } from '@/lib/features/orders/service'
 import { Order } from '@/lib/features/orders/types'
 import { useAuth } from '@/lib/auth-context'
-import { Loader2, ArrowLeft } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { OrderTracker } from '@/components/orders/OrderTracker'
 import { OrderStatusUpdate } from '@/components/orders/OrderStatusUpdate'
 import { DeliveryAddressCard } from '@/components/orders/DeliveryAddressCard'
@@ -14,6 +14,7 @@ import { PayViaSection } from '@/components/checkout/PayViaSection'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { formatPrice } from '@/lib/utils'
+import { getStatusColor } from '@/lib/features/orders/utils'
 
 export default function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter()
@@ -51,13 +52,15 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
 
     const formatDate = (dateString: string) => {
         try {
-            return new Intl.DateTimeFormat('en-IN', {
-                year: 'numeric',
-                month: 'short',
+            const date = new Date(dateString)
+            return new Intl.DateTimeFormat('en-GB', {
                 day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            }).format(new Date(dateString))
+                month: 'short',
+                year: '2-digit',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            }).format(date).replace(',', '')
         } catch (e) {
             return 'Invalid Date'
         }
@@ -82,14 +85,14 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                 <p className="text-sm text-gray-500 mb-1">Order ID</p>
                 <p className="font-semibold text-slate-800">{order.id}</p>
             </div>
-            <Badge className="bg-slate-100 text-slate-800 border-slate-200 shadow-none px-3 py-1">
+            <Badge className={`${getStatusColor(order.status)} shadow-none px-3 py-1 font-medium`}>
                 {order.status}
             </Badge>
         </div>
     )
 
     const OrderMetaInfo = () => (
-        <div className="flex flex-wrap gap-y-4 justify-between border-t border-gray-100 pt-4 mt-6">
+        <div className="flex flex-wrap gap-y-4 justify-between border-t border-gray-100 pt-4 mt-4">
             <div>
                 <p className="text-xs text-gray-400">Order Date</p>
                 <p className="text-sm font-medium text-slate-700">{formatDate(order.createdAt)}</p>
@@ -113,14 +116,6 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
     return (
         <div className="min-h-screen bg-gray-50 py-8">
             <div className="container mx-auto px-4 max-w-6xl">
-
-                <button
-                    onClick={() => router.back()}
-                    className="flex items-center text-sm text-gray-500 hover:text-slate-900 mb-6 transition-colors"
-                >
-                    <ArrowLeft className="h-4 w-4 mr-1" /> Back
-                </button>
-
                 <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6">
 
                     {/* MOBILE LAYOUT & COLUMN ORDER */}
@@ -138,13 +133,19 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                             {isAdmin ? <StatusBadgeRow /> : (
                                 <>
                                     <h2 className="text-lg font-semibold text-slate-800 mb-2 border-b border-gray-100 pb-2">Order Summary</h2>
-                                    <div className="mb-4">
+                                    <div className="mb-2">
                                         <p className="text-xs text-gray-500 mb-1">Order ID</p>
                                         <p className="font-medium text-slate-800 text-sm">{order.id} <span className="text-xs text-gray-400 ml-2">({order.products.reduce((acc, p) => acc + p.quantity, 0)} items)</span></p>
                                     </div>
-                                    <div className="mb-6">
+                                    <div className="mb-0">
                                         <OrderTracker status={order.status} />
                                     </div>
+                                    {order.adminComment && (
+                                        <div className="mt-1 bg-blue-50/50 border border-blue-100 rounded-lg p-4">
+                                            <p className="text-xs font-semibold text-blue-800 uppercase tracking-wider mb-1">Message from Admin</p>
+                                            <p className="text-sm text-blue-900 leading-relaxed">{order.adminComment}</p>
+                                        </div>
+                                    )}
                                 </>
                             )}
                             <OrderMetaInfo />
@@ -152,11 +153,19 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
 
                         {/* 2. Admin Status Update */}
                         {isAdmin && (
-                            <OrderStatusUpdate
-                                orderId={order.id}
-                                currentStatus={order.status}
-                                onUpdateComplete={(newStatus) => setOrder({ ...order, status: newStatus })}
-                            />
+                            <div className="space-y-4">
+                                <OrderStatusUpdate
+                                    orderId={order.id}
+                                    currentStatus={order.status}
+                                    onUpdateComplete={(newStatus, comment) => setOrder({ ...order, status: newStatus, adminComment: comment || order.adminComment })}
+                                />
+                                {order.adminComment && (
+                                    <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 shadow-sm">
+                                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Latest Comment on Order</p>
+                                        <p className="text-sm text-slate-700 italic">"{order.adminComment}"</p>
+                                    </div>
+                                )}
+                            </div>
                         )}
 
                         {/* 3. Delivery Address */}

@@ -37,6 +37,7 @@ export interface Order {
     status: OrderStatus;
     products: OrderItem[];
     customerInfo: CustomerInfo;
+    adminComment?: string;
 }
 
 export interface OrderFilters {

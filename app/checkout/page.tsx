@@ -20,15 +20,16 @@ export default function CheckoutPage() {
     const { total } = useCartStore()
     const { items, clearCart } = useCartStore()
     const [isProcessing, setIsProcessing] = useState(false)
+    const [isOrderConfirmed, setIsOrderConfirmed] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [showErrorDialog, setShowErrorDialog] = useState(false)
 
-    // Redirect to cart if no items
+    // Redirect to cart if no items (skip if order was just confirmed)
     useEffect(() => {
-        if (items.length === 0) {
+        if (items.length === 0 && !isOrderConfirmed) {
             router.push('/cart')
         }
-    }, [items.length, router])
+    }, [items.length, isOrderConfirmed, router])
 
     const generateOrderId = () => {
         const now = new Date()
@@ -88,6 +89,7 @@ export default function CheckoutPage() {
             await setDoc(doc(firestore, 'orders', orderId), orderData)
 
             // 6. Clear Cart & Navigate
+            setIsOrderConfirmed(true)
             clearCart()
             router.push('/orders')
 

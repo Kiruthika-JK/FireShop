@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -12,6 +12,7 @@ import { Order, OrderStatus, ORDER_STATUSES } from '@/lib/features/orders/types'
 import { DocumentSnapshot } from 'firebase/firestore'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { getStatusColor } from '@/lib/features/orders/utils'
 
 export default function OrdersPage() {
     const router = useRouter()
@@ -28,16 +29,28 @@ export default function OrdersPage() {
     const [isSearchExpanded, setIsSearchExpanded] = useState(false)
     const [debouncedSearch, setDebouncedSearch] = useState('')
 
+    // Redirect if not logged in — must be before any early returns to keep hooks order stable
+    useEffect(() => {
+        if (!authLoading && !user) {
+            router.push('/')
+        }
+    }, [authLoading, user, router])
+
     // Debounce Search
     useEffect(() => {
         const handler = setTimeout(() => {
             setDebouncedSearch(searchQuery)
-        }, 500) // 500ms debounce
+        }, 500)
         return () => clearTimeout(handler)
     }, [searchQuery])
 
-    // Load Orders Function
-    const loadOrders = useCallback(async (isLoadMore = false) => {
+    // Load Orders Function — takes explicit params to avoid stale-closure bugs
+    const loadOrders = useCallback(async (
+        isLoadMore: boolean,
+        currentLastDoc: DocumentSnapshot | null,
+        search: string,
+        status: OrderStatus | 'All'
+    ) => {
         if (!user) return
 
         try {
@@ -47,40 +60,13 @@ export default function OrdersPage() {
                 setLoading(true)
             }
 
-            // Optimization: If we have all data loaded (in-memory) and we are just filtering, 
-            // strictly we might not need to fetch. BUT, handling "All loaded" with complex search 
-            // matching on server vs client is tricky. 
-            // The requirement says: "If all orders fetched... do smart filtering from in-memory".
-            // Implementation: We can't really know if we have "all" orders across the entire DB 
-            // unless we fetched everything. 
-            // Simplification for now: Always fetch from server unless we implement a full sync.
-            // Wait, requirement: "Load next items only when admin reaches bottom... Show 'End of Orders' if no more".
-            // Optimization point: If we reached 'hasMore = false' for the *current filter set*, it doesn't mean we have ALL orders.
-            // Let's stick to Server Side filtering for correctness first, as Firestore doesn't support "Fetch All" efficiently to cache.
-
-            // Correction based on Requirement 5: "If all orders fetched from Firestore without any filters..."
-            // This implies: If Status=All, Search='', and we scrolled to the bottom (hasMore=false).
-            // THEN if user types/filters, we filter the `orders` array.
-
-            const isFullListLoaded = !hasMore && statusFilter === 'All' && debouncedSearch === '' && orders.length > 0;
-
-            if (isFullListLoaded && (statusFilter !== 'All' || debouncedSearch !== '')) {
-                // Do Client Side Filter
-                // Note: This logic path needs careful state management. 
-                // If we filter client side, we create a derived view. 
-                // For now, let's keep it robust with Server Side Fetching.
-                // Re-reading strictly: "fetch options... do smart filtering".
-                // I will prioritize correctness (Server Fetch) as the default. 
-                // If the dataset is small enough to be fully loaded, implementing client side filter on top is an optimization.
-            }
-
             const result = await OrderService.fetchOrders(
                 isAdmin,
                 user.email,
-                isLoadMore ? lastDoc : null,
+                isLoadMore ? currentLastDoc : null,
                 {
-                    status: statusFilter,
-                    search: debouncedSearch
+                    status,
+                    search
                 }
             )
 
@@ -99,29 +85,15 @@ export default function OrdersPage() {
             setLoading(false)
             setFetchingMore(false)
         }
-    }, [user, isAdmin, debouncedSearch, statusFilter, lastDoc, hasMore, orders.length]) // Add dependencies carefully
+    }, [user, isAdmin])
 
-    // Initial Load & Filter Change
+    // Initial Load & Filter Change — reset and re-fetch when filters or user changes
     useEffect(() => {
         if (!authLoading && user) {
-            // Reset pagination on filter change
             setLastDoc(null)
-            loadOrders(false)
+            loadOrders(false, null, debouncedSearch, statusFilter)
         }
-    }, [authLoading, user, isAdmin, debouncedSearch, statusFilter]) // Remove loadOrders from dep to avoid loop, rely on these values changing
-
-    // Render Helpers
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case OrderStatus.Delivered: return 'bg-green-100 text-green-800 border-green-200'
-            case OrderStatus.Shipped: return 'bg-blue-100 text-blue-800 border-blue-200'
-            case OrderStatus.ReadyToShip: return 'bg-purple-100 text-purple-800 border-purple-200'
-            case 'Confirmed': return 'bg-indigo-100 text-indigo-800 border-indigo-200' // Legacy?
-            case OrderStatus.Ordered: return 'bg-amber-100 text-amber-800 border-amber-200'
-            case OrderStatus.Canceled: return 'bg-red-100 text-red-800 border-red-200'
-            default: return 'bg-gray-100 text-gray-800 border-gray-200'
-        }
-    }
+    }, [authLoading, user, isAdmin, debouncedSearch, statusFilter, loadOrders])
 
     const formatDate = (dateString: string) => {
         try {
@@ -136,12 +108,6 @@ export default function OrdersPage() {
     }
 
     if (authLoading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin" /></div>
-
-    useEffect(() => {
-        if (!authLoading && !user) {
-            router.push('/')
-        }
-    }, [authLoading, user, router])
 
     if (!user) {
         return null
@@ -253,7 +219,7 @@ export default function OrdersPage() {
                         <div className="py-4 text-center">
                             {hasMore ? (
                                 <button
-                                    onClick={() => loadOrders(true)}
+                                    onClick={() => loadOrders(true, lastDoc, debouncedSearch, statusFilter)}
                                     disabled={fetchingMore}
                                     className="flex items-center gap-2 mx-auto text-primary hover:underline disabled:opacity-50"
                                 >
