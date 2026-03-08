@@ -33,7 +33,10 @@ export default function CartPage() {
                                         discountPercent: item.originalPrice ? Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100) : 0,
                                         outOfStock: false,
                                         thumbnail: item.thumbnail,
-                                        previews: [] // Cart items might not need previews, or we can fetch them if needed. For now empty to satisfy type.
+                                        previews: [], // Cart items might not need previews, or we can fetch them if needed. For now empty to satisfy type.
+                                        category: '',
+                                        categoryPosition: 0,
+                                        productPosition: 0
                                     }
 
                                     return (

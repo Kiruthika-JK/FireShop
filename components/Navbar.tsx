@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User as UserIcon } from "lucide-react";
+import Image from "next/image";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,9 +35,13 @@ export function Navbar() {
         <div className="flex justify-between items-center h-20">
           {/* Logo Section */}
           <Link href="/" className="flex items-center gap-3">
-            {/* Placeholder for "TS" logo if image not available, using a styled circle */}
-            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center border-2 border-white shadow-lg shrink-0">
-              <span className="font-bold italic text-white text-lg">TS</span>
+            <div className="relative w-10 h-10 shrink-0">
+              <Image
+                src="/logo.png"
+                alt="FireShop Logo"
+                fill
+                className="object-contain drop-shadow-md"
+              />
             </div>
 
             <div className="flex flex-col">

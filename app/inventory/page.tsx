@@ -115,6 +115,9 @@ export default function InventoryPage() {
     ) => {
         setItems(prev => {
             const newItems = [...prev];
+            let itemCategory = productData.category;
+            let newCategoryPosition = productData.categoryPosition;
+            let didCategoryPositionChange = false;
 
             if (editingItemIndex === -1) {
                 // Add New
@@ -130,42 +133,38 @@ export default function InventoryPage() {
                         deletedPreviews: deletedPreviews
                     }
                 });
+                // Note: Even for a new item, if they set a categoryPosition, we should probably sync it to others in the category for consistency
+                didCategoryPositionChange = true;
             } else if (editingItemIndex !== null) {
                 // Edit Existing
                 const existing = newItems[editingItemIndex!];
+                didCategoryPositionChange = existing.product.categoryPosition !== newCategoryPosition;
+
                 newItems[editingItemIndex!] = {
                     ...existing,
                     product: { ...productData, id: existing.product.id },
                     isDirty: true,
-                    // Merge file changes if already dirty? For simplicity, we just overwrite file changes with latest form submission
-                    // Note: If user edits twice, the last submission holds the pending files. 
-                    // Complex merging of arrays might be needed if he added files, closed form, opened again.
-                    // But ProductForm preserves 'previews' URLs.
-                    // For file inputs, ProductForm doesn't remember previous file inputs on re-open unless we pass them back.
-                    // Current ProductForm implementation handles 'previews' as URLs or Files. 
-                    // If we close form, we lose the File objects inside ProductForm unless passed.
-                    // Simplification: Form open/close clears unsaved file inputs inside form? 
-                    // Ideally, we shouldn't close form until done, OR we pass files back to form.
-                    // But here we are "Saving" to the staging area.
-                    // So we store the files here.
                     fileChanges: {
-                        thumbnail: thumbnailFile || (existing.fileChanges?.thumbnail || null), // If new file null, keep old pending if any? 
-                        // Actually ProductForm onSuccess logic needs to be careful.
-                        // We'll trust the form sends the *delta* or *complete state* of new files.
-                        // Our Form sends `newPreviewFiles` (only the ones currently added).
-                        // If I added files in previous edit, they are now "staged".
-                        // Logic Gap: ProductForm seeing "staged" files.
-                        // We will assume "Single Shot" means "Add Product" -> "Fill Form" -> "Submit to Stage".
-                        // If I edit a Staged product, I might lose the previous staged files if the form doesn't see them.
-                        // Fix strategy: If editing a staged item, we technically can't easily re-populate the file input.
-                        // So, we might accept that re-editing a staged item resets its file inputs or we block re-editing files?
-                        // Or we just append.
-                        // Let's assume simplest: Overwrite.
+                        thumbnail: thumbnailFile || (existing.fileChanges?.thumbnail || null),
                         newPreviews: [...(existing.fileChanges?.newPreviews || []), ...previewFiles],
                         deletedPreviews: [...(existing.fileChanges?.deletedPreviews || []), ...deletedPreviews]
                     }
                 };
             }
+
+            // Sync categoryPosition to all other items in the same category (if changed and category is set)
+            if (didCategoryPositionChange && itemCategory.trim() !== '') {
+                for (let i = 0; i < newItems.length; i++) {
+                    if (i !== editingItemIndex && newItems[i].product.category === itemCategory) {
+                        newItems[i] = {
+                            ...newItems[i],
+                            product: { ...newItems[i].product, categoryPosition: newCategoryPosition },
+                            isDirty: true // Mark as dirty so it gets saved
+                        };
+                    }
+                }
+            }
+
             return newItems;
         });
         setIsFormOpen(false)
@@ -320,149 +319,198 @@ export default function InventoryPage() {
                         </Button>
                     </Card>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-20">
-                        {/* List Active Items */}
-                        {items.map((item, index) => {
-                            if (item.isDeleted) return null;
+                    <div className="pb-20">
+                        {/* Group items by Category */}
+                        {(() => {
+                            const activeItems = items.filter(i => !i.isDeleted);
+                            // Get unique categories, mapping empty/whitespace to 'Unlisted'
+                            const getCatName = (cat: string) => cat?.trim() ? cat.trim() : 'Unlisted';
 
-                            const product = item.product;
-                            const isDirty = item.isDirty || item.isNew;
+                            const categories = Array.from(new Set(activeItems.map(i => getCatName(i.product.category))));
 
-                            return (
-                                <Card
-                                    key={product.id}
-                                    className={`group relative flex flex-row md:flex-col bg-white overflow-hidden hover:shadow-lg transition-shadow border-2 ${isDirty ? 'border-amber-400' : 'border-transparent'}`}
-                                >
-                                    {/* Image Section */}
-                                    <div
-                                        className="relative w-[100px] h-[100px] md:w-full md:h-48 shrink-0 bg-gray-100 flex items-center justify-center cursor-pointer"
-                                        onClick={() => {
-                                            const existingUrls = product.previews?.filter(p => !item.fileChanges?.deletedPreviews?.includes(p)) || [];
-                                            const newUrls = item.fileChanges?.newPreviews?.map(p => window.URL.createObjectURL(p.file)) || [];
-                                            let allUrls = [...existingUrls, ...newUrls];
+                            // Sort categories? Might just rely on how they appeared in the list, or we could sort them if needed. 
+                            // Since products are sorted by categoryPosition from DB out-of-the-box, the order of occurrence is likely correct.
+                            // However, let's explicitly push 'Unlisted' to the bottom.
+                            const sortedCategories = categories.filter(c => c !== 'Unlisted');
+                            if (categories.includes('Unlisted')) {
+                                sortedCategories.push('Unlisted');
+                            }
 
-                                            if (allUrls.length === 0) {
-                                                const fallbackThumbnail = item.fileChanges?.thumbnail ? window.URL.createObjectURL(item.fileChanges.thumbnail) : product.thumbnail;
-                                                if (fallbackThumbnail) {
-                                                    allUrls = [fallbackThumbnail];
-                                                }
-                                            }
+                            return sortedCategories.map(categoryName => {
+                                // Find all items belonging to this category
+                                const categoryItemsWithGlobalIndex = items
+                                    .map((item, originalIndex) => ({ item, originalIndex }))
+                                    .filter(({ item }) => !item.isDeleted && getCatName(item.product.category) === categoryName)
+                                    // Sort within category by productPosition to be safe (they are already sorted from DB, but user might have added/edited)
+                                    .sort((a, b) => a.item.product.productPosition - b.item.product.productPosition);
 
-                                            if (allUrls.length > 0) {
-                                                const params = new URLSearchParams();
-                                                allUrls.forEach(url => params.append('url', url));
-                                                router.push(`/product/${product.id}/preview?${params.toString()}`);
-                                            }
-                                        }}
-                                    >
-                                        {/* Thumbnail / Icon */}
-                                        {item.fileChanges?.thumbnail ? (
-                                            <div className="w-full h-full flex items-center justify-center text-xs text-gray-500 bg-gray-200">New Img</div>
-                                        ) : product.thumbnail ? (
-                                            <img
-                                                src={product.thumbnail}
-                                                alt={product.name}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        ) : (
-                                            <Package className="h-8 w-8 text-gray-400" />
-                                        )}
+                                if (categoryItemsWithGlobalIndex.length === 0) return null;
 
-                                        {/* Mobile: Stock Badge Overlap */}
-                                        <div className="md:hidden absolute -bottom-2 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap">
-                                            {product.outOfStock ? (
-                                                <Badge className="bg-red-100 text-red-800 border-red-200 text-[10px] px-1.5 h-4 shadow-sm">Out of Stock</Badge>
-                                            ) : (
-                                                <Badge className="bg-blue-100 text-blue-800 border-blue-200 text-[10px] px-1.5 h-4 shadow-sm">In Stock</Badge>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    {/* Content Section */}
-                                    <div className="flex-1 p-3 md:p-4 flex flex-col relative min-w-0">
-
-                                        {/* Header area */}
-                                        <div className="flex justify-between items-start gap-2">
-                                            <div className="flex-1 min-w-0">
-                                                <h3 className="font-semibold text-slate-900 text-sm md:text-lg line-clamp-2 leading-tight md:leading-snug mb-1">
-                                                    {product.name}
-                                                </h3>
-
-                                                {/* Badges (New/Modified) */}
-                                                {(item.isNew || isDirty) && (
-                                                    <div className="flex flex-wrap gap-1 mb-1">
-                                                        {item.isNew && <Badge className="bg-blue-100 text-blue-800 text-[10px] px-1.5 h-4">New</Badge>}
-                                                        {isDirty && !item.isNew && <Badge className="bg-amber-100 text-amber-800 text-[10px] px-1.5 h-4">Modified</Badge>}
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            {/* Mobile: Edit Button (Top Right) */}
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="md:hidden h-8 w-8 -mt-2 -mr-2 text-gray-500 hover:text-primary"
-                                                onClick={() => handleEditProduct(index)}
-                                            >
-                                                <Edit className="h-4 w-4" />
-                                            </Button>
-                                        </div>
-
-                                        {/* Price */}
-                                        <div className="mt-1 md:mt-2">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-xs md:text-sm text-gray-500 line-through">₹{product.originalPrice.toFixed(2)}</span>
-                                                <span className="text-sm md:text-lg font-bold text-green-600">₹{product.price.toFixed(2)}</span>
-                                                <span className="text-[10px] md:text-xs text-green-700 bg-green-50 px-1 rounded ml-1">{product.discountPercent}% OFF</span>
+                                return (
+                                    <section key={categoryName} className="mb-8 relative">
+                                        {/* Sticky Category Header */}
+                                        <div className="sticky top-0 z-10 bg-primary/10 backdrop-blur-md rounded-lg shadow-sm py-3 mb-4 border border-primary/20">
+                                            <div className="flex justify-between items-center px-4">
+                                                <h2 className="text-xl font-bold capitalize tracking-wide text-primary-foreground">{categoryName.toLowerCase()}</h2>
+                                                <Badge className="bg-primary/20 hover:bg-primary/30 text-primary-foreground border-0 shadow-sm">
+                                                    {categoryItemsWithGlobalIndex.length} items
+                                                </Badge>
                                             </div>
                                         </div>
 
-                                        {/* Desktop: Spacer & Actions */}
-                                        <div className="hidden md:flex flex-col gap-3 mt-4 flex-1 justify-end">
-                                            <div className="flex justify-between items-center">
-                                                {product.outOfStock ? (
-                                                    <Badge className="bg-red-100 text-red-800 border-red-200">Out of Stock</Badge>
-                                                ) : (
-                                                    <Badge className="bg-blue-100 text-blue-800 border-blue-200">In Stock</Badge>
-                                                )}
-                                            </div>
-                                            <div className="flex gap-2">
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                    onClick={() => handleEditProduct(index)}
-                                                    className="flex-1"
-                                                >
-                                                    <Edit className="h-4 w-4 mr-1" />
-                                                    Edit
-                                                </Button>
-                                                <Button
-                                                    variant="outline"
-                                                    size="icon"
-                                                    onClick={() => handleDeleteToggle(index)}
-                                                    className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 shrink-0"
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                </Button>
-                                            </div>
+                                        {/* Products Grid */}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                                            {categoryItemsWithGlobalIndex.map(({ item, originalIndex }, localIndex) => {
+                                                const product = item.product;
+                                                const isDirty = item.isDirty || item.isNew;
+
+                                                const handleReorder = (direction: 'up' | 'down') => {
+                                                    const swapIndex = direction === 'up' ? localIndex - 1 : localIndex + 1;
+                                                    if (swapIndex < 0 || swapIndex >= categoryItemsWithGlobalIndex.length) return; // Cannot move outside bounds
+
+                                                    const targetItemWithGlobalIndex = categoryItemsWithGlobalIndex[swapIndex];
+
+                                                    setItems(prevItems => {
+                                                        const newItems = [...prevItems];
+                                                        // Swap productPosition values
+                                                        const currentPos = newItems[originalIndex].product.productPosition;
+                                                        const targetPos = newItems[targetItemWithGlobalIndex.originalIndex].product.productPosition;
+
+                                                        // If they happen to have the same position number, force a difference
+                                                        if (currentPos === targetPos) {
+                                                            newItems[originalIndex].product.productPosition = direction === 'up' ? currentPos - 1 : currentPos + 1;
+                                                        } else {
+                                                            newItems[originalIndex].product.productPosition = targetPos;
+                                                            newItems[targetItemWithGlobalIndex.originalIndex].product.productPosition = currentPos;
+                                                        }
+
+                                                        newItems[originalIndex].isDirty = true;
+                                                        newItems[targetItemWithGlobalIndex.originalIndex].isDirty = true;
+
+                                                        return newItems;
+                                                    });
+                                                };
+
+                                                return (
+                                                    <Card
+                                                        key={product.id}
+                                                        className={`group relative flex flex-row md:flex-col bg-white overflow-hidden hover:shadow-lg transition-shadow border-2 ${isDirty ? 'border-amber-400' : 'border-transparent'}`}
+                                                    >
+                                                        {/* Image Section */}
+                                                        <div
+                                                            className="relative w-[100px] h-[100px] md:w-full md:h-48 shrink-0 bg-gray-100 flex items-center justify-center cursor-pointer"
+                                                            onClick={() => {
+                                                                const existingUrls = product.previews?.filter(p => !item.fileChanges?.deletedPreviews?.includes(p)) || [];
+                                                                const newUrls = item.fileChanges?.newPreviews?.map(p => window.URL.createObjectURL(p.file)) || [];
+                                                                let allUrls = [...existingUrls, ...newUrls];
+
+                                                                if (allUrls.length === 0) {
+                                                                    const fallbackThumbnail = item.fileChanges?.thumbnail ? window.URL.createObjectURL(item.fileChanges.thumbnail) : product.thumbnail;
+                                                                    if (fallbackThumbnail) {
+                                                                        allUrls = [fallbackThumbnail];
+                                                                    }
+                                                                }
+
+                                                                if (allUrls.length > 0) {
+                                                                    const params = new URLSearchParams();
+                                                                    allUrls.forEach(url => params.append('url', url));
+                                                                    router.push(`/product/${product.id}/preview?${params.toString()}`);
+                                                                }
+                                                            }}
+                                                        >
+                                                            {item.fileChanges?.thumbnail ? (
+                                                                <div className="w-full h-full flex items-center justify-center text-xs text-gray-500 bg-gray-200">New Img</div>
+                                                            ) : product.thumbnail ? (
+                                                                <img src={product.thumbnail} alt={product.name} className="w-full h-full object-cover" />
+                                                            ) : (
+                                                                <Package className="h-8 w-8 text-gray-400" />
+                                                            )}
+
+                                                            <div className="md:hidden absolute -bottom-2 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap">
+                                                                {product.outOfStock ? (
+                                                                    <Badge className="bg-red-100 text-red-800 border-red-200 text-[10px] px-1.5 h-4 shadow-sm">Out of Stock</Badge>
+                                                                ) : (
+                                                                    <Badge className="bg-blue-100 text-blue-800 border-blue-200 text-[10px] px-1.5 h-4 shadow-sm">In Stock</Badge>
+                                                                )}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Content Section */}
+                                                        <div className="flex-1 p-3 md:p-4 flex flex-col relative min-w-0">
+                                                            <div className="flex justify-between items-start gap-2">
+                                                                <div className="flex-1 min-w-0">
+                                                                    <h3 className="font-semibold text-slate-900 text-sm md:text-lg line-clamp-2 leading-tight md:leading-snug mb-1">
+                                                                        {product.name}
+                                                                    </h3>
+                                                                    {(item.isNew || isDirty) && (
+                                                                        <div className="flex flex-wrap gap-1 mb-1">
+                                                                            {item.isNew && <Badge className="bg-blue-100 text-blue-800 text-[10px] px-1.5 h-4">New</Badge>}
+                                                                            {isDirty && !item.isNew && <Badge className="bg-amber-100 text-amber-800 text-[10px] px-1.5 h-4">Modified</Badge>}
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                                <Button variant="ghost" size="icon" className="md:hidden h-8 w-8 -mt-2 -mr-2 text-gray-500 hover:text-primary" onClick={() => handleEditProduct(originalIndex)}>
+                                                                    <Edit className="h-4 w-4" />
+                                                                </Button>
+                                                            </div>
+
+                                                            <div className="mt-1 md:mt-2">
+                                                                <div className="flex items-center gap-2">
+                                                                    <span className="text-xs md:text-sm text-gray-500 line-through">₹{product.originalPrice.toFixed(2)}</span>
+                                                                    <span className="text-sm md:text-lg font-bold text-green-600">₹{product.price.toFixed(2)}</span>
+                                                                    <span className="text-[10px] md:text-xs text-green-700 bg-green-50 px-1 rounded ml-1">{product.discountPercent}% OFF</span>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Desktop Actions including ordering arrows */}
+                                                            <div className="hidden md:flex flex-col gap-3 mt-4 flex-1 justify-end">
+                                                                <div className="flex justify-between items-center">
+                                                                    {product.outOfStock ? (
+                                                                        <Badge className="bg-red-100 text-red-800 border-red-200">Out of Stock</Badge>
+                                                                    ) : (
+                                                                        <Badge className="bg-blue-100 text-blue-800 border-blue-200">In Stock</Badge>
+                                                                    )}
+                                                                </div>
+
+                                                                <div className="flex gap-2">
+                                                                    <div className="flex flex-col bg-gray-50 rounded border justify-between">
+                                                                        <button
+                                                                            onClick={() => handleReorder('up')}
+                                                                            disabled={localIndex === 0}
+                                                                            className="px-2 py-0.5 text-gray-500 hover:bg-gray-200 disabled:opacity-30 rounded-t h-1/2 text-xs flex items-center justify-center">
+                                                                            ▲
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={() => handleReorder('down')}
+                                                                            disabled={localIndex === categoryItemsWithGlobalIndex.length - 1}
+                                                                            className="px-2 py-0.5 text-gray-500 hover:bg-gray-200 disabled:opacity-30 rounded-b h-1/2 text-xs flex items-center justify-center border-t">
+                                                                            ▼
+                                                                        </button>
+                                                                    </div>
+
+                                                                    <Button variant="outline" size="sm" onClick={() => handleEditProduct(originalIndex)} className="flex-1">
+                                                                        <Edit className="h-4 w-4 mr-1" /> Edit
+                                                                    </Button>
+                                                                    <Button variant="outline" size="icon" onClick={() => handleDeleteToggle(originalIndex)} className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 shrink-0">
+                                                                        <Trash2 className="h-4 w-4" />
+                                                                    </Button>
+                                                                </div>
+                                                            </div>
+
+                                                            <Button variant="ghost" size="icon" className="md:hidden absolute bottom-1 right-1 h-8 w-8 text-red-400 hover:text-red-600" onClick={() => handleDeleteToggle(originalIndex)}>
+                                                                <Trash2 className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    </Card>
+                                                );
+                                            })}
                                         </div>
+                                    </section>
+                                );
+                            });
+                        })()}
 
-                                        {/* Mobile: Delete Button (Bottom Right) */}
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="md:hidden absolute bottom-1 right-1 h-8 w-8 text-red-400 hover:text-red-600"
-                                            onClick={() => handleDeleteToggle(index)}
-                                        >
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
-
-                                    </div>
-                                </Card>
-                            );
-                        })}
-
-                        {/* Deleted Items Section (Move to bottom of grid or separate) */}
+                        {/* Deleted Items Section */}
                         {items.some(i => i.isDeleted) && (
                             <div className="col-span-full mt-8 border-t pt-8">
                                 <h3 className="text-gray-500 font-semibold mb-4">Pending Deletion</h3>

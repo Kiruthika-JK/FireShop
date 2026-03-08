@@ -7,12 +7,25 @@ export class FirestoreProductsDs {
 
   static async getProducts(): Promise<ProductModel[]> {
     const productsRef = collection(firestore, this.COLLECTION_NAME);
-    const q = query(productsRef, orderBy("name"));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
+    const querySnapshot = await getDocs(productsRef);
+    const products = querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
     } as ProductModel));
+
+    // Client-side sort to support existing products that lack categoryPosition/productPosition fields.
+    // Firestore `orderBy` completely filters out documents that do not contain the field being ordered.
+    return products.sort((a, b) => {
+      const cPosA = a.categoryPosition || 0;
+      const cPosB = b.categoryPosition || 0;
+      if (cPosA !== cPosB) return cPosA - cPosB;
+
+      const pPosA = a.productPosition || 0;
+      const pPosB = b.productPosition || 0;
+      if (pPosA !== pPosB) return pPosA - pPosB;
+
+      return (a.name || '').localeCompare(b.name || '');
+    });
   }
 
   static async getProductById(id: string): Promise<ProductModel | null> {

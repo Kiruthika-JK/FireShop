@@ -31,6 +31,9 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
     originalPrice: product?.originalPrice?.toString() || '',
     discountPercent: product?.discountPercent?.toString() || '0',
     outOfStock: product?.outOfStock || false,
+    category: product?.category || '',
+    categoryPosition: product?.categoryPosition?.toString() || '0',
+    productPosition: product?.productPosition?.toString() || '0',
   });
 
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
@@ -147,6 +150,9 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
         outOfStock: formData.outOfStock,
         thumbnail: thumbnailFile ? '' : (thumbnailPreview || ''), // If new file, empty string placeholder
         previews: existingPreviewUrls,
+        category: formData.category.trim(),
+        categoryPosition: parseInt(formData.categoryPosition) || 0,
+        productPosition: parseInt(formData.productPosition) || 0,
       };
 
       onSuccess(productData, thumbnailFile, newPreviewFiles, deletedPreviews);
@@ -199,6 +205,41 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
             onChange={handleInputChange}
             min="0"
             max="100"
+          />
+        </div>
+      </div>
+
+      {/* Categorization */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label className="block text-sm font-medium mb-1">Category</label>
+          <Input
+            name="category"
+            value={formData.category}
+            onChange={handleInputChange}
+            placeholder="e.g. Fireworks"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Category Position</label>
+          <Input
+            type="number"
+            name="categoryPosition"
+            value={formData.categoryPosition}
+            onChange={handleInputChange}
+            min="0"
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Product Position</label>
+          <Input
+            type="number"
+            name="productPosition"
+            value={formData.productPosition}
+            onChange={handleInputChange}
+            min="0"
+            placeholder="0"
           />
         </div>
       </div>

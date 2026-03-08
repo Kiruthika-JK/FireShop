@@ -7,4 +7,7 @@ export interface ProductModel {
     outOfStock: boolean;
     thumbnail?: string;
     previews: string[];
+    category: string;
+    categoryPosition: number;
+    productPosition: number;
 }
