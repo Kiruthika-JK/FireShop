@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3bb27318-e75d-496f-bdb0-f51f7eac0477" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/cart/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/cart/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/inventory/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/inventory/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Navbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ProductCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/cart/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/cart/store.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/product/data/sources/ProductStorage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/product/data/sources/ProductStorage.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/firebase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/firebase.ts" afterDir="false" />
-    </list>
+    <list default="true" id="3bb27318-e75d-496f-bdb0-f51f7eac0477" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
