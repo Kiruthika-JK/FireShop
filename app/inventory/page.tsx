@@ -10,7 +10,7 @@ import { ProductForm } from '@/components/inventory/ProductForm'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Trash2, Edit, Plus, Package, AlertCircle } from 'lucide-react'
+import { Trash2, Edit, Plus, Package, AlertCircle, Upload, FileText } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 interface InventoryItem {
@@ -37,6 +37,9 @@ export default function InventoryPage() {
     const [loadingProducts, setLoadingProducts] = useState(true)
     const [isFormOpen, setIsFormOpen] = useState(false)
     const [editingItemIndex, setEditingItemIndex] = useState<number | null>(null)
+    const [isImporting, setIsImporting] = useState(false)
+    const [importProgress, setImportProgress] = useState(0)
+    const [importStatus, setImportStatus] = useState('')
 
     // Saving State
     const [isSaving, setIsSaving] = useState(false)
@@ -87,6 +90,106 @@ export default function InventoryPage() {
         } finally {
             setLoadingProducts(false)
         }
+    }
+
+    const handleImportProducts = async () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        
+        input.onchange = async (e) => {
+            const file = (e.target as HTMLInputElement).files?.[0];
+            if (!file) return;
+            
+            setIsImporting(true);
+            setImportProgress(0);
+            setImportStatus('Reading file...');
+            
+            try {
+                const text = await file.text();
+                const products = JSON.parse(text);
+                
+                if (!Array.isArray(products)) {
+                    throw new Error('Invalid JSON format. Expected array of products.');
+                }
+                
+                setImportStatus('Processing products...');
+                setImportProgress(20);
+                
+                const newItems: InventoryItem[] = [];
+                let processedCount = 0;
+                const totalProducts = products.length;
+                
+                for (const product of products) {
+                    processedCount++;
+                    const progress = 20 + (processedCount / totalProducts) * 70;
+                    setImportProgress(Math.round(progress));
+                    setImportStatus(`Processing ${product.name || 'Product'} (${processedCount}/${totalProducts})`);
+                    
+                    // Validate required fields
+                    if (!product.name || !product.price || !product.category) {
+                        console.warn(`Skipping invalid product:`, product);
+                        continue;
+                    }
+                    
+                    // Generate unique ID
+                    const tempId = `import_${Date.now()}_${processedCount}`;
+                    
+                    // Create inventory item
+                    const inventoryItem: InventoryItem = {
+                        product: {
+                            id: tempId,
+                            name: product.name,
+                            price: parseFloat(product.price) || 0,
+                            originalPrice: parseFloat(product.originalPrice) || parseFloat(product.price) || 0,
+                            discountPercent: product.originalPrice ? 
+                                Math.round(((parseFloat(product.originalPrice) - parseFloat(product.price)) / parseFloat(product.originalPrice)) * 100) : 0,
+                            category: product.category || 'uncategorized',
+                            categoryPosition: 0,
+                            productPosition: 0,
+                            outOfStock: false,
+                            previews: product.previews || []
+                        },
+                        isNew: true,
+                        isDeleted: false,
+                        isDirty: true
+                    };
+                    
+                    // Only add thumbnail if it exists
+                    if (product.thumbnail) {
+                        inventoryItem.product.thumbnail = product.thumbnail;
+                    }
+                    
+                    newItems.push(inventoryItem);
+                }
+                
+                setImportProgress(95);
+                setImportStatus('Adding products to inventory...');
+                
+                // Add new items to existing items
+                setItems(prev => [...prev, ...newItems]);
+                
+                setImportProgress(100);
+                setImportStatus(`Successfully imported ${newItems.length} products!`);
+                
+                setTimeout(() => {
+                    setIsImporting(false);
+                    setImportProgress(0);
+                    setImportStatus('');
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Import error:', error);
+                setImportStatus(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+                setTimeout(() => {
+                    setIsImporting(false);
+                    setImportProgress(0);
+                    setImportStatus('');
+                }, 3000);
+            }
+        };
+        
+        input.click();
     }
 
     const handleAddProduct = () => {
@@ -255,13 +358,28 @@ export default function InventoryPage() {
             setSaveStatus('Complete!');
             setSaveProgress(100);
 
-            // Reload
-            await loadProducts();
+            // Ensure modal closes after completion
+            setTimeout(() => {
+                console.log('Closing save modal...');
+                setIsSaving(false);
+                
+                // Reload products in background
+                loadProducts().catch(error => {
+                    console.error('Error reloading products:', error);
+                });
+            }, 1000); // Show completion for 1 second
+
+            // Fallback: Force close after 3 seconds total
+            setTimeout(() => {
+                if (isSaving) {
+                    console.log('Fallback: Force closing save modal');
+                    setIsSaving(false);
+                }
+            }, 3000);
 
         } catch (error) {
             console.error(error);
             alert('Error saving changes. Check console for details.');
-        } finally {
             setIsSaving(false);
         }
     }
@@ -292,9 +410,13 @@ export default function InventoryPage() {
                             <Plus className="h-4 w-4 mr-2" />
                             Add Product
                         </Button>
+                        <Button onClick={handleImportProducts} variant="outline" disabled={isImporting} className="w-full sm:w-auto">
+                            <Upload className="h-4 w-4 mr-2" />
+                            {isImporting ? 'Importing...' : 'Import JSON'}
+                        </Button>
                         <Button
                             onClick={saveChanges}
-                            disabled={!hasUnsavedChanges || isSaving}
+                            disabled={!hasUnsavedChanges || isSaving || isImporting}
                             className={`
                                 ${hasUnsavedChanges ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400'} 
                                 text-white w-full sm:w-auto sm:min-w-[140px]
@@ -553,6 +675,25 @@ export default function InventoryPage() {
                         />
                     </DialogContent>
                 </Dialog>
+
+                {/* Import Progress Overlay */}
+                {isImporting && (
+                    <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center backdrop-blur-sm">
+                        <div className="bg-white rounded-xl p-8 max-w-sm w-full shadow-2xl">
+                            <h3 className="text-xl font-bold mb-4 text-center">Importing Products</h3>
+                            <div className="mb-2 flex justify-between text-sm text-gray-600">
+                                <span>{importStatus}</span>
+                                <span>{importProgress}%</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2.5 mb-6">
+                                <div className="bg-primary h-2.5 rounded-full transition-all duration-300" style={{ width: `${importProgress}%` }}></div>
+                            </div>
+                            {importProgress < 100 && (
+                                <p className="text-xs text-center text-gray-400">Please do not close this tab.</p>
+                            )}
+                        </div>
+                    </div>
+                )}
 
                 {/* Save Progress Overlay */}
                 {isSaving && (

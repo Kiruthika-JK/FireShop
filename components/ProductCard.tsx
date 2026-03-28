@@ -1,10 +1,11 @@
 'use client'
 
 import { useRef } from 'react'
-import { Plus, Minus } from 'lucide-react'
+import { Plus, Minus, Sparkles } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { AnimatedButton } from '@/components/ui/AnimatedButton'
 import { useCartStore } from '@/lib/features/cart/store'
 import { mergeClasses, formatPrice } from '@/lib/utils'
 import { ProductModel } from '@/lib/features/product/domain/models/ProductModel'
@@ -21,7 +22,15 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
     const cartItem = items.find((i) => i.productId === product.id)
     const quantity = cartItem ? cartItem.quantity : 0
 
-    const handleIncrement = () => {
+    const handleIncrement = (event?: React.MouseEvent) => {
+        // Trigger sparkle explosion at click coordinates
+        if (event && (window as any).addClickSparkle) {
+            const rect = (event.target as HTMLElement).getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            (window as any).addClickSparkle(x, y);
+        }
+
         addItem({
             productId: product.id,
             name: product.name,
@@ -29,7 +38,7 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
             originalPrice: product.originalPrice,
             quantity: 1,
             thumbnail: product.thumbnail
-        })
+        });
     }
 
     const timerRef = useRef<any>(null);
@@ -87,11 +96,18 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
     )
 
     return (
-        <Card className={mergeClasses("overflow-hidden hover:shadow-lg transition-shadow bg-white border-input p-0", className)}>
+        <Card className={mergeClasses("overflow-hidden hover:shadow-2xl transition-all duration-300 bg-white border-input p-0 transform hover:scale-105 hover:border-yellow-400/50 relative", className)}>
+            {/* Sparkle effect for special products */}
+            {product.discountPercent > 20 && (
+                <div className="absolute top-2 right-2 z-10">
+                    <Sparkles className="w-5 h-5 text-yellow-500 animate-pulse" />
+                </div>
+            )}
+            
             <div className="flex flex-row sm:flex-col h-full bg-white rounded-xl p-2 sm:p-0 gap-4 sm:gap-0 items-center sm:items-stretch">
                 {/* Image Container */}
                 <div
-                    className="relative shrink-0 w-[100px] h-[100px] sm:w-full sm:h-48 bg-[#D9D9D9] flex items-center justify-center text-gray-500 rounded-lg sm:rounded-none overflow-hidden cursor-pointer"
+                    className="relative shrink-0 w-[100px] h-[100px] sm:w-full sm:h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 rounded-lg sm:rounded-none overflow-hidden cursor-pointer group"
                     onClick={() => {
                         const urlsToPass = product.previews && product.previews.length > 0
                             ? product.previews
@@ -108,11 +124,14 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
                         <img
                             src={product.thumbnail}
                             alt={product.name}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                         />
                     ) : (
                         <span className="text-xs sm:text-lg opacity-50">600 × 400</span>
                     )}
+                    
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
 
                 <div className="flex-1 flex flex-row sm:flex-col justify-between items-center sm:items-start p-2 sm:p-4 w-full">
@@ -127,10 +146,10 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
 
                             <div className="flex items-center gap-3 mt-0 sm:mt-4 sm:ml-0 ml-auto sm:w-full sm:justify-between">
                                 <div className="flex items-center gap-2 sm:ml-auto">
-                                    <Button
+                                    <AnimatedButton
                                         variant="outline"
                                         size="icon"
-                                        className="h-8 w-8 rounded-full border-slate-400 bg-transparent hover:bg-slate-200 text-slate-700 select-none"
+                                        className="h-8 w-8 rounded-full border-slate-400 bg-transparent hover:bg-slate-200 text-slate-700 select-none hover:scale-110 transition-transform"
                                         onClick={handleDecrementClick}
                                         onMouseDown={handleLongPressStart}
                                         onMouseUp={handleLongPressEnd}
@@ -138,18 +157,20 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
                                         onTouchStart={handleLongPressStart}
                                         onTouchEnd={handleLongPressEnd}
                                         disabled={quantity === 0}
+                                        sparkle={quantity > 0}
                                     >
                                         <Minus className="h-4 w-4" />
-                                    </Button>
-                                    <span className="w-4 text-center font-medium text-slate-900">{quantity}</span>
-                                    <Button
+                                    </AnimatedButton>
+                                    <span className="w-4 text-center font-medium text-slate-900 font-bold">{quantity}</span>
+                                    <AnimatedButton
                                         variant="outline"
                                         size="icon"
-                                        className="h-8 w-8 rounded-full border-slate-400 bg-transparent hover:bg-slate-200 text-slate-700"
-                                        onClick={handleIncrement}
+                                        className="h-8 w-8 rounded-full border-slate-400 bg-transparent hover:bg-slate-200 text-slate-700 hover:scale-110 transition-transform"
+                                        onClick={(e) => handleIncrement(e)}
+                                        sparkle={true}
                                     >
                                         <Plus className="h-4 w-4" />
-                                    </Button>
+                                    </AnimatedButton>
                                 </div>
                             </div>
                         </>

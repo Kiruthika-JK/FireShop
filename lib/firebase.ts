@@ -9,7 +9,7 @@ import { config } from "./config";
 const app = !getApps().length ? initializeApp(config.firebase) : getApp();
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
-const storage = getStorage(app);
+const storage = getStorage(app); // Use default bucket to avoid CORS issues
 const firestore = getFirestore(app);
 
 let analytics;

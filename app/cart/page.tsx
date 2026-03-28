@@ -5,15 +5,31 @@ import { useCartStore } from '@/lib/features/cart/store'
 import { formatPrice } from '@/lib/utils'
 import { ProductCard } from '@/components/ProductCard'
 import { ProductModel } from '@/lib/features/product/domain/models/ProductModel'
+import { Button } from '@/components/ui/button'
+import { Trash2 } from 'lucide-react'
 
 export default function CartPage() {
     const router = useRouter()
-    const { items, total, discount } = useCartStore()
+    const { items, total, discount, clearCart } = useCartStore()
 
     return (
         <div className="min-h-screen bg-gray-50 pb-64 lg:pb-12">
 
             <div className="container mx-auto px-4 py-8">
+                <div className="flex justify-between items-center mb-8">
+                    <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
+                    {items.length > 0 && (
+                        <Button
+                            variant="outline"
+                            onClick={clearCart}
+                            className="text-red-600 border-red-600 hover:bg-red-50"
+                        >
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Clear Cart
+                        </Button>
+                    )}
+                </div>
+                
                 {items.length === 0 ? (
                     <div className="text-center py-12 text-gray-500">
                         Your cart is empty

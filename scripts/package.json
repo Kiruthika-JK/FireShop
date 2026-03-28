@@ -1,0 +1,15 @@
+{
+  "name": "fireshop-import",
+  "version": "1.0.0",
+  "description": "Import products to Firebase for FireShop",
+  "main": "import-products.js",
+  "scripts": {
+    "import": "node import-products.js"
+  },
+  "dependencies": {
+    "firebase": "^10.8.0"
+  },
+  "keywords": ["firebase", "import", "firecrackers"],
+  "author": "GANISHKHASRI CRACKERS",
+  "license": "MIT"
+}

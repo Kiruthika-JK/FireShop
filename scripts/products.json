@@ -1,0 +1,1370 @@
+[
+  {
+    "name": "12 Cm Electric Sparklers (10Pcs)",
+    "originalPrice": 110,
+    "price": 22,
+    "category": "sparklers",
+    "description": "1 Box - Premium quality electric sparklers",
+    "stock": 50,
+    "featured": true
+  },
+  {
+    "name": "12 Cm Colour Sparklers (10Pcs)",
+    "originalPrice": 126,
+    "price": 25,
+    "category": "sparklers",
+    "description": "1 Box - Colorful sparklers for celebrations",
+    "stock": 50,
+    "featured": true
+  },
+  {
+    "name": "12 Cm Green Sparklers (10Pcs)",
+    "originalPrice": 142,
+    "price": 28,
+    "category": "sparklers",
+    "description": "1 Box - Green colored sparklers",
+    "stock": 50,
+    "featured": true
+  },
+  {
+    "name": "12 Cm Red Sparklers (10Pcs)",
+    "originalPrice": 158,
+    "price": 32,
+    "category": "sparklers",
+    "description": "1 Box - Red colored sparklers",
+    "stock": 50,
+    "featured": true
+  },
+  {
+    "name": "15 Cm Electric Sparklers (10Pcs)",
+    "originalPrice": 173,
+    "price": 35,
+    "category": "sparklers",
+    "description": "1 Box - Large electric sparklers",
+    "stock": 50,
+    "featured": true
+  },
+  {
+    "name": "15 Cm Colour Sparklers (10Pcs)",
+    "originalPrice": 189,
+    "price": 38,
+    "category": "sparklers",
+    "description": "1 Box - Large colorful sparklers",
+    "stock": 50,
+    "featured": true
+  },
+  {
+    "name": "15 Cm Green Sparklers (10Pcs)",
+    "originalPrice": 236,
+    "price": 47,
+    "category": "sparklers",
+    "description": "1 Box - Large green sparklers",
+    "stock": 50,
+    "featured": true
+  },
+  {
+    "name": "15 Cm Red Sparklers (10Pcs)",
+    "originalPrice": 247,
+    "price": 49,
+    "category": "sparklers",
+    "description": "1 Box - Large red sparklers",
+    "stock": 50,
+    "featured": true
+  },
+  {
+    "name": "30 Cm Electric Sparklers (5Pcs)",
+    "originalPrice": 173,
+    "price": 35,
+    "category": "sparklers",
+    "description": "1 Box - Extra large electric sparklers",
+    "stock": 30,
+    "featured": true
+  },
+  {
+    "name": "30 Cm Colour Sparklers (5Pcs)",
+    "originalPrice": 189,
+    "price": 38,
+    "category": "sparklers",
+    "description": "1 Box - Extra large colorful sparklers",
+    "stock": 30,
+    "featured": true
+  },
+  {
+    "name": "30 Cm Green Sparklers (5Pcs)",
+    "originalPrice": 236,
+    "price": 47,
+    "category": "sparklers",
+    "description": "1 Box - Extra large green sparklers",
+    "stock": 30,
+    "featured": true
+  },
+  {
+    "name": "30 Cm Red Sparklers (5Pcs)",
+    "originalPrice": 247,
+    "price": 49,
+    "category": "sparklers",
+    "description": "1 Box - Extra large red sparklers",
+    "stock": 30,
+    "featured": true
+  },
+  {
+    "name": "50 Cm Electric Sparklers (5Pcs)",
+    "originalPrice": 735,
+    "price": 147,
+    "category": "sparklers",
+    "description": "1 Box - Giant electric sparklers",
+    "stock": 20,
+    "featured": true
+  },
+  {
+    "name": "50 Cm Colour Sparklers (5Pcs)",
+    "originalPrice": 814,
+    "price": 163,
+    "category": "sparklers",
+    "description": "1 Box - Giant colorful sparklers",
+    "stock": 20,
+    "featured": true
+  },
+  {
+    "name": "Rotating Sparklers (1Pcs)",
+    "originalPrice": 866,
+    "price": 173,
+    "category": "sparklers",
+    "description": "1 Box - Rotating sparklers with special effects",
+    "stock": 25,
+    "featured": true
+  },
+  {
+    "name": "Flower Pots Small (10Pcs)",
+    "originalPrice": 210,
+    "price": 168,
+    "category": "flowerpots",
+    "description": "1 Box - Small flower pots for ground display",
+    "stock": 40,
+    "featured": true
+  },
+  {
+    "name": "Flower Pots Big (10Pcs)",
+    "originalPrice": 310,
+    "price": 247.8,
+    "category": "flowerpots",
+    "description": "1 Box - Big flower pots for vibrant display",
+    "stock": 35,
+    "featured": true
+  },
+  {
+    "name": "Flower Pots Special (10Pcs)",
+    "originalPrice": 473,
+    "price": 378,
+    "category": "flowerpots",
+    "description": "1 Box - Special flower pots with unique effects",
+    "stock": 30,
+    "featured": true
+  },
+  {
+    "name": "Flower Pots Asoka (10Pcs)",
+    "originalPrice": 525,
+    "price": 420,
+    "category": "flowerpots",
+    "description": "1 Box - Asoka flower pots traditional design",
+    "stock": 30,
+    "featured": true
+  },
+  {
+    "name": "Flower Pots Giant (10Pcs)",
+    "originalPrice": 662,
+    "price": 529.2,
+    "category": "flowerpots",
+    "description": "1 Box - Giant flower pots for maximum impact",
+    "stock": 25,
+    "featured": true
+  },
+  {
+    "name": "Flower Pots Deluxe (5Pcs)",
+    "originalPrice": 730,
+    "price": 583.8,
+    "category": "flowerpots",
+    "description": "1 Box - Deluxe flower pots premium quality",
+    "stock": 20,
+    "featured": true
+  },
+  {
+    "name": "Flower Pots Super Deluxe (2Pcs)",
+    "originalPrice": 509,
+    "price": 407.4,
+    "category": "flowerpots",
+    "description": "1 Box - Super deluxe flower pots luxury",
+    "stock": 15,
+    "featured": true
+  },
+  {
+    "name": "Colour Koti (10Pcs)",
+    "originalPrice": 887,
+    "price": 709.8,
+    "category": "flowerpots",
+    "description": "1 Box - Colorful koti flower pots",
+    "stock": 25,
+    "featured": true
+  },
+  {
+    "name": "Colour Koti Deluxe (10Pcs)",
+    "originalPrice": 1449,
+    "price": 1159.2,
+    "category": "flowerpots",
+    "description": "1 Box - Deluxe colorful koti flower pots",
+    "stock": 20,
+    "featured": true
+  },
+  {
+    "name": "Rangeela (Colour Pinjore) (10Pcs)",
+    "originalPrice": 1559,
+    "price": 1247.4,
+    "category": "flowerpots",
+    "description": "1 Box - Rangeela colorful pinjore flower pots",
+    "stock": 20,
+    "featured": true
+  },
+  {
+    "name": "Lucky/Jersey Red & Green (5Pcs)",
+    "originalPrice": 761,
+    "price": 609,
+    "category": "flowerpots",
+    "description": "1 Box - Lucky Jersey red and green flower pots",
+    "stock": 25,
+    "featured": true
+  },
+  {
+    "name": "Tri Colour (5Pcs)",
+    "originalPrice": 1103,
+    "price": 882,
+    "category": "flowerpots",
+    "description": "1 Box - Tri color flower pots patriotic",
+    "stock": 20,
+    "featured": true
+  },
+  {
+    "name": "Motu Patlu/Pop Eye Tricolour(5Pcs)",
+    "originalPrice": 945,
+    "price": 756,
+    "category": "flowerpots",
+    "description": "1 Box - Motu Patlu tricolor flower pots",
+    "stock": 20,
+    "featured": true
+  },
+  {
+    "name": "Monster Koti DLX (10Pcs)",
+    "originalPrice": 2231,
+    "price": 1785,
+    "category": "flowerpots",
+    "description": "1 Box - Monster koti deluxe flower pots",
+    "stock": 15,
+    "featured": true
+  },
+  {
+    "name": "Ganga Jamuna (10Pcs)",
+    "originalPrice": 420,
+    "price": 336,
+    "category": "flowerpots",
+    "description": "1 Box - Ganga Jamuna flower pots combination",
+    "stock": 30,
+    "featured": true
+  },
+  {
+    "name": "Ground Chakkar Big (10Pcs)",
+    "originalPrice": 168,
+    "price": 134.4,
+    "category": "chakras",
+    "description": "1 Box - Big ground chakkar spinning wheels",
+    "stock": 35,
+    "featured": true
+  },
+  {
+    "name": "Ground Chakkar Asoka (10Pcs)",
+    "originalPrice": 221,
+    "price": 176.4,
+    "category": "chakras",
+    "description": "1 Box - Asoka ground chakkar traditional",
+    "stock": 30,
+    "featured": true
+  },
+  {
+    "name": "Ground Chakkar Special (10Pcs)",
+    "originalPrice": 362,
+    "price": 289.8,
+    "category": "chakras",
+    "description": "1 Box - Special ground chakkar with effects",
+    "stock": 25,
+    "featured": true
+  },
+  {
+    "name": "Ground Chakkar Deluxe (10Pcs)",
+    "originalPrice": 551,
+    "price": 441,
+    "category": "chakras",
+    "description": "1 Box - Deluxe ground chakkar premium",
+    "stock": 20,
+    "featured": true
+  },
+  {
+    "name": "Whizzling Wheel (5Pcs)",
+    "originalPrice": 588,
+    "price": 470.4,
+    "category": "chakras",
+    "description": "1 Box - Whizzling wheel fast spinning",
+    "stock": 25,
+    "featured": true
+  },
+  {
+    "name": "4*4 Wheel (5Pcs)",
+    "originalPrice": 772,
+    "price": 617.4,
+    "category": "chakras",
+    "description": "1 Box - 4x4 wheel special design",
+    "stock": 20,
+    "featured": true
+  },
+  {
+    "name": "Hot Wheels (5Pcs)",
+    "originalPrice": 1129,
+    "price": 903,
+    "category": "chakras",
+    "description": "1 Box - Hot wheels fast spinning chakras",
+    "stock": 15,
+    "featured": true
+  },
+  {
+    "name": "Disco Wheel (5 Pcs)",
+    "originalPrice": 499,
+    "price": 399,
+    "category": "chakras",
+    "description": "1 Box - Disco wheel colorful spinning",
+    "stock": 25,
+    "featured": true
+  },
+  {
+    "name": "Win Wheel Mini (10Pcs)",
+    "originalPrice": 656,
+    "price": 525,
+    "category": "chakras",
+    "description": "1 Box - Win wheel mini spinning wheels",
+    "stock": 30,
+    "featured": true
+  },
+  {
+    "name": "Win Wheel Max (10Pcs)",
+    "originalPrice": 814,
+    "price": 651,
+    "category": "chakras",
+    "description": "1 Box - Win wheel max large spinning",
+    "stock": 25,
+    "featured": true
+  },
+  {
+    "name": "Win Wheel Super (10Pcs)",
+    "originalPrice": 1024,
+    "price": 819,
+    "category": "chakras",
+    "description": "1 Box - Win wheel super premium",
+    "stock": 20,
+    "featured": true
+  },
+  {
+    "name": "Peacock Red and Green (1Pcs)",
+    "originalPrice": 788,
+    "price": 630,
+    "category": "special",
+    "description": "1 Box - Peacock red and green special",
+    "stock": 25,
+    "featured": true
+  },
+  {
+    "name": "Bada Peacock 5In 1 (1Pcs)",
+    "originalPrice": 1875,
+    "price": 1500,
+    "category": "special",
+    "description": "1 Box - Bada peacock 5 in 1 combination",
+    "stock": 15,
+    "featured": true
+  },
+  {
+    "name": "King Bomb",
+    "originalPrice": 375,
+    "price": 300,
+    "category": "bombs",
+    "description": "1 Box - King bomb powerful sound",
+    "stock": 30,
+    "featured": true
+  },
+  {
+    "name": "King Of Kango (10Pcs)",
+    "originalPrice": 450,
+    "price": 360,
+    "category": "bombs",
+    "description": "1 Box - King of kango bomb series",
+    "stock": 35,
+    "featured": true
+  },
+  {
+    "name": "DTX (10Pcs)",
+    "originalPrice": 944,
+    "price": 755,
+    "category": "bombs",
+    "description": "1 Box - DTX bomb high impact",
+    "stock": 25,
+    "featured": true
+  },
+  {
+    "name": "Dinosour Bomb (10Pcs)",
+    "originalPrice": 752,
+    "price": 602,
+    "category": "bombs",
+    "description": "1 Box - Dinosaur bomb series",
+    "stock": 30,
+    "featured": true
+  },
+  {
+    "name": "Classic/Jug-Mug 5000 5G (10Pcs)",
+    "originalPrice": 525,
+    "price": 420,
+    "category": "bombs",
+    "description": "1 Box - Classic jug mug bomb series",
+    "stock": 35,
+    "featured": true
+  },
+  {
+    "name": "Paper Bomb (Adiyal) 1/4 Kg (1Pcs)",
+    "originalPrice": 275,
+    "price": 220,
+    "category": "bombs",
+    "description": "1 Box - Paper bomb adiyal 1/4 kg",
+    "stock": 40,
+    "featured": true
+  },
+  {
+    "name": "Paper Bomb (Adiyal) 1/2 Kg (1Pcs)",
+    "originalPrice": 525,
+    "price": 420,
+    "category": "bombs",
+    "description": "1 Box - Paper bomb adiyal 1/2 kg",
+    "stock": 30,
+    "featured": true
+  },
+  {
+    "name": "Paper Bomb (Adiyal) 1 Kg (1Pcs)",
+    "originalPrice": 1025,
+    "price": 820,
+    "category": "bombs",
+    "description": "1 Box - Paper bomb adiyal 1 kg",
+    "stock": 20,
+    "featured": true
+  },
+  {
+    "name": "2 3/4\" Kuruvi (1Pkt)",
+    "originalPrice": 36,
+    "price": 29,
+    "category": "bombs",
+    "description": "1 Pkt - Kuruvi small bomb",
+    "stock": 50,
+    "featured": false
+  },
+  {
+    "name": "3 1/2\" Lakshmi (1Pkt)",
+    "originalPrice": 90,
+    "price": 72,
+    "category": "bombs",
+    "description": "1 Pkt - Lakshmi bomb traditional",
+    "stock": 50,
+    "featured": false
+  },
+  {
+    "name": "4\" Lakshmi (1Pkt)",
+    "originalPrice": 115,
+    "price": 92,
+    "category": "bombs",
+    "description": "1 Pkt - Lakshmi bomb 4 inch",
+    "stock": 45,
+    "featured": false
+  },
+  {
+    "name": "4\" Deluxe Lakshmi (1Pkt)",
+    "originalPrice": 140,
+    "price": 112,
+    "category": "bombs",
+    "description": "1 Pkt - Deluxe Lakshmi bomb premium",
+    "stock": 40,
+    "featured": false
+  },
+  {
+    "name": "4\" Gold Lakshmi (1Pkt)",
+    "originalPrice": 140,
+    "price": 112,
+    "category": "bombs",
+    "description": "1 Pkt - Gold Lakshmi bomb luxury",
+    "stock": 40,
+    "featured": false
+  },
+  {
+    "name": "5\" Jallikattu/Vikram/Ganesh (1Pkt)",
+    "originalPrice": 200,
+    "price": 160,
+    "category": "bombs",
+    "description": "1 Pkt - Jallikattu bomb series",
+    "stock": 35,
+    "featured": false
+  },
+  {
+    "name": "2 Sound Crackers",
+    "originalPrice": 131,
+    "price": 105,
+    "category": "bombs",
+    "description": "1 Pkt - 2 sound crackers double blast",
+    "stock": 40,
+    "featured": false
+  },
+  {
+    "name": "Rocket Bomb (10Pcs)",
+    "originalPrice": 275,
+    "price": 220,
+    "category": "rockets",
+    "description": "1 Box - Rocket bomb combination",
+    "stock": 35,
+    "featured": true
+  },
+  {
+    "name": "Lunik Express (10Pcs)",
+    "originalPrice": 515,
+    "price": 412,
+    "category": "rockets",
+    "description": "1 Box - Lunik express rocket series",
+    "stock": 30,
+    "featured": true
+  },
+  {
+    "name": "Musical Rocket (10Pcs)",
+    "originalPrice": 700,
+    "price": 560,
+    "category": "rockets",
+    "description": "1 Box - Musical rocket with sound effects",
+    "stock": 25,
+    "featured": true
+  },
+  {
+    "name": "10*10 Shot (1Pcs)",
+    "originalPrice": 18155,
+    "price": 14524,
+    "category": "aerial",
+    "description": "1 Box - 10x10 shot aerial display",
+    "stock": 10,
+    "featured": true
+  },
+  {
+    "name": "12 Shot - Crackling Rider (1Pcs)",
+    "originalPrice": 601,
+    "price": 480,
+    "category": "aerial",
+    "description": "1 Box - 12 shot crackling rider",
+    "stock": 20,
+    "featured": true
+  },
+  {
+    "name": "12 - Multicolour Shot (1Pcs)",
+    "originalPrice": 901,
+    "price": 721,
+    "category": "aerial",
+    "description": "1 Box - 12 multicolour shot aerial",
+    "stock": 20,
+    "featured": true
+  },
+  {
+    "name": "25 - Crackling Rider (1Pcs)",
+    "originalPrice": 1166,
+    "price": 932,
+    "category": "aerial",
+    "description": "1 Box - 25 crackling rider shots",
+    "stock": 15,
+    "featured": true
+  },
+  {
+    "name": "50 - Crackling Rider (1Pcs)",
+    "originalPrice": 2331,
+    "price": 1865,
+    "category": "aerial",
+    "description": "1 Box - 50 crackling rider shots",
+    "stock": 10,
+    "featured": true
+  },
+  {
+    "name": "30 - Multicolour Shot (1Pcs)",
+    "originalPrice": 1950,
+    "price": 1560,
+    "category": "aerial",
+    "description": "1 Box - 30 multicolour shot aerial",
+    "stock": 12,
+    "featured": true
+  },
+  {
+    "name": "60 - Multicolour Shot (1Pcs)",
+    "originalPrice": 3900,
+    "price": 3120,
+    "category": "aerial",
+    "description": "1 Box - 60 multicolour shot aerial",
+    "stock": 8,
+    "featured": true
+  },
+  {
+    "name": "120 - Multicolour Shot (1Pcs)",
+    "originalPrice": 7800,
+    "price": 6240,
+    "category": "aerial",
+    "description": "1 Box - 120 multicolour shot aerial",
+    "stock": 5,
+    "featured": true
+  },
+  {
+    "name": "240 - Multicolour Shot (1Pcs)",
+    "originalPrice": 15600,
+    "price": 12480,
+    "category": "aerial",
+    "description": "1 Box - 240 multicolour shot aerial",
+    "stock": 3,
+    "featured": true
+  },
+  {
+    "name": "Chotta Fancy (1Pcs)",
+    "originalPrice": 151,
+    "price": 120,
+    "category": "aerial",
+    "description": "1 Box - Chotta fancy small aerial",
+    "stock": 30,
+    "featured": false
+  },
+  {
+    "name": "2\" Single (1Pcs)",
+    "originalPrice": 460,
+    "price": 368,
+    "category": "aerial",
+    "description": "1 Box - 2 inch single aerial",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "2\" 3Pcs (1Box)",
+    "originalPrice": 1275,
+    "price": 1020,
+    "category": "aerial",
+    "description": "1 Box - 2 inch 3 pieces aerial",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "3 1/2\" Fancy Single (1Pcs)",
+    "originalPrice": 1349,
+    "price": 1079,
+    "category": "aerial",
+    "description": "1 Box - 3.5 inch fancy single aerial",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "3 1/2\" Fancy (2Pcs) (1Box)",
+    "originalPrice": 2580,
+    "price": 2064,
+    "category": "aerial",
+    "description": "1 Box - 3.5 inch fancy 2 pieces aerial",
+    "stock": 15,
+    "featured": false
+  },
+  {
+    "name": "3 1/2\" Seven Steps (1Pcs)",
+    "originalPrice": 1457,
+    "price": 1165,
+    "category": "aerial",
+    "description": "1 Box - 3.5 inch seven steps aerial",
+    "stock": 18,
+    "featured": false
+  },
+  {
+    "name": "3 1/2\" Double Ball (1Pcs)",
+    "originalPrice": 1655,
+    "price": 1324,
+    "category": "aerial",
+    "description": "1 Box - 3.5 inch double ball aerial",
+    "stock": 15,
+    "featured": false
+  },
+  {
+    "name": "3 1/2\" Nayagara (1Pcs)",
+    "originalPrice": 1261,
+    "price": 1009,
+    "category": "aerial",
+    "description": "1 Box - 3.5 inch Nayagara aerial",
+    "stock": 18,
+    "featured": false
+  },
+  {
+    "name": "4\" Fancy Single (1Pcs)",
+    "originalPrice": 1405,
+    "price": 1124,
+    "category": "aerial",
+    "description": "1 Box - 4 inch fancy single aerial",
+    "stock": 15,
+    "featured": false
+  },
+  {
+    "name": "4\" Fancy (2Pcs) (1Pcs)",
+    "originalPrice": 1405,
+    "price": 1124,
+    "category": "aerial",
+    "description": "1 Box - 4 inch fancy 2 pieces aerial",
+    "stock": 12,
+    "featured": false
+  },
+  {
+    "name": "5\" Fancy Single (1Pcs)",
+    "originalPrice": 2358,
+    "price": 1886,
+    "category": "aerial",
+    "description": "1 Box - 5 inch fancy single aerial",
+    "stock": 10,
+    "featured": false
+  },
+  {
+    "name": "5\" Fancy (2 Pcs) (1Box)",
+    "originalPrice": 4655,
+    "price": 3724,
+    "category": "aerial",
+    "description": "1 Box - 5 inch fancy 2 pieces aerial",
+    "stock": 8,
+    "featured": false
+  },
+  {
+    "name": "6\" Water Queen (1Pcs)",
+    "originalPrice": 879,
+    "price": 703,
+    "category": "aerial",
+    "description": "1 Box - 6 inch water queen aerial",
+    "stock": 15,
+    "featured": false
+  },
+  {
+    "name": "Festival Party (3Pcs)",
+    "originalPrice": 1403,
+    "price": 1123,
+    "category": "aerial",
+    "description": "1 Box - Festival party aerial combination",
+    "stock": 12,
+    "featured": false
+  },
+  {
+    "name": "Tin (1Pcs)",
+    "originalPrice": 500,
+    "price": 400,
+    "category": "aerial",
+    "description": "1 Box - Tin aerial series",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Siren (5Pcs)",
+    "originalPrice": 590,
+    "price": 472,
+    "category": "flowerpots",
+    "description": "1 Box - Siren whistling fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Mega Siren (3Pcs)",
+    "originalPrice": 750,
+    "price": 600,
+    "category": "flowerpots",
+    "description": "1 Box - Mega siren loud whistling",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Pogo/Jolly Rancher/Tom&Cherry (5Pcs)",
+    "originalPrice": 650,
+    "price": 520,
+    "category": "flowerpots",
+    "description": "1 Box - Pogo series color fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Angry Bird/Scooby-doo/KurKur (5Pcs)",
+    "originalPrice": 1310,
+    "price": 1048,
+    "category": "flowerpots",
+    "description": "1 Box - Angry bird series fountain",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Starpots (5Pcs)",
+    "originalPrice": 735,
+    "price": 588,
+    "category": "flowerpots",
+    "description": "1 Box - Star pots color fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Diamond Buster (5Pcs)",
+    "originalPrice": 567,
+    "price": 453,
+    "category": "flowerpots",
+    "description": "1 Box - Diamond buster fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Glorious Green (5Pcs)",
+    "originalPrice": 567,
+    "price": 453,
+    "category": "flowerpots",
+    "description": "1 Box - Glorious green fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Gold Monets (5Pcs)",
+    "originalPrice": 567,
+    "price": 453,
+    "category": "flowerpots",
+    "description": "1 Box - Gold monets fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "volvo Red (5Pcs)",
+    "originalPrice": 567,
+    "price": 453,
+    "category": "flowerpots",
+    "description": "1 Box - Volvo red fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Amaze (5Pcs)",
+    "originalPrice": 567,
+    "price": 453,
+    "category": "flowerpots",
+    "description": "1 Box - Amaze fountain series",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Sun Feast-Red,Green,Gold,White,Red&Green (5Pcs)",
+    "originalPrice": 640,
+    "price": 512,
+    "category": "flowerpots",
+    "description": "1 Box - Sun feast multicolor fountain",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Red Bloom/kit kat Red (5Pcs)",
+    "originalPrice": 840,
+    "price": 672,
+    "category": "flowerpots",
+    "description": "1 Box - Red bloom fountain series",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Reen Garden/Green Flash/Tic Tac Mint (5Pcs)",
+    "originalPrice": 840,
+    "price": 672,
+    "category": "flowerpots",
+    "description": "1 Box - Reen garden fountain series",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Red Sun/Little Fish/Dairy Milk (5Pcs)",
+    "originalPrice": 840,
+    "price": 672,
+    "category": "flowerpots",
+    "description": "1 Box - Red sun fountain series",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Gold Feast/Gold Coin/5 Star (5Pcs)",
+    "originalPrice": 840,
+    "price": 672,
+    "category": "flowerpots",
+    "description": "1 Box - Gold feast fountain series",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Blue Ice/Silver Moon/Milky Bar (5Pcs)",
+    "originalPrice": 840,
+    "price": 672,
+    "category": "flowerpots",
+    "description": "1 Box - Blue ice fountain series",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Miss Butterfly (5Pcs)",
+    "originalPrice": 840,
+    "price": 672,
+    "category": "flowerpots",
+    "description": "1 Box - Miss butterfly fountain",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Kinster/Jigarthanda (3Pcs)",
+    "originalPrice": 1140,
+    "price": 912,
+    "category": "flowerpots",
+    "description": "1 Box - Kinster fountain series",
+    "stock": 15,
+    "featured": false
+  },
+  {
+    "name": "Peacock Tail (2Pcs)",
+    "originalPrice": 1165,
+    "price": 932,
+    "category": "flowerpots",
+    "description": "1 Box - Peacock tail fountain",
+    "stock": 15,
+    "featured": false
+  },
+  {
+    "name": "Electric Stone (10Pcs)",
+    "originalPrice": 90,
+    "price": 72,
+    "category": "novelty",
+    "description": "1 Box - Electric stone novelty",
+    "stock": 40,
+    "featured": false
+  },
+  {
+    "name": "Snake Egg (10Pcs)",
+    "originalPrice": 140,
+    "price": 112,
+    "category": "novelty",
+    "description": "1 Box - Snake egg novelty crackers",
+    "stock": 35,
+    "featured": false
+  },
+  {
+    "name": "Gold Fish 2in1 (1Pcs)",
+    "originalPrice": 750,
+    "price": 600,
+    "category": "special",
+    "description": "1 Box - Gold fish 2 in 1 special",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Croods Fish 2in1 (1Pcs)",
+    "originalPrice": 750,
+    "price": 600,
+    "category": "special",
+    "description": "1 Box - Croods fish 2 in 1 special",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Angel Time 2in1 (1Pcs)",
+    "originalPrice": 750,
+    "price": 600,
+    "category": "special",
+    "description": "1 Box - Angel time 2 in 1 special",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "8\" Triple Monkey 3in 1 (1Pcs)",
+    "originalPrice": 975,
+    "price": 780,
+    "category": "special",
+    "description": "1 Box - Triple monkey 3 in 1 special",
+    "stock": 15,
+    "featured": false
+  },
+  {
+    "name": "6000 (1Pcs)",
+    "originalPrice": 645,
+    "price": 516,
+    "category": "flowerpots",
+    "description": "1 Box - 6000 crackling fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Tweet (1Pcs)",
+    "originalPrice": 645,
+    "price": 516,
+    "category": "flowerpots",
+    "description": "1 Box - Tweet crackling fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Poppings (1Pcs)",
+    "originalPrice": 645,
+    "price": 516,
+    "category": "flowerpots",
+    "description": "1 Box - Poppings crackling fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Golden Peacock (1Pcs)",
+    "originalPrice": 645,
+    "price": 516,
+    "category": "flowerpots",
+    "description": "1 Box - Golden peacock fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Star Show Crackling (1Pcs)",
+    "originalPrice": 950,
+    "price": 760,
+    "category": "flowerpots",
+    "description": "1 Box - Star show crackling fountain",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "White Crackling (1Pcs)",
+    "originalPrice": 950,
+    "price": 760,
+    "category": "flowerpots",
+    "description": "1 Box - White crackling fountain",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Autumn Rain(1Pcs)",
+    "originalPrice": 825,
+    "price": 660,
+    "category": "flowerpots",
+    "description": "1 Box - Autumn rain fountain",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Winter Rain(1Pcs)",
+    "originalPrice": 825,
+    "price": 660,
+    "category": "flowerpots",
+    "description": "1 Box - Winter rain fountain",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Rain & Shin (1Pcs)",
+    "originalPrice": 900,
+    "price": 720,
+    "category": "special",
+    "description": "1 Box - Rain and shin special",
+    "stock": 18,
+    "featured": false
+  },
+  {
+    "name": "Jelly Belly (1Pcs)",
+    "originalPrice": 900,
+    "price": 720,
+    "category": "special",
+    "description": "1 Box - Jelly belly special",
+    "stock": 18,
+    "featured": false
+  },
+  {
+    "name": "Crack Jack (1Pcs)",
+    "originalPrice": 900,
+    "price": 720,
+    "category": "special",
+    "description": "1 Box - Crack jack special",
+    "stock": 18,
+    "featured": false
+  },
+  {
+    "name": "Tik Tok (1Pcs)",
+    "originalPrice": 900,
+    "price": 720,
+    "category": "special",
+    "description": "1 Box - Tik tok special",
+    "stock": 18,
+    "featured": false
+  },
+  {
+    "name": "Photo Flash (5Pcs)",
+    "originalPrice": 315,
+    "price": 252,
+    "category": "novelty",
+    "description": "1 Box - Photo flash novelty",
+    "stock": 30,
+    "featured": false
+  },
+  {
+    "name": "Helicopter (5Pcs)",
+    "originalPrice": 450,
+    "price": 360,
+    "category": "novelty",
+    "description": "1 Box - Helicopter novelty",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Bambaram (10Pcs)",
+    "originalPrice": 500,
+    "price": 400,
+    "category": "novelty",
+    "description": "1 Box - Bambaram spinning top",
+    "stock": 30,
+    "featured": false
+  },
+  {
+    "name": "Butterfly (10Pcs)",
+    "originalPrice": 325,
+    "price": 260,
+    "category": "novelty",
+    "description": "1 Box - Butterfly novelty",
+    "stock": 35,
+    "featured": false
+  },
+  {
+    "name": "Drone (5Pcs)",
+    "originalPrice": 490,
+    "price": 392,
+    "category": "novelty",
+    "description": "1 Box - Drone novelty",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Bim Bam Crackling/Mad Max (10Pcs)",
+    "originalPrice": 240,
+    "price": 192,
+    "category": "novelty",
+    "description": "1 Box - Bim bam crackling novelty",
+    "stock": 40,
+    "featured": false
+  },
+  {
+    "name": "Rainbow Colour Smoke (3Pcs)",
+    "originalPrice": 950,
+    "price": 760,
+    "category": "novelty",
+    "description": "1 Box - Rainbow color smoke",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Dora Singer (5Pcs)",
+    "originalPrice": 700,
+    "price": 560,
+    "category": "novelty",
+    "description": "1 Box - Dora singer novelty",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Kit Kat (10Pcs)",
+    "originalPrice": 115,
+    "price": 92,
+    "category": "novelty",
+    "description": "1 Box - Kit kat novelty",
+    "stock": 40,
+    "featured": false
+  },
+  {
+    "name": "Assorted Cartoon (10Pcs)",
+    "originalPrice": 125,
+    "price": 100,
+    "category": "novelty",
+    "description": "1 Box - Assorted cartoon novelty",
+    "stock": 40,
+    "featured": false
+  },
+  {
+    "name": "Bat and Ball (1Pcs)",
+    "originalPrice": 785,
+    "price": 628,
+    "category": "novelty",
+    "description": "1 Box - Bat and ball novelty",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Fire Egg (2Pcs)",
+    "originalPrice": 775,
+    "price": 620,
+    "category": "novelty",
+    "description": "1 Box - Fire egg novelty",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Hammer of Thor (2Pcs)",
+    "originalPrice": 3615,
+    "price": 2892,
+    "category": "novelty",
+    "description": "1 Box - Hammer of Thor novelty",
+    "stock": 10,
+    "featured": false
+  },
+  {
+    "name": "Sowrd (2Pcs)",
+    "originalPrice": 3615,
+    "price": 2892,
+    "category": "novelty",
+    "description": "1 Box - Sword novelty",
+    "stock": 10,
+    "featured": false
+  },
+  {
+    "name": "Money Bank (3Pcs)",
+    "originalPrice": 700,
+    "price": 560,
+    "category": "novelty",
+    "description": "1 Box - Money bank novelty",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Mony Plast/Mangatha (5Pcs)",
+    "originalPrice": 950,
+    "price": 760,
+    "category": "novelty",
+    "description": "1 Box - Money plastic novelty",
+    "stock": 18,
+    "featured": false
+  },
+  {
+    "name": "Magic Whip (2000 sounds) (1Pcs)",
+    "originalPrice": 676,
+    "price": 541,
+    "category": "novelty",
+    "description": "1 Box - Magic whip 2000 sounds",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "Kungfu Deluxe (1000 sounds) (1Pcs)",
+    "originalPrice": 275,
+    "price": 220,
+    "category": "novelty",
+    "description": "1 Box - Kungfu deluxe 1000 sounds",
+    "stock": 30,
+    "featured": false
+  },
+  {
+    "name": "Moon Droops(5Pcs)",
+    "originalPrice": 465,
+    "price": 372,
+    "category": "flowerpots",
+    "description": "1 Box - Moon droops fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Feather Droops (5Pcs)",
+    "originalPrice": 465,
+    "price": 372,
+    "category": "flowerpots",
+    "description": "1 Box - Feather droops fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Golden Drops (5Pcs)",
+    "originalPrice": 465,
+    "price": 372,
+    "category": "flowerpots",
+    "description": "1 Box - Golden drops fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Peacock Feather (5Pcs)",
+    "originalPrice": 515,
+    "price": 412,
+    "category": "flowerpots",
+    "description": "1 Box - Peacock feather fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Touch and Touch (5Pcs)",
+    "originalPrice": 525,
+    "price": 420,
+    "category": "flowerpots",
+    "description": "1 Box - Touch and touch fountain",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Sachin Small (10Box)",
+    "originalPrice": 360,
+    "price": 288,
+    "category": "novelty",
+    "description": "1 Box - Sachin small match box",
+    "stock": 30,
+    "featured": false
+  },
+  {
+    "name": "Lion Delux (10Box)",
+    "originalPrice": 630,
+    "price": 504,
+    "category": "novelty",
+    "description": "1 Box - Lion deluxe match box",
+    "stock": 25,
+    "featured": false
+  },
+  {
+    "name": "Royal Giant (10Box)",
+    "originalPrice": 810,
+    "price": 648,
+    "category": "novelty",
+    "description": "1 Box - Royal giant match box",
+    "stock": 20,
+    "featured": false
+  },
+  {
+    "name": "25 - Items Gift Box",
+    "originalPrice": 2500,
+    "price": 2000,
+    "category": "giftbox",
+    "description": "1 Box - 25 items premium gift collection",
+    "stock": 10,
+    "featured": true
+  },
+  {
+    "name": "32 - Items Gift Box",
+    "originalPrice": 3200,
+    "price": 2560,
+    "category": "giftbox",
+    "description": "1 Box - 32 items premium gift collection",
+    "stock": 10,
+    "featured": true
+  },
+  {
+    "name": "42 - Items Gift Box",
+    "originalPrice": 4200,
+    "price": 3360,
+    "category": "giftbox",
+    "description": "1 Box - 42 items premium gift collection",
+    "stock": 10,
+    "featured": true
+  },
+  {
+    "name": "50 - Items Gift Box",
+    "originalPrice": 5000,
+    "price": 4000,
+    "category": "giftbox",
+    "description": "1 Box - 50 items premium gift collection",
+    "stock": 10,
+    "featured": true
+  }
+]
