@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { Navbar } from "@/components/Navbar";
 import { AuthProvider } from "@/lib/auth-context";
+import { BestSellersProvider } from "@/lib/best-sellers-context";
 import { SparkleAnimation } from "@/components/animations/SparkleAnimation";
 import { SparkleContainer } from "@/components/animations/SparkleContainer";
 import { generateSEOHead } from "@/components/seo/SEOHead";
@@ -26,15 +27,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}
+        suppressHydrationWarning
       >
         <SparkleAnimation />
         <SparkleContainer />
         <AuthProvider>
-          <Navbar />
-          {children}
+          <BestSellersProvider>
+            <Navbar />
+            {children}
+          </BestSellersProvider>
         </AuthProvider>
       </body>
     </html>

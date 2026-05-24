@@ -38,15 +38,33 @@ export class FirestoreProductsDs {
   }
 
   static async addProduct(product: Omit<ProductModel, 'id'>): Promise<string> {
+    console.log('FirestoreProductsDs.addProduct - Input data:', {
+      name: product.name,
+      thumbnail: product.thumbnail,
+      previews: product.previews,
+      category: product.category,
+      fullProduct: product
+    });
     const docRef = await addDoc(collection(firestore, this.COLLECTION_NAME), product);
+    console.log('FirestoreProductsDs.addProduct - Document created with ID:', docRef.id);
     return docRef.id;
   }
 
   static async updateProduct(id: string, product: Partial<ProductModel>): Promise<void> {
+    console.log('FirestoreProductsDs.updateProduct - Input data:', {
+      id: id,
+      name: product.name,
+      thumbnail: product.thumbnail,
+      previews: product.previews,
+      category: product.category,
+      fullProduct: product
+    });
     const docRef = doc(firestore, this.COLLECTION_NAME, id);
     // Remove id from update data if present
     const { id: _, ...updateData } = product as any;
+    console.log('FirestoreProductsDs.updateProduct - Update data:', updateData);
     await updateDoc(docRef, updateData);
+    console.log('FirestoreProductsDs.updateProduct - Document updated successfully');
   }
 
   static async deleteProduct(id: string): Promise<void> {

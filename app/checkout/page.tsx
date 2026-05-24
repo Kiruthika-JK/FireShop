@@ -88,7 +88,85 @@ export default function CheckoutPage() {
             // 5. Upload to Firestore
             await setDoc(doc(firestore, 'orders', orderId), orderData)
 
-            // 6. Clear Cart & Navigate
+            // 6. Send customer confirmation email
+            try {
+                const { sendEmail } = await import('@/lib/email')
+                
+                // Generate order confirmation HTML
+                const emailHtml = `
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+                            <h1 style="margin: 0; font-size: 28px;">🎆 FireShop</h1>
+                            <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Order Confirmation</p>
+                        </div>
+                        
+                        <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px;">
+                            <h2 style="color: #333; margin-top: 0;">Thank You for Your Order!</h2>
+                            <p style="color: #666; line-height: 1.6;">We've received your order and are processing it. Here are your order details:</p>
+                            
+                            <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #667eea;">
+                                <h3 style="color: #333; margin-top: 0;">Order #${orderId}</h3>
+                                <p style="color: #666; margin: 5px 0;"><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                                <p style="color: #666; margin: 5px 0;"><strong>Status:</strong> <span style="color: #28a745; font-weight: bold;">Processing</span></p>
+                            </div>
+                            
+                            <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                                <h4 style="color: #333; margin-top: 0;">Delivery Address</h4>
+                                <p style="color: #666; margin: 5px 0;">${orderData.customerInfo.name}</p>
+                                <p style="color: #666; margin: 5px 0;">${orderData.customerInfo.address}, ${orderData.customerInfo.city}</p>
+                                <p style="color: #666; margin: 5px 0;">${orderData.customerInfo.pincode}</p>
+                                <p style="color: #666; margin: 5px 0;">📱 ${orderData.customerInfo.mobileNo}</p>
+                            </div>
+                            
+                            <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                                <h4 style="color: #333; margin-top: 0;">Order Items (${orderData.products.length} items)</h4>
+                                ${orderData.products.map((item: any) => `
+                                    <div style="border-bottom: 1px solid #eee; padding: 10px 0;">
+                                        <p style="color: #333; margin: 5px 0; font-weight: bold;">${item.name}</p>
+                                        <p style="color: #666; margin: 5px 0;">Quantity: ${item.quantity} × ₹${item.discountedPrice}</p>
+                                    </div>
+                                `).join('')}
+                                <div style="text-align: right; margin-top: 20px; padding-top: 20px; border-top: 2px solid #667eea;">
+                                    <p style="color: #333; font-size: 18px; font-weight: bold;">Total: ₹${orderData.totalPrice}</p>
+                                </div>
+                            </div>
+                            
+                            <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffc107;">
+                                <p style="color: #856404; margin: 0; font-size: 14px;"><strong>⚠️ Important:</strong> Final price excludes courier charges. You'll need to pay the courier charge directly to the delivery partner.</p>
+                            </div>
+                            
+                            <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #28a745;">
+                                <h4 style="color: #155724; margin-top: 0;">What's Next?</h4>
+                                <ol style="color: #155724; margin: 10px 0; padding-left: 20px;">
+                                    <li>We'll process your order within 24 hours</li>
+                                    <li>You'll receive updates when order status changes</li>
+                                    <li>Courier partner will contact you for delivery</li>
+                                    <li>Pay courier charge directly to delivery partner</li>
+                                </ol>
+                            </div>
+                            
+                            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                                <p style="color: #666; margin: 0; font-size: 14px;">Need help? Contact us:</p>
+                                <p style="color: #666; margin: 5px 0;">📧 support@fireshop.com | 📞 +91-XXXXXXXXXX</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+                
+                await sendEmail({
+                    to: orderData.customerInfo.emailId,
+                    subject: `Order Confirmation - #${orderId}`,
+                    html: emailHtml,
+                    replyTo: 'orders@fireshop.com'
+                })
+                
+                console.log('Customer confirmation email queued successfully')
+            } catch (error) {
+                console.error('Error sending customer confirmation:', error)
+                // Don't block order completion if notifications fail
+            }
+
+            // 7. Clear Cart & Navigate
             setIsOrderConfirmed(true)
             clearCart()
             router.push('/orders')
@@ -197,6 +275,7 @@ export default function CheckoutPage() {
             <Dialog open={showErrorDialog} onOpenChange={setShowErrorDialog}>
                 <DialogContent>
                     <DialogHeader>
+                        <DialogTitle className="sr-only">Error</DialogTitle>
                         <DialogDescription className="pt-2">
                             {error}
                         </DialogDescription>

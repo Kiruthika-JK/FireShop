@@ -1,0 +1,51 @@
+[debug] [2026-04-11T13:43:18.717Z] ----------------------------------------------------------------------
+[debug] [2026-04-11T13:43:18.719Z] Command:       /opt/homebrew/Cellar/node/25.2.1/bin/node /Users/kjeevan/.npm-global/bin/firebase init
+[debug] [2026-04-11T13:43:18.719Z] CLI Version:   15.14.0
+[debug] [2026-04-11T13:43:18.719Z] Platform:      darwin
+[debug] [2026-04-11T13:43:18.719Z] Node Version:  v25.2.1
+[debug] [2026-04-11T13:43:18.719Z] Time:          Sat Apr 11 2026 19:13:18 GMT+0530 (India Standard Time)
+[debug] [2026-04-11T13:43:18.719Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/kjeevan/IdeaProjects/FireShop
+
+[debug] [2026-04-11T13:45:34.866Z] ----------------------------------------------------------------------
+[debug] [2026-04-11T13:45:34.868Z] Command:       /opt/homebrew/Cellar/node/25.2.1/bin/node /Users/kjeevan/.npm-global/bin/firebase init
+[debug] [2026-04-11T13:45:34.868Z] CLI Version:   15.14.0
+[debug] [2026-04-11T13:45:34.868Z] Platform:      darwin
+[debug] [2026-04-11T13:45:34.868Z] Node Version:  v25.2.1
+[debug] [2026-04-11T13:45:34.868Z] Time:          Sat Apr 11 2026 19:15:34 GMT+0530 (India Standard Time)
+[debug] [2026-04-11T13:45:34.868Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/kjeevan/IdeaProjects/FireShop
+
+[debug] [2026-04-11T13:45:44.597Z] ExitPromptError: User force closed the prompt with SIGINT
+    at Interface.sigint (/Users/kjeevan/.npm-global/lib/node_modules/firebase-tools/node_modules/@inquirer/core/dist/commonjs/lib/create-prompt.js:101:37)
+    at Interface.emit (node:events:508:28)
+    at [_ttyWrite] [as _ttyWrite] (node:internal/readline/interface:1327:18)
+    at ReadStream.onkeypress (node:internal/readline/interface:284:20)
+    at ReadStream.emit (node:events:520:35)
+    at emitKeys (node:internal/readline/utils:371:14)
+    at emitKeys.next (<anonymous>)
+    at ReadStream.onData (node:internal/readline/emitKeypressEvents:64:36)
+    at ReadStream.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)
+[error] 
+[error] Error: An unexpected error has occurred.

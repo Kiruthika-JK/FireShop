@@ -1,0 +1,49 @@
+{
+  "categoryVideos": {
+    "sparklers": {
+      "videoId": "dQw4w9WgXcQ",
+      "title": "Electric Sparklers Demo",
+      "description": "Watch our premium electric sparklers in action"
+    },
+    "flowerpots": {
+      "videoId": "dQw4w9WgXcQ",
+      "title": "Flower Pots Demo",
+      "description": "Beautiful flower pots with vibrant colors"
+    },
+    "bombs": {
+      "videoId": "dQw4w9WgXcQ",
+      "title": "Bombs and Crackers Demo",
+      "description": "Powerful bombs and crackers for grand celebrations"
+    },
+    "chakras": {
+      "videoId": "dQw4w9WgXcQ",
+      "title": "Chakras and Wheels Demo",
+      "description": "Spinning chakras with amazing patterns"
+    },
+    "rockets": {
+      "videoId": "dQw4w9WgXcQ",
+      "title": "Rockets Demo",
+      "description": "High-flying rockets with spectacular displays"
+    },
+    "aerial": {
+      "videoId": "dQw4w9WgXcQ",
+      "title": "Aerial Shots Demo",
+      "description": "Multi-shot aerial crackers for stunning sky displays"
+    },
+    "novelty": {
+      "videoId": "dQw4w9WgXcQ",
+      "title": "Novelty Items Demo",
+      "description": "Unique and special crackers for memorable celebrations"
+    },
+    "giftbox": {
+      "videoId": "dQw4w9WgXcQ",
+      "title": "Gift Boxes Demo",
+      "description": "Complete Diwali gift boxes with assorted crackers"
+    }
+  },
+  "instructions": {
+    "howToUpdate": "Replace the videoId with actual YouTube video IDs",
+    "howToFindVideoId": "Go to YouTube video URL and copy the video ID (the part after v=)",
+    "example": "For https://www.youtube.com/watch?v=abc123xyz, the videoId is 'abc123xyz'"
+  }
+}

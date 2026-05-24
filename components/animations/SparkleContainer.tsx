@@ -11,6 +11,11 @@ interface SparkleEvent {
 
 export function SparkleContainer() {
   const [sparkles, setSparkles] = useState<SparkleEvent[]>([]);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const addSparkle = (x: number, y: number) => {
     const id = Date.now() + Math.random();
@@ -23,11 +28,17 @@ export function SparkleContainer() {
 
   // Expose method globally
   useEffect(() => {
+    if (!isClient) return;
+    
     (window as any).addClickSparkle = addSparkle;
     return () => {
       delete (window as any).addClickSparkle;
     };
-  }, []);
+  }, [isClient]);
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <>

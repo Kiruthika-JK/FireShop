@@ -4,7 +4,45 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3bb27318-e75d-496f-bdb0-f51f7eac0477" name="Changes" comment="" />
+    <list default="true" id="3bb27318-e75d-496f-bdb0-f51f7eac0477" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/upload/route.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/cart/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/cart/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/checkout/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/checkout/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/inventory/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/inventory/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ProductCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/animations/FireworksAnimation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/animations/FireworksAnimation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/checkout/OrderInfoSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/checkout/OrderInfoSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/checkout/OrderItemsSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/checkout/OrderItemsSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/checkout/PayViaSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/checkout/PayViaSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/home/ProductGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/home/ProductGrid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/inventory/ProductForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/inventory/ProductForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/orders/OrderTracker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/orders/OrderTracker.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/seo/SEOHead.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/seo/SEOHead.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/AnimatedButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/AnimatedButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/CategoryBanners.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/CategoryBanners.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/HeroSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/HeroSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/android_vs_nexjs.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/code-style.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ecommerce_tech_stack.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/environment-setup.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/firebase-rules-quick-setup.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/inventory-setup.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase-storage.rules" beforeDir="false" afterPath="$PROJECT_DIR$/firebase-storage.rules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/auth-context.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/auth-context.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/orders/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/orders/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/orders/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/orders/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/product/data/sources/FirestoreProductsDs.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/product/data/sources/FirestoreProductsDs.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/product/data/sources/ProductStorage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/product/data/sources/ProductStorage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/product/domain/models/ProductModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/product/domain/models/ProductModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/IMPORT_INSTRUCTIONS.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/products-corrected.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/products.json" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,6 +79,19 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="FireShop" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="FireShop" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

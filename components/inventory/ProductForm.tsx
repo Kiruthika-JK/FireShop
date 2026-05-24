@@ -8,7 +8,7 @@ import { validateImageAspectRatio, compressImage, getImageDimensions } from '@/l
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Upload, AlertCircle, Loader2, Trash2, Plus } from 'lucide-react';
+import { Upload, AlertCircle, Loader2, Trash2, Plus, Image as ImageIcon } from 'lucide-react';
 
 export interface ProductFormProps {
   product?: ProductModel | null;
@@ -27,6 +27,7 @@ const MAX_IMAGE_DIMENSION = 1920;
 export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) {
   const [formData, setFormData] = useState({
     name: product?.name || '',
+    content: product?.content || '1 Box',
     price: product?.price?.toString() || '',
     originalPrice: product?.originalPrice?.toString() || '',
     discountPercent: product?.discountPercent?.toString() || '0',
@@ -34,6 +35,11 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
     category: product?.category || '',
     categoryPosition: product?.categoryPosition?.toString() || '0',
     productPosition: product?.productPosition?.toString() || '0',
+    trending: product?.trending || false,
+    // YouTube Video Fields
+    youtubeVideoId: product?.youtubeVideoId || '',
+    videoTitle: product?.videoTitle || '',
+    videoDescription: product?.videoDescription || '',
   });
 
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
@@ -63,10 +69,23 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === 'checkbox' ? checked : value
     }));
+  };
+
+  const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+
+  const handleCancel = () => {
+    onCancel();
   };
 
   const handleThumbnailSelect = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -110,7 +129,7 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
     return originalPrice * (1 - discountPercent / 100);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -144,15 +163,21 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
 
       const productData: Omit<ProductModel, 'id'> = {
         name: formData.name.trim(),
-        originalPrice,
-        price,
-        discountPercent,
+        content: formData.content.trim(),
+        originalPrice: parseFloat(formData.originalPrice) || 0,
+        price: parseFloat(formData.price) || 0,
+        discountPercent: parseFloat(formData.discountPercent) || 0,
         outOfStock: formData.outOfStock,
+        trending: formData.trending,
         thumbnail: thumbnailFile ? '' : (thumbnailPreview || ''), // If new file, empty string placeholder
         previews: existingPreviewUrls,
         category: formData.category.trim(),
         categoryPosition: parseInt(formData.categoryPosition) || 0,
         productPosition: parseInt(formData.productPosition) || 0,
+        // YouTube Video Fields
+        youtubeVideoId: formData.youtubeVideoId.trim(),
+        videoTitle: formData.videoTitle.trim(),
+        videoDescription: formData.videoDescription.trim(),
       };
 
       onSuccess(productData, thumbnailFile, newPreviewFiles, deletedPreviews);
@@ -263,21 +288,43 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
         <label htmlFor="outOfStock" className="text-sm font-medium">Out of Stock</label>
       </div>
 
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id="trending"
+          name="trending"
+          checked={formData.trending}
+          onChange={handleInputChange}
+          className="h-4 w-4"
+        />
+        <label htmlFor="trending" className="text-sm font-medium flex items-center gap-2">
+          <span className="text-green-600">Best Seller</span>
+        </label>
+      </div>
+
       {/* Thumbnail */}
       <div>
         <label className="block text-sm font-medium mb-2">Thumbnail (Optional)</label>
         <div className="flex items-start gap-4">
           {thumbnailPreview ? (
             <div className="relative">
-              <img src={thumbnailPreview} alt="Thumbnail" className="w-24 h-24 object-cover rounded border" />
+              <img 
+                src={thumbnailPreview} 
+                alt="Thumbnail" 
+                className="w-24 h-24 object-cover rounded border"
+                                onError={(e) => {
+                  // If thumbnail fails to load, clear it to show placeholder
+                  setThumbnailPreview(null);
+                }}
+              />
               <Button
                 type="button"
                 variant="destructive"
                 size="sm"
                 className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
                 onClick={() => {
-                  setThumbnailFile(null);
                   setThumbnailPreview(null);
+                  setThumbnailFile(null);
                 }}
               >
                 &times;
@@ -285,18 +332,33 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
             </div>
           ) : (
             <div className="w-24 h-24 bg-gray-100 rounded border flex items-center justify-center text-gray-400 text-xs">
-              No Image
+              <ImageIcon className="w-6 h-6" />
             </div>
           )}
-          <div>
+          <div className="flex-1">
             <Input
               type="file"
               accept="image/*"
               onChange={handleThumbnailSelect}
             />
-            <p className="text-xs text-gray-500 mt-1">Upload a new image to replace.</p>
+            <p className="text-xs text-gray-500 mt-1">
+              Upload a custom thumbnail image (optional)
+            </p>
           </div>
         </div>
+      </div>
+
+      {/* Out of Stock */}
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id="outOfStock"
+          name="outOfStock"
+          checked={formData.outOfStock}
+          onChange={handleInputChange}
+          className="h-4 w-4"
+        />
+        <label htmlFor="outOfStock" className="text-sm font-medium">Out of Stock</label>
       </div>
 
       {/* Previews (Images & Videos) */}
@@ -341,9 +403,71 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
         </div>
       </div>
 
+      {/* YouTube Video Section */}
+      <div className="border-t pt-6">
+        <label className="block text-sm font-medium mb-4">YouTube Video (Optional)</label>
+        
+        <div className="space-y-4">
+          {/* YouTube Video ID */}
+          <div>
+            <label className="block text-sm font-medium mb-1">YouTube Video ID</label>
+            <Input
+              name="youtubeVideoId"
+              value={formData.youtubeVideoId}
+              onChange={handleInputChange}
+              placeholder="e.g. dQw4w9WgXcQ"
+              className="font-mono"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              The video ID from YouTube URL (part after v=). Example: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+            </p>
+          </div>
+
+          {/* Video Title */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Video Title</label>
+            <Input
+              name="videoTitle"
+              value={formData.videoTitle}
+              onChange={handleInputChange}
+              placeholder="e.g. Electric Sparklers Demo"
+            />
+          </div>
+
+          {/* Video Description */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Video Description</label>
+            <textarea
+              name="videoDescription"
+              value={formData.videoDescription}
+              onChange={handleTextareaChange}
+              placeholder="Brief description of the video content..."
+              className="w-full p-2 border rounded-md resize-none h-20 text-sm"
+            />
+          </div>
+
+          {/* Video Preview */}
+          {formData.youtubeVideoId && (
+            <div className="border rounded-lg p-4 bg-gray-50">
+              <h4 className="text-sm font-medium mb-2">Video Preview</h4>
+              <div className="aspect-video bg-black rounded overflow-hidden">
+                <iframe
+                  className="w-full h-full"
+                  src={`https://www.youtube.com/embed/${formData.youtubeVideoId}`}
+                  title="Video Preview"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Actions */}
       <div className="flex gap-3 pt-4 border-t">
-        <Button type="button" variant="outline" onClick={onCancel} className="flex-1">
+        <Button type="button" variant="outline" onClick={handleCancel} className="flex-1">
           Cancel (Discard Form)
         </Button>
         <Button type="submit" className="flex-1">

@@ -20,8 +20,18 @@ interface ClickSparkleProps {
 }
 
 export function ClickSparkle({ x, y, onComplete }: ClickSparkleProps) {
-  const [particles, setParticles] = useState<SparkleParticle[]>([]);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
+  const [isClient, setIsClient] = useState(false);
+  const [particles, setParticles] = useState<SparkleParticle[]>([]);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
   const particlesRef = useRef<SparkleParticle[]>([]);
 
   useEffect(() => {

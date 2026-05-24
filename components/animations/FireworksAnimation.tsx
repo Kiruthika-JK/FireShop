@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Particle {
   x: number;
@@ -15,6 +15,15 @@ interface Particle {
 
 export function FireworksAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -38,10 +47,10 @@ export function FireworksAnimation() {
       color: string;
       exploded: boolean = false;
 
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = canvas.height;
-        this.targetY = Math.random() * canvas.height * 0.5;
+      constructor(canvasWidth: number, canvasHeight: number) {
+        this.x = Math.random() * canvasWidth;
+        this.y = canvasHeight;
+        this.targetY = Math.random() * canvasHeight * 0.5;
         this.vx = (Math.random() - 0.5) * 2;
         this.vy = -Math.random() * 3 - 12;
         this.color = colors[Math.floor(Math.random() * colors.length)];
@@ -78,7 +87,7 @@ export function FireworksAnimation() {
         }
       }
 
-      draw() {
+      draw(ctx: CanvasRenderingContext2D) {
         if (!this.exploded) {
           ctx.beginPath();
           ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
@@ -91,18 +100,20 @@ export function FireworksAnimation() {
     const fireworks: Firework[] = [];
 
     function animate() {
+      if (!ctx || !canvas) return;
+      
       ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Launch new firework randomly
       if (Math.random() < 0.03) {
-        fireworks.push(new Firework());
+        fireworks.push(new Firework(canvas.width, canvas.height));
       }
 
       // Update and draw fireworks
       for (let i = fireworks.length - 1; i >= 0; i--) {
         fireworks[i].update();
-        fireworks[i].draw();
+        fireworks[i].draw(ctx);
         if (fireworks[i].exploded) {
           fireworks.splice(i, 1);
         }

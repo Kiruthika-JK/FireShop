@@ -1,5 +1,6 @@
 export enum OrderStatus {
     Ordered = 'Ordered',
+    Processing = 'Processing',
     ReadyToShip = 'Ready to Ship',
     Shipped = 'Shipped',
     Delivered = 'Delivered',
@@ -8,6 +9,7 @@ export enum OrderStatus {
 
 export const ORDER_STATUSES: OrderStatus[] = [
     OrderStatus.Ordered,
+    OrderStatus.Processing,
     OrderStatus.ReadyToShip,
     OrderStatus.Shipped,
     OrderStatus.Delivered,

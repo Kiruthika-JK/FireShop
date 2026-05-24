@@ -29,9 +29,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Check if user is admin by direct document lookup (email as document ID)
     const checkAdminStatus = async (email: string) => {
         try {
+            console.log('Admin check for email:', email);
+            
+            // Check if user email exists in admins collection
             const adminDocRef = doc(firestore, "admins", email);
             const adminDoc = await getDoc(adminDocRef);
-            return adminDoc.exists();
+            const isAdminUser = adminDoc.exists();
+            
+            console.log('Admin status for', email, ':', isAdminUser);
+            return isAdminUser;
         } catch (error) {
             console.error("Error checking admin status", error);
             return false;

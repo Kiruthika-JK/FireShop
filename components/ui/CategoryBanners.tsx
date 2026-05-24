@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Bomb, Sparkles, Flame, Star, Rocket, Package, Gift } from 'lucide-react';
+import { Bomb, Sparkles, Flame, Rocket, Package, Gift, Target, Zap, Flower } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 interface Category {
   id: string;
@@ -22,136 +23,235 @@ export function CategoryBanners() {
       id: 'sparklers',
       name: 'Sparklers',
       icon: <Sparkles className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Essential for celebrations',
-      gradient: 'from-purple-600 to-pink-600',
-      count: 18
+      description: 'Electric & color sparklers',
+      gradient: 'from-yellow-500 to-red-500',
+      count: 15
     },
     {
       id: 'flowerpots',
       name: 'Flower Pots',
+      icon: <Flower className="w-6 h-6 sm:w-8 sm:h-8" />,
+      description: 'Bushvanam, poo chakram, malai pookal',
+      gradient: 'from-orange-500 to-yellow-500',
+      count: 14
+    },
+    {
+      id: 'flowerpotbombs',
+      name: 'Flower Pot Bombs',
+      icon: <Bomb className="w-6 h-6 sm:w-8 sm:h-8" />,
+      description: 'Ganga Jamuna flower pot bombs',
+      gradient: 'from-red-500 to-orange-500',
+      count: 1
+    },
+    {
+      id: 'chakra',
+      name: 'Chakra',
+      icon: <Zap className="w-6 h-6 sm:w-8 sm:h-8" />,
+      description: 'Ground chakkar, whizzling wheel',
+      gradient: 'from-orange-500 to-yellow-500',
+      count: 11
+    },
+    {
+      id: 'peacocks',
+      name: 'Peacocks',
       icon: <Flame className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Most popular ground crackers',
-      gradient: 'from-yellow-600 to-orange-600',
-      count: 32
+      description: 'Peacock red & green',
+      gradient: 'from-orange-500 to-yellow-500',
+      count: 3
+    },
+    {
+      id: 'pencil',
+      name: 'Pencil',
+      icon: <Target className="w-6 h-6 sm:w-8 sm:h-8" />,
+      description: 'Pencil shots, crackling pencil',
+      gradient: 'from-yellow-500 to-red-500',
+      count: 7
+    },
+    {
+      id: 'bijili',
+      name: 'Bijili',
+      icon: <Zap className="w-6 h-6 sm:w-8 sm:h-8" />,
+      description: 'Red bijili, stripped bijili',
+      gradient: 'from-orange-500 to-yellow-500',
+      count: 2
+    },
+    {
+      id: 'specialcelebrationfunction',
+      name: 'Special Celebration Function',
+      icon: <Flame className="w-6 h-6 sm:w-8 sm:h-8" />,
+      description: '10*10 shot celebration function',
+      gradient: 'from-red-500 to-orange-500',
+      count: 1
+    },
+    {
+      id: 'twinklingstar',
+      name: 'Twinkling Star',
+      icon: <Sparkles className="w-6 h-6 sm:w-8 sm:h-8" />,
+      description: '1.5" & 4" twinkling stars',
+      gradient: 'from-yellow-500 to-red-500',
+      count: 2
     },
     {
       id: 'bombs',
       name: 'Bombs',
       icon: <Bomb className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Traditional sound crackers',
-      gradient: 'from-red-600 to-orange-600',
-      count: 24
+      description: 'King bomb, DTX & paper bombs',
+      gradient: 'from-orange-600 to-red-600',
+      count: 8
     },
     {
-      id: 'chakras',
-      name: 'Chakras',
-      icon: <Star className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Spinning ground crackers',
-      gradient: 'from-green-600 to-teal-600',
-      count: 21
+      id: 'soundcrackers',
+      name: 'Sound Crackers',
+      icon: <Bomb className="w-6 h-6 sm:w-8 sm:h-8" />,
+      description: 'One sound, two sound crackers',
+      gradient: 'from-red-600 to-orange-600',
+      count: 7
     },
     {
       id: 'rockets',
       name: 'Rockets',
       icon: <Rocket className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Sky celebrations',
-      gradient: 'from-blue-600 to-cyan-600',
-      count: 15
+      description: 'Musical & sky rockets',
+      gradient: 'from-orange-500 to-red-500',
+      count: 4
     },
     {
-      id: 'aerial',
-      name: 'Aerial',
-      icon: <Star className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Spectacular sky displays',
-      gradient: 'from-indigo-600 to-purple-600',
-      count: 35
+      id: 'aerialshot',
+      name: 'Aerial Shot',
+      icon: <Rocket className="w-6 h-6 sm:w-8 sm:h-8" />,
+      description: 'Sky wala, star world, multi-shot',
+      gradient: 'from-red-500 to-yellow-500',
+      count: 28
     },
     {
-      id: 'novelty',
-      name: 'Novelty',
+      id: 'tinseries',
+      name: 'TIN Series',
       icon: <Package className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Kids favorites',
-      gradient: 'from-pink-600 to-rose-600',
-      count: 25
+      description: '6" water queen, festival party',
+      gradient: 'from-orange-500 to-red-500',
+      count: 3
+    },
+    {
+      id: 'whistlingfountain',
+      name: 'Whistling Fountain',
+      icon: <Flame className="w-6 h-6 sm:w-8 sm:h-8" />,
+      description: 'Siren, mega siren',
+      gradient: 'from-yellow-500 to-red-500',
+      count: 2
+    },
+    {
+      id: 'cracklingfountain',
+      name: 'Crackling Fountain',
+      icon: <Sparkles className="w-6 h-6 sm:w-8 sm:h-8" />,
+      description: 'Colour, crackling, mega & double wonder fountains',
+      gradient: 'from-orange-500 to-yellow-500',
+      count: 40
+    },
+    {
+      id: 'digitalwala',
+      name: 'Digital Wala',
+      icon: <Target className="w-6 h-6 sm:w-8 sm:h-8" />,
+      description: 'Magic whip, kungfu deluxe',
+      gradient: 'from-red-500 to-orange-500',
+      count: 2
+    },
+    {
+      id: 'childrennovelty',
+      name: 'Children Novelty',
+      icon: <Gift className="w-6 h-6 sm:w-8 sm:h-8" />,
+      description: 'Photo flash, helicopter, drone',
+      gradient: 'from-yellow-500 to-red-500',
+      count: 19
     },
     {
       id: 'giftbox',
-      name: 'Gift Box',
+      name: 'Gift Boxes',
       icon: <Gift className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Complete celebration packs',
+      description: '25, 32, 42 & 50 items combo packs',
       gradient: 'from-amber-600 to-yellow-600',
       count: 4
     }
   ];
 
   const handleCategoryClick = (categoryId: string) => {
-    // Navigate to home page with category hash
-    router.push(`/#category-${categoryId}`);
-    
-    // Scroll to category section after navigation
-    setTimeout(() => {
-      const element = document.getElementById(`category-${categoryId}`);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 100);
+    // Find the category name from the category ID
+    const category = categories.find(cat => cat.id === categoryId);
+    if (category) {
+      // Generate the same category ID format as SinglePageProductGrid
+      const categoryHash = category.name.toLowerCase().replace(/\s+/g, '-');
+      router.push(`/#category-${categoryHash}`);
+      
+      // Scroll to category section after navigation
+      setTimeout(() => {
+        const element = document.getElementById(`category-${categoryHash}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
   };
 
   return (
     <div className="container mx-auto px-4 sm:px-6 mb-8 sm:mb-12">
-      <div className="text-center mb-6 sm:mb-8">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-          Shop by Category
-        </h2>
-        <p className="text-sm sm:text-base text-gray-600">
-          Quick access to our complete collection
-        </p>
-      </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-3 lg:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
         {categories.map((category) => (
           <div
             key={category.id}
-            className="relative group cursor-pointer transform transition-all duration-300 hover:scale-105"
+            id={`category-${category.id}`}
+            className={`relative overflow-hidden rounded-xl p-6 cursor-pointer transform transition-all duration-500 hover:scale-105 hover:shadow-2xl bg-gradient-to-br ${category.gradient} text-white border-2 border-white/30 shadow-xl`}
             onMouseEnter={() => setHoveredCategory(category.id)}
             onMouseLeave={() => setHoveredCategory(null)}
             onClick={() => handleCategoryClick(category.id)}
           >
-            <div className={`bg-gradient-to-br ${category.gradient} p-3 sm:p-4 lg:p-5 rounded-xl sm:rounded-2xl text-white relative overflow-hidden h-20 sm:h-24 lg:h-28 flex flex-col items-center justify-center text-center`}>
-              {/* Background Pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-0 right-0 w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-full blur-2xl" />
-                <div className="absolute bottom-0 left-0 w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-full blur-xl" />
-              </div>
+            {/* Enhanced Diwali-themed Background Pattern */}
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute inset-0" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M20 20c0-3-2.5-5.5-5.5-5.5S9 17 9 20s2.5 5.5 5.5 5.5 5.5-2.5 5.5-5.5zm0 20c0-3-2.5-5.5-5.5-5.5S9 37 9 40s2.5 5.5 5.5 5.5 5.5-2.5 5.5-5.5zm20 0c0-3-2.5-5.5-5.5-5.5S29 37 29 40s2.5 5.5 5.5 5.5 5.5-2.5 5.5-5.5zm20-20c0-3-2.5-5.5-5.5-5.5S29 17 29 20s2.5 5.5 5.5 5.5 5.5-2.5 5.5-5.5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              }}></div>
+            </div>
+            
+            {/* Animated Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/10 animate-pulse"></div>
+            
+            {/* Enhanced Diwali Sparkle Overlay */}
+            <div className="absolute inset-0">
+              <div className="absolute top-2 right-2 w-2 h-2 bg-yellow-300 rounded-full animate-pulse shadow-lg shadow-yellow-300/50"></div>
+              <div className="absolute bottom-3 left-3 w-2 h-2 bg-orange-300 rounded-full animate-pulse delay-150 shadow-lg shadow-orange-300/50"></div>
+              <div className="absolute top-6 left-8 w-2 h-2 bg-red-300 rounded-full animate-pulse delay-300 shadow-lg shadow-red-300/50"></div>
+              <div className="absolute top-4 right-8 w-1 h-1 bg-pink-300 rounded-full animate-pulse delay-500"></div>
+              <div className="absolute bottom-6 right-4 w-1 h-1 bg-purple-300 rounded-full animate-pulse delay-700"></div>
+              <div className="absolute top-8 left-4 w-1 h-1 bg-cyan-300 rounded-full animate-pulse delay-1000"></div>
+            </div>
+            
+            {/* Diwali Color Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-orange-600/20 via-red-500/10 to-transparent"></div>
 
-              {/* Icon */}
-              <div className="relative z-10 mb-1 sm:mb-2">
-                {category.icon}
-              </div>
-
-              {/* Name */}
-              <div className="relative z-10">
-                <h3 className="font-bold text-xs sm:text-sm lg:text-base mb-1">
-                  {category.name}
-                </h3>
-                <p className="text-xs opacity-90 hidden lg:block">
+            {/* Content */}
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-4">
+                <div className={`p-3 rounded-full bg-white/20 backdrop-blur-sm shadow-lg border border-white/30`}>
+                  {category.icon}
+                </div>
+                <Badge variant="secondary" className="bg-white/20 text-white border-white/30 shadow-lg">
                   {category.count} items
-                </p>
+                </Badge>
               </div>
 
-              {/* Hover Overlay */}
-              <div className={`absolute inset-0 bg-black/20 transition-opacity duration-300 ${
-                hoveredCategory === category.id ? 'opacity-100' : 'opacity-0'
-              }`} />
+              <h3 className="text-xl font-bold mb-2 bg-gradient-to-r from-yellow-200 to-orange-200 bg-clip-text text-transparent">
+                {category.name}
+              </h3>
+              
+              <p className="text-sm opacity-90 bg-gradient-to-r from-white/90 to-white/70 bg-clip-text text-transparent">
+                {category.description}
+              </p>
+            </div>
 
-              {/* Description on Hover */}
-              <div className={`absolute bottom-0 left-0 right-0 bg-black/80 p-2 transform transition-transform duration-300 ${
-                hoveredCategory === category.id ? 'translate-y-0' : 'translate-y-full'
-              }`}>
-                <p className="text-xs text-white text-center">
-                  {category.description}
-                </p>
-              </div>
+            {/* Description on Hover */}
+            <div className={`absolute bottom-0 left-0 right-0 bg-black/80 p-4 transform transition-transform duration-300 ${
+              hoveredCategory === category.id ? 'translate-y-0' : 'translate-y-full'
+            }`}>
+              <h3 className="text-xl font-bold mb-2 bg-gradient-to-r from-yellow-200 to-orange-200 bg-clip-text text-transparent">{category.name}</h3>
+              <p className="text-sm opacity-90 bg-gradient-to-r from-white/90 to-white/70 bg-clip-text text-transparent">{category.description}</p>
             </div>
           </div>
         ))}

@@ -7,7 +7,7 @@ export function HeroSection() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="relative bg-gradient-to-br from-gray-900 to-black py-6 sm:py-8 overflow-hidden">
+    <div className="relative bg-gradient-to-br from-gray-900 to-black py-6 sm:py-8 pt-8 sm:pt-12 overflow-hidden">
       {/* Subtle Background Elements */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-8 left-8 w-16 h-16 bg-yellow-400/30 rounded-full blur-2xl animate-pulse" />

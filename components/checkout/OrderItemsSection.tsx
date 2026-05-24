@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useCartStore } from '@/lib/features/cart/store'
 import { Card } from '@/components/ui/card'
+import { OptimizedImage } from '@/components/ui/OptimizedImage'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { formatPrice } from '@/lib/utils'
 
@@ -30,6 +31,9 @@ export function OrderItemsSection() {
                         <table className="w-full">
                             <thead className="bg-gray-50 border-b border-gray-200">
                                 <tr>
+                                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 w-24">
+                                        Image
+                                    </th>
                                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
                                         Product name
                                     </th>
@@ -47,8 +51,17 @@ export function OrderItemsSection() {
                             <tbody className="divide-y divide-gray-200">
                                 {items.map((item) => (
                                     <tr key={item.productId} className="hover:bg-gray-50">
+                                        <td className="px-6 py-4">
+                                            <OptimizedImage
+                                                src={item.thumbnail || ''}
+                                                alt={item.name}
+                                                width={64}
+                                                height={64}
+                                                className="w-16 h-16 bg-gray-50 rounded-lg border border-gray-200"
+                                            />
+                                        </td>
                                         <td className="px-6 py-4 text-sm text-slate-900">
-                                            {item.name}
+                                            <div className="font-medium">{item.name}</div>
                                         </td>
                                         <td className="px-6 py-4 text-sm text-slate-900 text-center">
                                             x{item.quantity}

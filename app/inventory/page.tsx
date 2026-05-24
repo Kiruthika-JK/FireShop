@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/auth-context'
+import { getAuth } from 'firebase/auth'
 import { ProductModel } from '@/lib/features/product/domain/models/ProductModel'
 import { FirestoreProductsDs } from '@/lib/features/product/data/sources/FirestoreProductsDs'
 import { deleteProductImage, uploadProductImage, uploadProductPreview } from '@/lib/features/product/data/sources/ProductStorage'
@@ -12,6 +13,7 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Trash2, Edit, Plus, Package, AlertCircle, Upload, FileText } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { MediaCarousel } from '@/components/ui/MediaCarousel'
 
 interface InventoryItem {
     product: ProductModel;
@@ -46,6 +48,16 @@ export default function InventoryPage() {
     const [saveProgress, setSaveProgress] = useState(0)
     const [saveStatus, setSaveStatus] = useState('')
 
+    // Media Carousel State
+    const [showCarousel, setShowCarousel] = useState(false)
+    const [carouselProduct, setCarouselProduct] = useState<ProductModel | null>(null)
+
+    // Function to open MediaCarousel
+    const openMediaCarousel = (product: ProductModel) => {
+        setCarouselProduct(product)
+        setShowCarousel(true)
+    }
+
     useEffect(() => {
         if (!loading && !isAdmin) {
             router.push('/')
@@ -76,7 +88,16 @@ export default function InventoryPage() {
     const loadProducts = async () => {
         try {
             setLoadingProducts(true)
+            console.log('Loading products from Firestore...');
             const fetchedProducts = await FirestoreProductsDs.getProducts()
+            console.log('Loaded products from Firestore:', fetchedProducts.length);
+            console.log('Sample product data:', fetchedProducts.slice(0, 2).map(p => ({
+                id: p.id,
+                name: p.name,
+                thumbnail: p.thumbnail,
+                previewCount: p.previews?.length || 0,
+                previews: p.previews
+            })));
             setOriginalItems(fetchedProducts)
             setItems(fetchedProducts.map(p => ({
                 product: p,
@@ -85,6 +106,7 @@ export default function InventoryPage() {
                 isDirty: false
             })))
             setDeletedIds(new Set())
+            console.log('Products loaded and set in state');
         } catch (error) {
             console.error('Error loading products:', error)
         } finally {
@@ -140,15 +162,29 @@ export default function InventoryPage() {
                         product: {
                             id: tempId,
                             name: product.name,
+                            content: product.content || '',
                             price: parseFloat(product.price) || 0,
                             originalPrice: parseFloat(product.originalPrice) || parseFloat(product.price) || 0,
                             discountPercent: product.originalPrice ? 
                                 Math.round(((parseFloat(product.originalPrice) - parseFloat(product.price)) / parseFloat(product.originalPrice)) * 100) : 0,
                             category: product.category || 'uncategorized',
-                            categoryPosition: 0,
-                            productPosition: 0,
-                            outOfStock: false,
-                            previews: product.previews || []
+                            categoryPosition: parseInt(product.categoryPosition) || 0,
+                            productPosition: parseInt(product.productPosition) || 0,
+                            outOfStock: product.outOfStock || false,
+                            previews: product.previews || [],
+                            // SEO Fields
+                            seoTitle: product.seoTitle,
+                            seoDescription: product.seoDescription,
+                            seoKeywords: product.seoKeywords,
+                            metaTitle: product.metaTitle,
+                            metaDescription: product.metaDescription,
+                            canonicalUrl: product.canonicalUrl,
+                            structuredData: product.structuredData,
+                            // YouTube Video Fields
+                            youtubeVideoId: product.youtubeVideoId,
+                            videoThumbnail: product.videoThumbnail,
+                            videoTitle: product.videoTitle,
+                            videoDescription: product.videoDescription
                         },
                         isNew: true,
                         isDeleted: false,
@@ -282,8 +318,13 @@ export default function InventoryPage() {
         setSaveStatus('Preparing...');
 
         try {
+            console.log('Starting save process...');
+            console.log('Total items:', items.length);
+            
             // Filter changes
             const itemsToProcess = items.filter(i => i.isDirty || i.isDeleted || i.isNew);
+            console.log('Items to process:', itemsToProcess.length);
+            
             const totalSteps = itemsToProcess.length * 2; // rough estimate
             let completedSteps = 0;
 
@@ -291,93 +332,170 @@ export default function InventoryPage() {
                 completedSteps++;
                 setSaveProgress(Math.min(100, Math.round((completedSteps / totalSteps) * 100)));
                 setSaveStatus(status);
+                console.log('Progress:', status, `${completedSteps}/${totalSteps}`);
             };
+
+            // Check authentication
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
+            console.log('Current user authenticated:', !!currentUser);
+            if (!currentUser) {
+                throw new Error('User not authenticated. Please login to save changes.');
+            }
 
             // Process Deletions First
             const deletedItems = items.filter(i => i.isDeleted && !i.isNew);
+            console.log('Items to delete:', deletedItems.length);
             updateProgress(`Deleting ${deletedItems.length} items...`);
 
             for (const item of deletedItems) {
-                // Delete images
-                if (item.product.thumbnail) await deleteProductImage(item.product.thumbnail);
-                for (const preview of item.product.previews) {
-                    await deleteProductImage(preview);
+                console.log('Deleting item:', item.product.name);
+                try {
+                    // Delete images
+                    if (item.product.thumbnail) {
+                        console.log('Deleting thumbnail:', item.product.thumbnail);
+                        await deleteProductImage(item.product.thumbnail);
+                    }
+                    for (const preview of item.product.previews) {
+                        console.log('Deleting preview:', preview);
+                        await deleteProductImage(preview);
+                    }
+                    // Delete doc
+                    console.log('Deleting Firestore document:', item.product.id);
+                    await FirestoreProductsDs.deleteProduct(item.product.id);
+                    console.log('Successfully deleted item:', item.product.name);
+                } catch (error) {
+                    console.error('Error deleting item:', item.product.name, error);
+                    throw new Error(`Failed to delete item ${item.product.name}: ${(error as Error).message}`);
                 }
-                // Delete doc
-                await FirestoreProductsDs.deleteProduct(item.product.id);
             }
 
             // Process Updates / Creates
             const activeItems = items.filter(i => !i.isDeleted && (i.isDirty || i.isNew));
+            console.log('Items to save/update:', activeItems.length);
 
             for (const item of activeItems) {
+                console.log('Processing item:', item.product.name, {
+                    isNew: item.isNew,
+                    isDirty: item.isDirty,
+                    hasThumbnail: !!item.fileChanges?.thumbnail,
+                    hasPreviews: item.fileChanges?.newPreviews?.length || 0
+                });
                 updateProgress(`Saving ${item.product.name}...`);
 
                 let productData = { ...item.product };
                 const fileChanges = item.fileChanges;
 
-                // 1. Delete removed previews
-                if (fileChanges?.deletedPreviews) {
-                    for (const url of fileChanges.deletedPreviews) {
-                        await deleteProductImage(url);
+                try {
+                    // 1. Delete removed previews
+                    if (fileChanges?.deletedPreviews) {
+                        console.log('Deleting removed previews:', fileChanges.deletedPreviews.length);
+                        for (const url of fileChanges.deletedPreviews) {
+                            console.log('Deleting preview URL:', url);
+                            await deleteProductImage(url);
+                        }
                     }
-                }
 
-                // 2. Upload Thumbnail
-                if (fileChanges?.thumbnail) {
-                    const url = await uploadProductImage(fileChanges.thumbnail, productData.name);
-                    productData.thumbnail = url;
-                    // Update previews array if it contained the old thumbnail or if we want to add the new one
-                }
-
-                // 3. Upload Previews
-                if (fileChanges?.newPreviews) {
-                    const uploadedPreviewUrls = [];
-                    for (const p of fileChanges.newPreviews) {
-                        // We need a unique name for preview to avoid conflict or overwrite
-                        // We use the file name but sanitised? Or just a counter?
-                        // "products/{name}/previews/{filename}"
-                        // File objects have names.
-                        const url = await uploadProductPreview(p.file, productData.name, p.name);
-                        uploadedPreviewUrls.push(url);
+                    // 2. Upload Thumbnail
+                    if (fileChanges?.thumbnail) {
+                        console.log('Uploading thumbnail for:', productData.name);
+                        const url = await uploadProductImage(fileChanges.thumbnail, productData.name);
+                        console.log('Thumbnail uploaded successfully:', url);
+                        productData.thumbnail = url;
                     }
-                    productData.previews = [...productData.previews, ...uploadedPreviewUrls];
-                }
 
-                // 4. Save to Firestore
-                // Remove temp ID if new
-                if (item.isNew) {
-                    const { id, ...data } = productData;
-                    await FirestoreProductsDs.addProduct(data);
-                } else {
-                    const { id, ...data } = productData;
-                    await FirestoreProductsDs.updateProduct(id, data);
+                    // 3. Upload Previews
+                    if (fileChanges?.newPreviews) {
+                        console.log('Uploading previews:', fileChanges.newPreviews.length);
+                        const uploadedPreviewUrls = [];
+                        for (const p of fileChanges.newPreviews) {
+                            console.log('Uploading preview:', p.name);
+                            const url = await uploadProductPreview(p.file, productData.name, p.name);
+                            console.log('Preview uploaded successfully:', url);
+                            uploadedPreviewUrls.push(url);
+                        }
+                        productData.previews = [...productData.previews, ...uploadedPreviewUrls];
+                    }
+
+                    // 4. Save to Firestore
+                    console.log('Saving to Firestore:', {
+                        isNew: item.isNew,
+                        productId: item.product.id,
+                        hasThumbnail: !!productData.thumbnail,
+                        thumbnailUrl: productData.thumbnail,
+                        previewCount: productData.previews.length,
+                        previews: productData.previews,
+                        fullProductData: productData
+                    });
+
+                    if (item.isNew) {
+                        const { id, ...data } = productData;
+                        console.log('Adding new product with data:', {
+                            name: data.name,
+                            thumbnail: data.thumbnail,
+                            previews: data.previews
+                        });
+                        const docId = await FirestoreProductsDs.addProduct(data);
+                        console.log('Successfully added new product:', docId, data.name);
+                    } else {
+                        const { id, ...data } = productData;
+                        console.log('Updating product with data:', {
+                            id: id,
+                            name: data.name,
+                            thumbnail: data.thumbnail,
+                            previews: data.previews
+                        });
+                        await FirestoreProductsDs.updateProduct(id, data);
+                        console.log('Successfully updated product:', id, data.name);
+                    }
+
+                } catch (error) {
+                    console.error('Error processing item:', item.product.name, error);
+                    throw new Error(`Failed to save item ${item.product.name}: ${(error as Error).message}`);
                 }
             }
 
             setSaveStatus('Complete!');
             setSaveProgress(100);
+            console.log('Save process completed successfully!');
 
             // Ensure modal closes after completion
             setTimeout(() => {
                 console.log('Closing save modal...');
                 setIsSaving(false);
                 
-                // Reload products in background
-                loadProducts().catch(error => {
+                // Force reload products to show updated thumbnails
+                console.log('Reloading products to show updated thumbnails...');
+                loadProducts().then(() => {
+                    console.log('Products reloaded successfully');
+                    // Force a re-render by updating the items state
+                    window.location.reload(); // Force page refresh to ensure new images appear
+                }).catch(error => {
                     console.error('Error reloading products:', error);
                 });
-            }, 1000); // Show completion for 1 second
-
-            // Fallback: Force close after 3 seconds total
-            setTimeout(() => {
-                if (isSaving) {
-                    console.log('Fallback: Force closing save modal');
-                    setIsSaving(false);
-                }
-            }, 3000);
+            }, 1000);
 
         } catch (error) {
+            console.error('Error saving changes:', error);
+            console.error('Error details:', {
+                name: (error as Error).name,
+                message: (error as Error).message,
+                stack: (error as Error).stack
+            });
+            
+            // Provide more specific error messages
+            let errorMessage = 'Failed to save changes';
+            if ((error as Error).message.includes('permission-denied') || (error as Error).message.includes('unauthorized')) {
+                errorMessage = 'Permission denied. You must be logged in as an admin to save changes.';
+            } else if ((error as Error).message.includes('network')) {
+                errorMessage = 'Network error. Please check your internet connection and try again.';
+            } else if ((error as Error).message.includes('Failed to upload')) {
+                errorMessage = 'Image upload failed. Please check the images and try again.';
+            } else {
+                errorMessage = `Error: ${(error as Error).message}`;
+            }
+            
+            setSaveStatus(errorMessage);
             console.error(error);
             alert('Error saving changes. Check console for details.');
             setIsSaving(false);
@@ -521,29 +639,25 @@ export default function InventoryPage() {
                                                         {/* Image Section */}
                                                         <div
                                                             className="relative w-[100px] h-[100px] md:w-full md:h-48 shrink-0 bg-gray-100 flex items-center justify-center cursor-pointer"
-                                                            onClick={() => {
-                                                                const existingUrls = product.previews?.filter(p => !item.fileChanges?.deletedPreviews?.includes(p)) || [];
-                                                                const newUrls = item.fileChanges?.newPreviews?.map(p => window.URL.createObjectURL(p.file)) || [];
-                                                                let allUrls = [...existingUrls, ...newUrls];
-
-                                                                if (allUrls.length === 0) {
-                                                                    const fallbackThumbnail = item.fileChanges?.thumbnail ? window.URL.createObjectURL(item.fileChanges.thumbnail) : product.thumbnail;
-                                                                    if (fallbackThumbnail) {
-                                                                        allUrls = [fallbackThumbnail];
-                                                                    }
-                                                                }
-
-                                                                if (allUrls.length > 0) {
-                                                                    const params = new URLSearchParams();
-                                                                    allUrls.forEach(url => params.append('url', url));
-                                                                    router.push(`/product/${product.id}/preview?${params.toString()}`);
-                                                                }
-                                                            }}
+                                                            onClick={() => openMediaCarousel(product)}
                                                         >
                                                             {item.fileChanges?.thumbnail ? (
                                                                 <div className="w-full h-full flex items-center justify-center text-xs text-gray-500 bg-gray-200">New Img</div>
                                                             ) : product.thumbnail ? (
-                                                                <img src={product.thumbnail} alt={product.name} className="w-full h-full object-cover" />
+                                                                <img 
+                                                                    src={product.thumbnail} 
+                                                                    alt={product.name} 
+                                                                    className="w-full h-full object-cover"
+                                                                    onError={(e) => {
+                                                                        const img = e.target as HTMLImageElement;
+                                                                        if (product.thumbnail && product.thumbnail.includes('firebasestorage.googleapis.com')) {
+                                                                            const fixedUrl = product.thumbnail.includes('?') 
+                                                                                ? `${product.thumbnail}&alt=media`
+                                                                                : `${product.thumbnail}?alt=media`;
+                                                                            img.src = fixedUrl;
+                                                                        }
+                                                                    }}
+                                                                />
                                                             ) : (
                                                                 <Package className="h-8 w-8 text-gray-400" />
                                                             )}
@@ -712,6 +826,18 @@ export default function InventoryPage() {
                             )}
                         </div>
                     </div>
+                )}
+
+                {/* Media Carousel */}
+                {carouselProduct && (
+                    <MediaCarousel
+                        isOpen={showCarousel}
+                        onClose={() => setShowCarousel(false)}
+                        images={carouselProduct.previews}
+                        videoId={carouselProduct.youtubeVideoId}
+                        videoTitle={carouselProduct.videoTitle}
+                        productName={carouselProduct.name}
+                    />
                 )}
             </div>
         </div>

@@ -14,7 +14,7 @@ export function OrderTracker({ status }: OrderTrackerProps) {
     // Define the timeline steps
     const steps = isCanceled
         ? [OrderStatus.Ordered, OrderStatus.Canceled]
-        : [OrderStatus.Ordered, OrderStatus.ReadyToShip, OrderStatus.Shipped, OrderStatus.Delivered]
+        : [OrderStatus.Ordered, OrderStatus.Processing, OrderStatus.ReadyToShip, OrderStatus.Shipped, OrderStatus.Delivered]
 
     // Determine current index
     let currentIndex = 0
@@ -33,12 +33,15 @@ export function OrderTracker({ status }: OrderTrackerProps) {
                 {/* Connecting Lines */}
                 <div
                     className="absolute top-3 sm:top-4 -translate-y-1/2 h-1 bg-gray-200 -z-10 rounded-full"
-                    style={{ left: `${50 / steps.length}%`, right: `${50 / steps.length}%` }}
+                    style={{ 
+                        left: `${100 / (steps.length * 2)}%`, 
+                        right: `${100 / (steps.length * 2)}%` 
+                    }}
                 />
                 <div
                     className="absolute top-3 sm:top-4 -translate-y-1/2 h-1 bg-green-500 transition-all duration-500 -z-10 rounded-full"
                     style={{
-                        left: `${50 / steps.length}%`,
+                        left: `${100 / (steps.length * 2)}%`,
                         width: `${steps.length > 1 ? (currentIndex / (steps.length - 1)) * (100 - 100 / steps.length) : 0}%`,
                         backgroundColor: isCanceled && currentIndex === 1 ? '#ef4444' : '#22c55e'
                     }}
@@ -50,7 +53,7 @@ export function OrderTracker({ status }: OrderTrackerProps) {
                     const isLastStepCanceled = isCanceled && index === 1;
 
                     return (
-                        <div key={step} className="flex-1 flex flex-col items-center gap-2 z-10 px-1 sm:px-2" title={step}>
+                        <div key={step} className={`flex flex-col items-center gap-2 z-10 ${steps.length === 5 ? 'px-0.5 sm:px-1' : 'px-1 sm:px-2'}`} title={step}>
                             <div
                                 className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border-2 transition-colors duration-300 ${isLastStepCanceled && isCompleted
                                     ? 'border-red-500 bg-red-500 text-white'
@@ -61,9 +64,9 @@ export function OrderTracker({ status }: OrderTrackerProps) {
                             >
                                 {isLastStepCanceled ? <X className="h-3 w-3 sm:h-4 sm:w-4" /> : <Check className="h-3 w-3 sm:h-4 sm:w-4" />}
                             </div>
-                            <span className={`text-[10px] sm:text-xs font-medium text-center whitespace-nowrap overflow-hidden text-ellipsis w-full px-1 ${isCompleted ? 'text-slate-800' : 'text-gray-400'
+                            <span className={`text-[9px] sm:text-xs font-medium text-center whitespace-nowrap overflow-hidden text-ellipsis w-full ${isCompleted ? 'text-slate-800' : 'text-gray-400'
                                 }`}>
-                                {step}
+                                {step.length > 10 ? step.substring(0, 8) + '...' : step}
                             </span>
                         </div>
                     )

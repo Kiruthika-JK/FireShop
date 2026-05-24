@@ -17,7 +17,7 @@ interface PayViaSectionProps {
 export function PayViaSection({ amount, customer }: PayViaSectionProps) {
     // Generate UPI payment URL
     const generateUPIUrl = () => {
-        const pa = '7639464976-6@ybl'
+        const pa = '8248817401-2@ibl'
         const pn = customer?.name ? encodeURIComponent(customer.name) : 'Ganishkhasri Crackers'
         // If customer exists, format "Number - Rs Amount", else just "Rs Amount"
         const tnText = customer?.mobileNumber

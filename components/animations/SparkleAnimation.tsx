@@ -12,8 +12,15 @@ interface Sparkle {
 
 export function SparkleAnimation() {
   const [sparkles, setSparkles] = useState<Sparkle[]>([]);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return;
+    
     const generateSparkles = () => {
       const newSparkles: Sparkle[] = [];
       for (let i = 0; i < 15; i++) {
@@ -32,7 +39,11 @@ export function SparkleAnimation() {
     const interval = setInterval(generateSparkles, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isClient]);
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden">

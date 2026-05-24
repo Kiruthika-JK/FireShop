@@ -1,125 +1,72 @@
-# FireShop 🛒
+# FireShop - Diwali Crackers E-commerce Platform
 
-E-commerce platform built with Next.js, Firebase, and TypeScript.
+A modern e-commerce platform for selling Diwali crackers and fireworks online in Tamil Nadu, India.
 
-## 🚀 Quick Start for Developers
+## Features
 
-### Prerequisites
-- Node.js 20+ and npm
-- Git
+- **Product Management**: Complete inventory management with categories
+- **SEO Optimization**: Tamil SEO for Indian market with Tamil cracker names
+- **Category Structure**: 16 optimized categories including Saravadi
+- **Responsive Design**: Mobile-first design with Tailwind CSS
+- **Payment Integration**: UPI and online payment support
+- **Trending Products**: Mark products as trending for visibility
+- **Admin Panel**: Easy product management interface
 
-### Setup
+## Categories
 
-1. **Clone the repository**
-   ```bash
-   git clone <your-repo-url>
-   cd FireShop
-   ```
+1. **Sparklers** - Electric & color sparklers
+2. **Flower Pots** - Small, big & special flower pots  
+3. **Ground Chakkar** - Ground chakkar big, special & whizzling wheels
+4. **Peacocks** - Peacock red & green
+5. **Bijili Crackers** - Red & stripped bijili
+6. **Twinkling Star** - 1.5" & 4" twinkling stars
+7. **Pencil Shots** - 15" navrang pencil
+8. **Bombs** - King bomb, DTX & paper bombs
+9. **Saravadi** - 2 sound to 240 shots
+10. **Rockets** - Musical & sky rockets
+11. **Aerial Shot** - 7 to 240 multicolour shots & night aerial
+12. **Whistling Fountain** - Electric stone & snake egg
+13. **Crackling Fountain** - Colour, crackling, mega & double wonder fountains
+14. **Digital Wala** - Digital crackers
+15. **Children Novelty** - Kids special items
+16. **Gift Boxes** - 25 to 50 items boxes
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+## Technology Stack
 
-3. **Environment is ready!**
-   - `.env` is already committed with production Firebase config
-   - No manual setup needed - just run the app
+- **Frontend**: Next.js 14 with TypeScript
+- **Styling**: Tailwind CSS
+- **Database**: Firestore
+- **Authentication**: Firebase Auth
+- **Payment**: UPI integration
+- **Deployment**: Vercel
 
-4. **Start development server**
-   ```bash
-   npm run dev
-   ```
+## Getting Started
 
-5. **Open** [http://localhost:3000](http://localhost:3000)
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Set up Firebase configuration
+4. Run development server: `npm run dev`
+5. Open http://localhost:3000
 
-### Optional: Local Environment Overrides
+## SEO Features
 
-If you need to override settings locally:
-```bash
-cp .env.example .env.local
-# Edit .env.local with your personal settings
-```
+- **Tamil Names**: Optimized for Tamil Nadu market
+- **Meta Tags**: Complete SEO optimization
+- **Structured Data**: Schema.org markup
+- **Tamil Keywords**: Local search optimization
 
-## 📁 Environment Configuration
+## Admin Features
 
-```
-.env            ✅ Committed - Production config (team-shared)
-.env.staging    ✅ Committed - Staging config (future)
-.env.example    ✅ Committed - Template
-.env.local      ❌ Gitignored - Local overrides & secrets
-```
+- **Product Management**: Add, edit, delete products
+- **Trending Toggle**: Mark products as trending
+- **Category Management**: Organize products by category
+- **Price Management**: Set original and discounted prices
+- **Stock Management**: Track product availability
 
-**Why is `.env` committed?**
-- Firebase client keys are **public by design** (secured via Firebase Security Rules)
-- Enables zero-setup for new team members
-- Private repo = safe to share configuration
+## Deployment
 
-📖 **Full details:** See [docs/environment-setup.md](docs/environment-setup.md)
+The application is deployed on Vercel and uses Firebase for backend services.
 
-## 🛠️ Available Scripts
+## License
 
-```bash
-npm run dev              # Start development server
-npm run dev:staging      # Start with staging config
-npm run build            # Build for production
-npm run build:staging    # Build with staging config
-npm run start            # Start production server
-npm run lint             # Run ESLint
-```
-
-## 🏗️ Project Structure
-
-```
-app/                    # Next.js App Router pages
-components/             # Reusable React components
-lib/                    # Utilities, config, features
-  ├── config.ts         # Centralized configuration
-  ├── firebase.ts       # Firebase initialization
-  └── features/         # Feature-based architecture
-      ├── cart/         # Cart management (Zustand)
-      └── product/      # Product domain logic
-docs/                   # Documentation
-public/                 # Static assets
-```
-
-## 🔐 Security
-
-- **Client-side keys**: Exposed to browser (normal for Firebase)
-- **Security enforced by**: Firebase Security Rules & App Check
-- **Server secrets**: Store in `.env.local` (gitignored) without `NEXT_PUBLIC_` prefix
-
-## 📚 Tech Stack
-
-- **Framework**: Next.js 16 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4
-- **Backend**: Firebase (Auth, Firestore)
-- **State Management**: Zustand
-- **UI Components**: Radix UI + shadcn/ui
-
-## 🌍 Deployment
-
-### Vercel (Recommended)
-1. Import project to Vercel
-2. Environment variables auto-detected from `.env`
-3. Deploy!
-
-### Other Platforms
-Set environment variables from `.env` in your platform's dashboard.
-
-## 📖 Documentation
-
-- [Environment Setup Guide](docs/environment-setup.md)
-- [Android vs Next.js Comparison](docs/android_vs_nexjs.md)
-- [Tech Stack Decisions](docs/ecommerce_tech_stack.md)
-
-## 🤝 Contributing
-
-1. Create a feature branch
-2. Make your changes
-3. Test locally with `npm run dev`
-4. Submit a PR
-
----
-
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+© 2024 FireShop Tamil Nadu. All rights reserved.

@@ -1,11 +1,16 @@
 import { ProductModel } from "@/lib/features/product/domain/models/ProductModel"
 import { ProductCard } from "@/components/ProductCard"
+import { CategoryBanner } from "./CategoryBanner"
+import { ProductPagination } from "@/components/ui/ProductPagination"
 
 interface ProductGridProps {
     products: ProductModel[]
+    currentPage?: number
+    itemsPerPage?: number
+    onPageChange?: (page: number) => void
 }
 
-export function ProductGrid({ products }: ProductGridProps) {
+export function ProductGrid({ products, currentPage = 1, itemsPerPage = 12, onPageChange }: ProductGridProps) {
     const getCatName = (cat: string) => cat?.trim() ? cat.trim() : 'Unlisted';
 
     // Define category order based on Indian market priority
@@ -33,28 +38,45 @@ export function ProductGrid({ products }: ProductGridProps) {
         orderedCategories.push('Unlisted');
     }
 
+    // Calculate pagination
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedProducts = products.slice(startIndex, endIndex);
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+
     return (
         <div className="container mx-auto p-4 mt-2">
             {orderedCategories.map((category) => {
-                const categoryProducts = products.filter(p => getCatName(p.category) === category);
+                const categoryProducts = paginatedProducts.filter(p => getCatName(p.category) === category);
                 const categoryId = category.toLowerCase().replace(/\s+/g, '-');
 
                 return (
-                    <section key={category} id={`category-${categoryId}`} className="mb-8 relative scroll-mt-20">
-                        {/* Sticky Category Header */}
-                        <div className="sticky top-0 z-10 bg-primary/10 backdrop-blur-md rounded-lg shadow-sm py-3 mb-4 border border-primary/20">
-                            <h2 className="text-xl font-bold px-4 capitalize tracking-wide text-primary-foreground">{category.toLowerCase()}</h2>
-                        </div>
-
+                    <CategoryBanner
+                        key={category}
+                        category={category}
+                        productCount={categoryProducts.length}
+                        categoryId={categoryId}
+                    >
                         {/* Grid View for Products in this Category */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
                             {categoryProducts.map(p => (
                                 <ProductCard key={p.id} product={p} />
                             ))}
                         </div>
-                    </section>
+                    </CategoryBanner>
                 )
             })}
+            
+            {/* Pagination */}
+            {onPageChange && (
+                <ProductPagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={onPageChange}
+                    itemsPerPage={itemsPerPage}
+                    totalItems={products.length}
+                />
+            )}
         </div>
     )
 }
