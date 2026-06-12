@@ -8,6 +8,7 @@ import { BestSellersProvider } from "@/lib/best-sellers-context";
 import { SparkleAnimation } from "@/components/animations/SparkleAnimation";
 import { SparkleContainer } from "@/components/animations/SparkleContainer";
 import { generateSEOHead } from "@/components/seo/SEOHead";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
             {children}
           </BestSellersProvider>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );

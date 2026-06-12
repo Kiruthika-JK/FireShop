@@ -4,8 +4,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 import {
     onAuthStateChanged,
     signInWithPopup,
+    signInWithRedirect,
     signOut,
-    User
+    User,
+    getRedirectResult
 } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, googleProvider, firestore } from "./firebase";
@@ -58,12 +60,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setLoading(false);
         });
 
+        // Handle redirect result for mobile sign-in
+        getRedirectResult(auth)
+            .then((result) => {
+                if (result?.user) {
+                    console.log("Redirect sign-in successful:", result.user);
+                }
+            })
+            .catch((error) => {
+                console.error("Error handling redirect result:", error);
+            });
+
         return () => unsubscribe();
     }, []);
 
     const loginWithGoogle = async () => {
         try {
-            await signInWithPopup(auth, googleProvider);
+            // Detect if mobile device
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                // Use redirect for mobile devices (popup blockers on mobile)
+                await signInWithRedirect(auth, googleProvider);
+            } else {
+                // Use popup for desktop
+                await signInWithPopup(auth, googleProvider);
+            }
         } catch (error) {
             console.error("Error signing in with Google", error);
             throw error;

@@ -318,31 +318,30 @@ export function Navbar() {
             <div className="flex flex-col gap-1">
               <span className="text-yellow-400 font-medium text-sm">Categories:</span>
               <div className="grid grid-cols-2 gap-1">
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#sparklers'; setIsOpen(false); }}>Sparklers</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#flowerpots'; setIsOpen(false); }}>Flower Pots</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#groundchakkar'; setIsOpen(false); }}>Ground Chakkar</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#peacocks'; setIsOpen(false); }}>Peacocks</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#bijili'; setIsOpen(false); }}>Bijili Crackers</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#twinklingstar'; setIsOpen(false); }}>Twinkling Star</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#pencil'; setIsOpen(false); }}>Pencil Shots</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#bombs'; setIsOpen(false); }}>Bombs</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#saravadi'; setIsOpen(false); }}>Sound Crackers</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#rockets'; setIsOpen(false); }}>Rockets</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#aerialshot'; setIsOpen(false); }}>Aerial Shot</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#whistlingfountain'; setIsOpen(false); }}>Whistling Fountain</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#cracklingfountain'; setIsOpen(false); }}>Crackling Fountain</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#digitalwala'; setIsOpen(false); }}>Digital Wala</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-sparklers'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#sparklers'; setIsOpen(false); }}>Sparklers</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-flowerpots'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#flowerpots'; setIsOpen(false); }}>Flower Pots</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-groundchakkar'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#groundchakkar'; setIsOpen(false); }}>Ground Chakkar</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-peacocks'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#peacocks'; setIsOpen(false); }}>Peacocks</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-bijili'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#bijili'; setIsOpen(false); }}>Bijili Crackers</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-twinklingstar'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#twinklingstar'; setIsOpen(false); }}>Twinkling Star</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-pencil'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#pencil'; setIsOpen(false); }}>Pencil Shots</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-bombs'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#bombs'; setIsOpen(false); }}>Bombs</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-saravadi'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#saravadi'; setIsOpen(false); }}>Sound Crackers</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-rockets'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#rockets'; setIsOpen(false); }}>Rockets</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-aerialshot'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#aerialshot'; setIsOpen(false); }}>Aerial Shot</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-whistlingfountain'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#whistlingfountain'; setIsOpen(false); }}>Whistling Fountain</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-cracklingfountain'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#cracklingfountain'; setIsOpen(false); }}>Crackling Fountain</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-digitalwala'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#digitalwala'; setIsOpen(false); }}>Digital Wala</button>
                 <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => {
                     const element = document.getElementById('category-childrennovelty');
                     if (element) {
                       element.scrollIntoView({ behavior: 'smooth' });
                     } else {
-                      // Fallback to URL change
                       window.location.href = '/#childrennovelty';
                     }
                     setIsOpen(false);
                   }}>Children Novelty</button>
-                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#giftbox'; setIsOpen(false); }}>Gift Boxes</button>
+                <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-giftbox'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#giftbox'; setIsOpen(false); }}>Gift Boxes</button>
               </div>
             </div>
 
