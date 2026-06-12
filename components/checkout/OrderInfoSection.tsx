@@ -14,7 +14,8 @@ export function OrderInfoSection() {
     // Calculate GST based on location
     const calculateGST = () => {
         const isTNOrPondicherry = customerInfo.state === 'Tamil Nadu' || customerInfo.state === 'Pondicherry'
-        if (isTNOrPondicherry) {
+        const isStateSelected = customerInfo.state && customerInfo.state.trim() !== ''
+        if (isTNOrPondicherry || !isStateSelected) {
             return 0
         }
         return Math.round(total * 0.18) // 18% GST
@@ -53,7 +54,7 @@ export function OrderInfoSection() {
 
                     <div className="flex justify-between items-center py-2">
                         <p className="text-sm font-semibold text-gray-700">Grand Total</p>
-                        <p className="text-xl text-green-600 font-bold">₹{formatPrice(grandTotal)}</p>
+                        <p className="text-xl text-green-600 font-bold">₹{formatPrice(grandTotal)} + Delivery charges</p>
                     </div>
                 </div>
             </div>

@@ -8,8 +8,8 @@ import { Input } from '@/components/ui/input'
 import { Edit2, Save, X } from 'lucide-react'
 
 export function CustomerInfoSection() {
-    const { customerInfo, setCustomerInfo } = useCustomerInfoStore()
-    const [isEditing, setIsEditing] = useState(false)
+    const { customerInfo, setCustomerInfo, updateField } = useCustomerInfoStore()
+    const [isEditing, setIsEditing] = useState(true) // Show form by default
     const [formData, setFormData] = useState(customerInfo)
     const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -72,6 +72,10 @@ export function CustomerInfoSection() {
         // Clear error for this field when user starts typing
         if (errors[field]) {
             setErrors({ ...errors, [field]: '' })
+        }
+        // Update store in real-time for state field to trigger GST calculation
+        if (field === 'state') {
+            updateField('state', value)
         }
     }
 
@@ -191,6 +195,9 @@ export function CustomerInfoSection() {
                                 <option value="Other">Other</option>
                             </select>
                             {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
+                            {formData.state && formData.state !== 'Tamil Nadu' && formData.state !== 'Pondicherry' && (
+                                <p className="text-amber-600 text-xs mt-1 font-medium">⚠️ 18% GST will be added to your order</p>
+                            )}
                         </div>
                     </div>
 

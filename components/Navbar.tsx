@@ -202,7 +202,7 @@ export function Navbar() {
             </DropdownMenu>
 
             {/* Cart */}
-            <Link href="/checkout" className="text-white hover:text-yellow-400 transition-colors font-medium cursor-pointer flex items-center gap-2 relative">
+            <Link href="/cart" className="text-white hover:text-yellow-400 transition-colors font-medium cursor-pointer flex items-center gap-2 relative">
               <ShoppingCart className="h-4 w-4" />
               Cart
               {hasCartItems && (
@@ -346,7 +346,7 @@ export function Navbar() {
             </div>
 
             {/* Cart - Mobile */}
-            <Link href="/checkout" className="bg-gray-900 hover:bg-gray-800 text-white hover:text-yellow-400 font-medium cursor-pointer flex items-center gap-2 py-3 px-4 rounded-lg border border-gray-700 transition-all relative" onClick={() => setIsOpen(false)}>
+            <Link href="/cart" className="bg-gray-900 hover:bg-gray-800 text-white hover:text-yellow-400 font-medium cursor-pointer flex items-center gap-2 py-3 px-4 rounded-lg border border-gray-700 transition-all relative" onClick={() => setIsOpen(false)}>
               <ShoppingCart className="h-4 w-4" />
               Cart
               {hasCartItems && (

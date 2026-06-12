@@ -27,7 +27,8 @@ export default function CheckoutPage() {
     // Calculate GST based on location
     const calculateGST = () => {
         const isTNOrPondicherry = customerInfo.state === 'Tamil Nadu' || customerInfo.state === 'Pondicherry'
-        if (isTNOrPondicherry) {
+        const isStateSelected = customerInfo.state && customerInfo.state.trim() !== ''
+        if (isTNOrPondicherry || !isStateSelected) {
             return 0
         }
         return Math.round(total * 0.18) // 18% GST
@@ -211,8 +212,10 @@ export default function CheckoutPage() {
                 <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8">Checkout</h1>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* Left Column - Customer Info & Order Info */}
+                    {/* Left Column - Customer Info & Shipping */}
                     <div className="lg:col-span-2 space-y-6">
+                        <CustomerInfoSection />
+
                         {/* Shipping Information */}
                         <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-6 shadow-sm border border-amber-200">
                             <h2 className="text-lg font-bold text-amber-900 mb-4 flex items-center gap-2">
@@ -226,30 +229,28 @@ export default function CheckoutPage() {
                                 <div className="bg-white rounded-lg p-4 border border-amber-300 mt-3">
                                     <ul className="space-y-2 list-disc list-inside">
                                         <li><strong>Tamil Nadu / Pondicherry:</strong> Delivery charges will be added based on location and can be paid after delivery to the courier partner. No GST applicable for orders within Tamil Nadu and Pondicherry.</li>
-                                        <li><strong>Other States:</strong> Flat 18% GST will be added to the order total. Delivery charges must be paid along with the order amount while placing the order itself.</li>
+                                        <li><strong>Other States:</strong> Flat 18% GST will be added to the order total. Delivery charges must be paid priorly along with the order amount.</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
 
-                        <CustomerInfoSection />
-                        <OrderInfoSection />
-
-                        {/* QR Code - Mobile Only (3rd position) */}
+                        {/* Order Summary - Mobile Only */}
                         <div className="lg:hidden">
-                            <PayViaSection amount={total} customer={{ name: customerInfo.name, mobileNumber: customerInfo.mobileNumber }} />
+                            <OrderItemsSection />
                         </div>
 
-                        {/* Order Items - Full width on desktop, after QR on mobile */}
-                        <div className="lg:col-span-3">
-                            <OrderItemsSection />
+                        {/* QR Code - Mobile Only */}
+                        <div className="lg:hidden">
+                            <PayViaSection amount={grandTotal} customer={{ name: customerInfo.name, mobileNumber: customerInfo.mobileNumber }} />
                         </div>
                     </div>
 
-                    {/* Right Column - QR Code & Confirm Order (Desktop Only) */}
+                    {/* Right Column - Order Summary & Payment (Desktop) */}
                     <div className="hidden lg:block lg:col-span-1">
                         <div className="sticky top-24 space-y-6">
-                            <PayViaSection amount={total} customer={{ name: customerInfo.name, mobileNumber: customerInfo.mobileNumber }} />
+                            <OrderItemsSection />
+                            <PayViaSection amount={grandTotal} customer={{ name: customerInfo.name, mobileNumber: customerInfo.mobileNumber }} />
 
                             {/* Confirm Order Section - Desktop */}
                             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
