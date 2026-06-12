@@ -1,6 +1,5 @@
 'use client'
 
-import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { ArrowLeft, ShoppingCart, Star } from 'lucide-react'
@@ -19,70 +18,6 @@ interface ProductPageProps {
   }
   searchParams: {
     url?: string[]
-  }
-}
-
-// Generate metadata for SEO
-export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  try {
-    const product = await FirestoreProductsDs.getProductById(params.id)
-    
-    if (!product) {
-      return {
-        title: 'Product Not Found',
-        description: 'The requested product could not be found.'
-      }
-    }
-
-    const seoTitle = product.seoTitle || `${product.name} - Ganishkha Crackers Sivakasi`
-    const seoDescription = product.seoDescription || `Buy ${product.name} at best price in Sivakasi. Premium quality crackers with fast delivery across Tamil Nadu and India.`
-    const canonicalUrl = product.canonicalUrl || `/product/${product.id}`
-
-    return {
-      title: seoTitle,
-      description: seoDescription,
-      keywords: product.seoKeywords || `${product.name}, sivakasi crackers, diwali crackers, tamil nadu fireworks`,
-      openGraph: {
-        title: product.metaTitle || seoTitle,
-        description: product.metaDescription || seoDescription,
-        type: 'website',
-        locale: 'en_IN',
-        url: `https://ganishkha-crackers.vercel.app${canonicalUrl}`,
-        siteName: 'Ganishkha Crackers',
-        images: product.thumbnail ? [
-          {
-            url: product.thumbnail,
-            width: 800,
-            height: 600,
-            alt: product.name,
-          }
-        ] : [],
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: product.metaTitle || seoTitle,
-        description: product.metaDescription || seoDescription,
-        images: product.thumbnail ? [product.thumbnail] : [],
-      },
-      alternates: {
-        canonical: canonicalUrl,
-      },
-      other: {
-        'product:brand': 'Ganishkha Crackers',
-        'product:category': product.category,
-        'product:price:amount': product.price.toString(),
-        'product:price:currency': 'INR',
-        'product:availability': 'in stock',
-        'product:condition': 'new',
-        'product:retailer_item_id': product.id,
-        'product:item_group_id': product.category,
-      },
-    }
-  } catch (error) {
-    return {
-      title: 'Product Details',
-      description: 'View product details and purchase crackers online.'
-    }
   }
 }
 
@@ -151,7 +86,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                   )}
                   
                   {/* Discount Badge */}
-                  {product.discountPercent > 0 && (
+                  {product.discountPercent && product.discountPercent > 0 && (
                     <div className="absolute top-4 right-4">
                       <Badge className="bg-red-500 text-white">
                         {product.discountPercent}% OFF
@@ -201,7 +136,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                 <span className="text-3xl font-bold text-orange-600">
                   {formatPrice(product.price)}
                 </span>
-                {product.originalPrice > product.price && (
+                {product.originalPrice && product.originalPrice > product.price && (
                   <>
                     <span className="text-lg text-gray-500 line-through">
                       {formatPrice(product.originalPrice)}
@@ -282,7 +217,7 @@ function AddToCartButton({ product }: { product: ProductModel }) {
       productId: product.id,
       name: product.name,
       price: product.price,
-      originalPrice: product.originalPrice,
+      originalPrice: product.originalPrice || product.price,
       quantity: 1,
       thumbnail: product.thumbnail
     })

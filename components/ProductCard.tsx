@@ -34,11 +34,15 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
 
     const handleIncrement = (event?: React.MouseEvent) => {
         // Trigger sparkle explosion at click coordinates
-        if (event && (window as any).addClickSparkle) {
-            const rect = (event.target as HTMLElement).getBoundingClientRect();
-            const x = rect.left + rect.width / 2;
-            const y = rect.top + rect.height / 2;
-            (window as any).addClickSparkle(x, y);
+        try {
+            if (event && (window as any).addClickSparkle) {
+                const rect = (event.target as HTMLElement).getBoundingClientRect();
+                const x = rect.left + rect.width / 2;
+                const y = rect.top + rect.height / 2;
+                (window as any).addClickSparkle(x, y);
+            }
+        } catch (error) {
+            console.error('Sparkle effect error:', error);
         }
 
         addItem({
@@ -88,7 +92,7 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
     // Purchase Variant Content (Browsing)
     const renderPurchaseContent = () => (
         <div className="flex items-center gap-2 text-xs sm:text-sm min-w-0">
-            <span className="text-gray-500 line-through truncate">₹{formatPrice(product.originalPrice)}</span>
+            {product.originalPrice && <span className="text-gray-500 line-through truncate">₹{formatPrice(product.originalPrice)}</span>}
             <span className="text-green-600 font-bold truncate">₹{formatPrice(product.price)}</span>
         </div>
     )
@@ -179,7 +183,7 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
                                     </h3>
                                     {variant === 'compact' ? (
                                         <div className="flex flex-col items-center gap-1 text-xs w-full">
-                                            <span className="text-gray-500 line-through text-xs">₹{formatPrice(product.originalPrice)}</span>
+                                            {product.originalPrice && <span className="text-gray-500 line-through text-xs">₹{formatPrice(product.originalPrice)}</span>}
                                             <span className="text-green-600 font-bold text-xs">₹{formatPrice(product.price)}</span>
                                         </div>
                                     ) : (
@@ -250,7 +254,7 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
         <MediaCarousel
             isOpen={showCarousel}
             onClose={() => setShowCarousel(false)}
-            images={product.previews}
+            images={product.previews || []}
             videoId={product.youtubeVideoId}
             videoTitle={product.videoTitle}
             productName={product.name}

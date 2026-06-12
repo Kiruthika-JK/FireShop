@@ -356,9 +356,11 @@ export default function InventoryPage() {
                         console.log('Deleting thumbnail:', item.product.thumbnail);
                         await deleteProductImage(item.product.thumbnail);
                     }
-                    for (const preview of item.product.previews) {
-                        console.log('Deleting preview:', preview);
-                        await deleteProductImage(preview);
+                    if (item.product.previews) {
+                        for (const preview of item.product.previews) {
+                            console.log('Deleting preview:', preview);
+                            await deleteProductImage(preview);
+                        }
                     }
                     // Delete doc
                     console.log('Deleting Firestore document:', item.product.id);
@@ -414,7 +416,7 @@ export default function InventoryPage() {
                             console.log('Preview uploaded successfully:', url);
                             uploadedPreviewUrls.push(url);
                         }
-                        productData.previews = [...productData.previews, ...uploadedPreviewUrls];
+                        productData.previews = [...(productData.previews || []), ...uploadedPreviewUrls];
                     }
 
                     // 4. Save to Firestore
@@ -423,7 +425,7 @@ export default function InventoryPage() {
                         productId: item.product.id,
                         hasThumbnail: !!productData.thumbnail,
                         thumbnailUrl: productData.thumbnail,
-                        previewCount: productData.previews.length,
+                        previewCount: productData.previews?.length || 0,
                         previews: productData.previews,
                         fullProductData: productData
                     });
@@ -692,9 +694,9 @@ export default function InventoryPage() {
 
                                                             <div className="mt-1 md:mt-2">
                                                                 <div className="flex items-center gap-2">
-                                                                    <span className="text-xs md:text-sm text-gray-500 line-through">₹{product.originalPrice.toFixed(2)}</span>
+                                                                    {product.originalPrice && <span className="text-xs md:text-sm text-gray-500 line-through">₹{product.originalPrice.toFixed(2)}</span>}
                                                                     <span className="text-sm md:text-lg font-bold text-green-600">₹{product.price.toFixed(2)}</span>
-                                                                    <span className="text-[10px] md:text-xs text-green-700 bg-green-50 px-1 rounded ml-1">{product.discountPercent}% OFF</span>
+                                                                    {product.discountPercent && <span className="text-[10px] md:text-xs text-green-700 bg-green-50 px-1 rounded ml-1">{product.discountPercent}% OFF</span>}
                                                                 </div>
                                                             </div>
 
@@ -833,7 +835,7 @@ export default function InventoryPage() {
                     <MediaCarousel
                         isOpen={showCarousel}
                         onClose={() => setShowCarousel(false)}
-                        images={carouselProduct.previews}
+                        images={carouselProduct.previews || []}
                         videoId={carouselProduct.youtubeVideoId}
                         videoTitle={carouselProduct.videoTitle}
                         productName={carouselProduct.name}

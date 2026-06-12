@@ -9,14 +9,13 @@ import { HeroSection } from '@/components/ui/HeroSection';
 import { CategoryBanners } from '@/components/ui/CategoryBanners';
 import { TrendingProducts } from '@/components/ui/TrendingProducts';
 import { ScrollToTop } from '@/components/ui/ScrollToTop';
+import { BrandsSection } from '@/components/ui/BrandsSection';
 import { getTamilNames, getTamilProductNames, matchesTamilNames } from '@/lib/data/tamilCrackerNames';
-import { useBestSellers } from '@/lib/best-sellers-context';
 import { Flame } from 'lucide-react';
 import Head from 'next/head';
 
 export default function ProductListPage() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const { showBestSellersOnly } = useBestSellers();
 
   // Enhanced SEO function with Tamil names
   const getSEOFriendlyName = (category: string, productName: string): string => {
@@ -262,7 +261,7 @@ export default function ProductListPage() {
               }
             >
               {(products: ProductModel[]) => <SinglePageProductGrid 
-                products={showBestSellersOnly ? products.filter(p => p.trending) : products} 
+                products={products} 
                 activeCategory={activeCategory}
                 />}
             </ProductProvider>
@@ -270,6 +269,9 @@ export default function ProductListPage() {
         </div>
         <CheckoutFloatingBar />
       </main>
+      
+      {/* Brands Section - Compact footer style */}
+      <BrandsSection />
       
       {/* Navigation Components */}
       <ScrollToTop />

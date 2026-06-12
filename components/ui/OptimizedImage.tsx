@@ -90,7 +90,7 @@ export function OptimizedImage({
       {!isLoaded && placeholder === 'blur' && <BlurPlaceholder />}
       
       {/* Actual Image */}
-      {isInView && !hasError && (
+      {isInView && !hasError && src && (
         <img
           ref={imgRef}
           src={src}

@@ -8,6 +8,7 @@ export interface CustomerInfo {
     landmark: string
     city: string
     pincode: string
+    state: string
 }
 
 export interface CustomerInfoStore {
@@ -25,6 +26,7 @@ const initialCustomerInfo: CustomerInfo = {
     landmark: '',
     city: '',
     pincode: '',
+    state: '',
 }
 
 export const useCustomerInfoStore = create<CustomerInfoStore>()(
@@ -35,12 +37,13 @@ export const useCustomerInfoStore = create<CustomerInfoStore>()(
             updateField: (field, value) =>
                 set({ customerInfo: { ...get().customerInfo, [field]: value } }),
             isComplete: () => {
-                const { name, mobileNumber, fullAddress, city, pincode } = get().customerInfo
+                const { name, mobileNumber, fullAddress, city, state, pincode } = get().customerInfo
                 return !!(
                     name.trim() &&
                     mobileNumber.trim() &&
                     fullAddress.trim() &&
                     city.trim() &&
+                    state.trim() &&
                     pincode.trim()
                 )
             },

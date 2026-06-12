@@ -22,6 +22,7 @@ interface ClickSparkleProps {
 export function ClickSparkle({ x, y, onComplete }: ClickSparkleProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
+  const particlesRef = useRef<SparkleParticle[]>([]);
   const [isClient, setIsClient] = useState(false);
   const [particles, setParticles] = useState<SparkleParticle[]>([]);
 
@@ -29,12 +30,9 @@ export function ClickSparkle({ x, y, onComplete }: ClickSparkleProps) {
     setIsClient(true);
   }, []);
 
-  if (!isClient) {
-    return null;
-  }
-  const particlesRef = useRef<SparkleParticle[]>([]);
-
   useEffect(() => {
+    if (!isClient) return;
+
     const colors = [
       'radial-gradient(circle, rgba(255,215,0,1) 0%, rgba(255,215,0,0.6) 40%, rgba(255,215,0,0) 70%)',
       'radial-gradient(circle, rgba(255,105,180,1) 0%, rgba(255,105,180,0.6) 40%, rgba(255,105,180,0) 70%)',
@@ -43,9 +41,9 @@ export function ClickSparkle({ x, y, onComplete }: ClickSparkleProps) {
       'radial-gradient(circle, rgba(255,99,71,1) 0%, rgba(255,99,71,0.6) 40%, rgba(255,99,71,0) 70%)',
       'radial-gradient(circle, rgba(255,255,0,1) 0%, rgba(255,255,0,0.6) 40%, rgba(255,255,0,0) 70%)'
     ];
-    
+
     const newParticles: SparkleParticle[] = [];
-    
+
     // Create explosion of particles
     for (let i = 0; i < 15; i++) {
       const angle = (Math.PI * 2 * i) / 15;
@@ -61,7 +59,7 @@ export function ClickSparkle({ x, y, onComplete }: ClickSparkleProps) {
         life: 1,
       });
     }
-    
+
     particlesRef.current = newParticles;
     setParticles([...newParticles]);
 
@@ -73,10 +71,10 @@ export function ClickSparkle({ x, y, onComplete }: ClickSparkleProps) {
         vy: p.vy + 0.1, // Less gravity for slower fall
         life: p.life - 0.008, // Slower fade out (was 0.02)
       })).filter(p => p.life > 0);
-      
+
       particlesRef.current = updated;
       setParticles([...updated]);
-      
+
       if (updated.length === 0) {
         onComplete();
       } else {
@@ -91,7 +89,11 @@ export function ClickSparkle({ x, y, onComplete }: ClickSparkleProps) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [x, y, onComplete]);
+  }, [x, y, onComplete, isClient]);
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 pointer-events-none z-50">

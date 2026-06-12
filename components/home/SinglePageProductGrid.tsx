@@ -40,15 +40,18 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
         return categoryMap[cat] || cat.charAt(0).toUpperCase() + cat.slice(1);
     };
 
+    // Get unique category IDs from products
+    const availableCategoryIds = Array.from(new Set(products.map(p => p.category))).filter(cat => cat && cat.trim() !== '');
+
     // Get display categories
     const displayCategories = Array.from(new Set(products.map(p => getCatName(p.category)))).filter(cat => cat !== 'Unlisted');
-    
+
     // Initialize with all categories expanded by default
     const [expandedCategories, setExpandedCategories] = useState<string[]>(displayCategories);
 
     const toggleCategory = (category: string) => {
-        setExpandedCategories(prev => 
-            prev.includes(category) 
+        setExpandedCategories(prev =>
+            prev.includes(category)
                 ? prev.filter(cat => cat !== category)
                 : [...prev, category]
         );
@@ -77,31 +80,16 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
         'giftbox'
     ];
 
-    // Get unique categories from products
-    const availableCategories = Array.from(new Set(products.map(p => getCatName(p.category))));
-    
-    // Order categories according to Indian market priority
-    const orderedCategories = categoryOrder
-        .filter(cat => availableCategories.includes(cat))
-        .concat(availableCategories.filter(cat => !categoryOrder.includes(cat) && cat !== 'Unlisted'));
-    
-    // Add Unlisted at the end if it exists
-    if (availableCategories.includes('Unlisted')) {
-        orderedCategories.push('Unlisted');
-    }
+    // Order category IDs according to Indian market priority
+    const orderedCategoryIds = categoryOrder
+        .filter(catId => availableCategoryIds.includes(catId))
+        .concat(availableCategoryIds.filter(catId => !categoryOrder.includes(catId)));
+
+    // Convert ordered category IDs to display names
+    const sortedCategories = orderedCategoryIds.map(catId => getCatName(catId)).filter(cat => cat !== 'Unlisted');
 
     // Show all products, no filtering
     const allProducts = products;
-
-    // Sort display categories according to category order
-    const sortedCategories = displayCategories.sort((a, b) => {
-        const aIndex = categoryOrder.indexOf(a.toLowerCase());
-        const bIndex = categoryOrder.indexOf(b.toLowerCase());
-        if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
-        if (aIndex === -1) return 1;
-        if (bIndex === -1) return -1;
-        return aIndex - bIndex;
-    });
 
     
     return (
@@ -109,6 +97,12 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
             {/* Products by Categories */}
             {sortedCategories.map((category) => {
                 const categoryProducts = allProducts.filter(p => getCatName(p.category) === category);
+                // Sort products: best sellers first, then by name
+                const sortedCategoryProducts = [...categoryProducts].sort((a, b) => {
+                    if (a.trending && !b.trending) return -1;
+                    if (!a.trending && b.trending) return 1;
+                    return a.name.localeCompare(b.name);
+                });
                 const categoryId = category.toLowerCase().replace(/\s+/g, '-');
 
                 return (
@@ -140,32 +134,32 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
                         }`}
                             aria-label={`${expandedCategories.includes(category) ? 'Collapse' : 'Expand'} ${category} category`}
                         >
-                            <div className="flex items-center justify-between w-full px-6 py-4">
-                                <div className="flex items-center gap-4">
-                                    <h3 className="text-xl font-bold drop-shadow-lg">
+                            <div className="flex items-center justify-between w-full px-4 sm:px-6 py-3 sm:py-4">
+                                <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
+                                    <h3 className="text-base sm:text-xl font-bold drop-shadow-lg truncate">
                                         {category}
                                     </h3>
-                                    <Badge className="text-sm bg-white/20 text-white border-white/30 font-semibold">
-                                        {categoryProducts.length} products
+                                    <Badge className="text-xs sm:text-sm bg-white/20 text-white border-white/30 font-semibold flex-shrink-0">
+                                        {categoryProducts.length}
                                     </Badge>
                                 </div>
-                                <div className="text-white/80 p-2 rounded-full bg-white/10">
+                                <div className="text-white/80 p-1.5 sm:p-2 rounded-full bg-white/10 flex-shrink-0 ml-2">
                                     {expandedCategories.includes(category) ? (
-                                        <ChevronUp className="w-5 h-5" />
+                                        <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5" />
                                     ) : (
-                                        <ChevronDown className="w-5 h-5" />
+                                        <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5" />
                                     )}
                                 </div>
                             </div>
                         </div>
                         
                         <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                            expandedCategories.includes(category) 
-                                ? 'max-h-[2000px] opacity-100' 
+                            expandedCategories.includes(category)
+                                ? 'max-h-none opacity-100'
                                 : 'max-h-0 opacity-0'
                         }`}>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3 px-4 sm:px-6 py-4">
-                                {categoryProducts.map(p => (
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-2 sm:gap-3 px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+                                {sortedCategoryProducts.map(p => (
                                     <ProductCard key={p.id} product={p} variant="compact" />
                                 ))}
                             </div>

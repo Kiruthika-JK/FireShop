@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, User as UserIcon, Home, Flame, Menu, ShoppingCart } from "lucide-react";
+import { Home, Menu, ShoppingCart, LogOut } from "lucide-react";
 import Image from "next/image";
 import { useBestSellers } from "@/lib/best-sellers-context";
 
@@ -200,20 +200,7 @@ export function Navbar() {
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
-            
-            {/* Best Sellers */}
-            <button 
-              onClick={() => {
-                setShowBestSellersOnly?.(!showBestSellersOnly);
-              }}
-              className={`text-white hover:text-yellow-400 transition-colors font-medium cursor-pointer flex items-center gap-2 ${
-                showBestSellersOnly ? 'text-yellow-400' : ''
-              }`}
-            >
-              <Flame className="h-4 w-4" />
-              {showBestSellersOnly ? 'All Products' : 'Best Sellers'}
-            </button>
-            
+
             {/* Cart */}
             <Link href="/checkout" className="text-white hover:text-yellow-400 transition-colors font-medium cursor-pointer flex items-center gap-2 relative">
               <ShoppingCart className="h-4 w-4" />
@@ -230,40 +217,43 @@ export function Navbar() {
                 Inventory
               </Link>
             )}
-            <Link href="/orders" className="text-white hover:text-yellow-400 transition-colors font-medium cursor-pointer">
-              Orders
-            </Link>
+            {user && (
+              <Link href="/orders" className="text-white hover:text-yellow-400 transition-colors font-medium cursor-pointer">
+                Orders
+              </Link>
+            )}
             <Link href="/contact" className="text-white hover:text-yellow-400 transition-colors font-medium">
               Contact Us
             </Link>
 
 
             {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger className="focus:outline-none cursor-pointer">
-                  <Avatar>
-                    <AvatarImage src={user.photoURL || undefined} alt={user.displayName || "User"} />
-                    <AvatarFallback className="bg-yellow-400 text-black font-bold">
-                      {user.displayName?.charAt(0) || "U"}
-                    </AvatarFallback>
-                  </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 bg-black text-white border-gray-800">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-gray-800" />
-                  <DropdownMenuItem className="focus:bg-gray-800 focus:text-white cursor-pointer">
-                    <UserIcon className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="focus:bg-gray-800 focus:text-white cursor-pointer text-red-500 focus:text-red-500"
-                    onClick={() => logout()}
-                  >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="flex items-center gap-3">
+                <span className="text-white hover:text-yellow-400 transition-colors font-medium hidden md:block">
+                  Welcome, {user.displayName?.split(' ')[0] || 'User'}
+                </span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="focus:outline-none cursor-pointer bg-transparent border-none p-0">
+                      <Avatar className="bg-gray-800">
+                        <AvatarImage src={user.photoURL || undefined} alt={user.displayName || "User"} />
+                        <AvatarFallback className="bg-yellow-400 text-black font-bold">
+                          {user.displayName?.charAt(0) || "U"}
+                        </AvatarFallback>
+                      </Avatar>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-40 bg-black text-white border-gray-800 z-50">
+                    <DropdownMenuItem
+                      className="focus:bg-gray-800 focus:text-white cursor-pointer text-red-500 focus:text-red-500"
+                      onClick={() => logout()}
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Logout</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             ) : (
               <LoginModal>
                 <button className="bg-yellow-400 text-black px-3 py-1 sm:px-5 sm:py-2 rounded-full font-bold hover:bg-yellow-300 transition-colors cursor-pointer text-sm sm:text-base">
@@ -273,8 +263,28 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile Menu Button - Optimized */}
-          <div className="md:hidden">
+          {/* Mobile Right Section */}
+          <div className="sm:hidden flex items-center gap-2">
+            {/* User Profile - Mobile Only (not tablet) */}
+            {user && (
+              <div className="flex items-center gap-2">
+                <Avatar className="h-8 w-8 bg-gray-800">
+                  <AvatarImage src={user.photoURL || undefined} />
+                  <AvatarFallback className="bg-yellow-400 text-black text-xs font-bold">
+                    {user.displayName?.charAt(0) || "U"}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+            )}
+            {/* Login/Sign up - Mobile Only (not tablet) */}
+            {!user && (
+              <LoginModal>
+                <button className="bg-yellow-400 text-black px-2 py-1 rounded-full font-bold hover:bg-yellow-300 transition-colors cursor-pointer text-xs">
+                  Login
+                </button>
+              </LoginModal>
+            )}
+            {/* Mobile Menu Button - Optimized */}
             <button onClick={toggleMenu} className="text-white focus:outline-none cursor-pointer p-1">
               <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
@@ -288,9 +298,10 @@ export function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-black border-t border-gray-800">
           <div className="flex flex-col px-4 py-3 sm:py-4 space-y-2 sm:space-y-4">
-            <Link 
-              href="/" 
-              className="text-white hover:text-yellow-400 font-medium cursor-pointer flex items-center gap-2 py-1" 
+            <Link
+              href="/"
+
+              className="bg-gray-900 hover:bg-gray-800 text-white hover:text-yellow-400 font-medium cursor-pointer flex items-center gap-2 py-3 px-4 rounded-lg border border-gray-700 transition-all"
               onClick={() => {
                 // Reset Best Sellers filter when going to Home
                 if (showBestSellersOnly) {
@@ -334,23 +345,9 @@ export function Navbar() {
                 <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { window.location.href = '/#giftbox'; setIsOpen(false); }}>Gift Boxes</button>
               </div>
             </div>
-            
-            {/* Best Sellers - Mobile */}
-            <button 
-              onClick={() => {
-                setShowBestSellersOnly?.(!showBestSellersOnly);
-                setIsOpen(false);
-              }}
-              className={`text-white hover:text-yellow-400 font-medium cursor-pointer flex items-center gap-2 py-1 ${
-                showBestSellersOnly ? 'text-yellow-400' : ''
-              }`}
-            >
-              <Flame className="h-4 w-4" />
-              {showBestSellersOnly ? 'All Products' : 'Best Sellers'}
-            </button>
-            
+
             {/* Cart - Mobile */}
-            <Link href="/checkout" className="text-white hover:text-yellow-400 font-medium cursor-pointer flex items-center gap-2 py-1 relative" onClick={() => setIsOpen(false)}>
+            <Link href="/checkout" className="bg-gray-900 hover:bg-gray-800 text-white hover:text-yellow-400 font-medium cursor-pointer flex items-center gap-2 py-3 px-4 rounded-lg border border-gray-700 transition-all relative" onClick={() => setIsOpen(false)}>
               <ShoppingCart className="h-4 w-4" />
               Cart
               {hasCartItems && (
@@ -359,23 +356,28 @@ export function Navbar() {
                 </span>
               )}
             </Link>
-            
+
             {user && isAdmin && (
-              <Link href="/inventory" className="text-white hover:text-yellow-400 font-medium cursor-pointer py-1" onClick={() => setIsOpen(false)}>
+              <Link href="/inventory" className="bg-gray-900 hover:bg-gray-800 text-white hover:text-yellow-400 font-medium cursor-pointer py-3 px-4 rounded-lg border border-gray-700 transition-all" onClick={() => setIsOpen(false)}>
                 Inventory
               </Link>
             )}
-            <Link href="/orders" className="text-white hover:text-yellow-400 font-medium cursor-pointer py-1" onClick={() => setIsOpen(false)}>
-              Orders
-            </Link>
-            <Link href="/contact" className="text-white hover:text-yellow-400 font-medium py-1" onClick={() => setIsOpen(false)}>
+            {user && (
+              <Link href="/orders" className="bg-gray-900 hover:bg-gray-800 text-white hover:text-yellow-400 font-medium cursor-pointer py-3 px-4 rounded-lg border border-gray-700 transition-all" onClick={() => setIsOpen(false)}>
+                Orders
+              </Link>
+            )}
+            <Link href="/contact" className="bg-gray-900 hover:bg-gray-800 text-white hover:text-yellow-400 font-medium py-3 px-4 rounded-lg border border-gray-700 transition-all" onClick={() => setIsOpen(false)}>
               Contact Us
             </Link>
 
-            {user ? (
+            {user && (
               <div className="flex flex-col gap-2 border-t border-gray-800 pt-2">
-                <div className="flex items-center gap-3 py-2">
-                  <Avatar className="h-8 w-8">
+                <div className="text-yellow-400 font-medium text-sm py-2 px-4">
+                  Welcome, {user.displayName?.split(' ')[0] || 'User'}
+                </div>
+                <div className="flex items-center gap-3 py-2 px-4 bg-gray-900 rounded-lg border border-gray-700">
+                  <Avatar className="h-8 w-8 bg-gray-800">
                     <AvatarImage src={user.photoURL || undefined} />
                     <AvatarFallback className="bg-yellow-400 text-black text-xs">
                       {user.displayName?.charAt(0) || "U"}
@@ -388,18 +390,12 @@ export function Navbar() {
                     logout();
                     setIsOpen(false);
                   }}
-                  className="text-red-500 font-medium flex items-center gap-2 cursor-pointer"
+                  className="bg-red-900/20 hover:bg-red-900/40 text-red-500 hover:text-red-400 font-medium flex items-center gap-2 cursor-pointer py-3 px-4 rounded-lg border border-red-800/50 transition-all"
                 >
                   <LogOut className="h-4 w-4" />
                   Log out
                 </button>
               </div>
-            ) : (
-              <LoginModal>
-                <button className="text-primary font-bold w-full text-left cursor-pointer" onClick={() => setIsOpen(false)}>
-                  Login / Signup
-                </button>
-              </LoginModal>
             )}
           </div>
         </div>

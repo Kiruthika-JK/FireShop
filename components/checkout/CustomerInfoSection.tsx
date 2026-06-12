@@ -46,6 +46,10 @@ export function CustomerInfoSection() {
             newErrors.city = 'City is required'
         }
 
+        if (!formData.state.trim()) {
+            newErrors.state = 'State is required'
+        }
+
         if (!formData.pincode.trim()) {
             newErrors.pincode = 'Pincode is required'
         } else if (!/^\d{6}$/.test(formData.pincode.trim())) {
@@ -164,17 +168,44 @@ export function CustomerInfoSection() {
 
                         <div>
                             <label className="block text-sm font-medium text-gray-600 mb-1">
-                                Pincode <span className="text-red-500">*</span>
+                                State <span className="text-red-500">*</span>
                             </label>
-                            <Input
-                                value={formData.pincode}
-                                onChange={(e) => handleChange('pincode', e.target.value)}
-                                placeholder="6 digits"
-                                maxLength={6}
-                                className={errors.pincode ? 'border-red-500' : ''}
-                            />
-                            {errors.pincode && <p className="text-red-500 text-xs mt-1">{errors.pincode}</p>}
+                            <select
+                                value={formData.state}
+                                onChange={(e) => handleChange('state', e.target.value)}
+                                className={`w-full px-3 py-2 rounded-md border ${errors.state ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent`}
+                            >
+                                <option value="">Select State</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Pondicherry">Pondicherry</option>
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="West Bengal">West Bengal</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
                         </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-600 mb-1">
+                            Pincode <span className="text-red-500">*</span>
+                        </label>
+                        <Input
+                            value={formData.pincode}
+                            onChange={(e) => handleChange('pincode', e.target.value)}
+                            placeholder="6 digits"
+                            maxLength={6}
+                            className={errors.pincode ? 'border-red-500' : ''}
+                        />
+                        {errors.pincode && <p className="text-red-500 text-xs mt-1">{errors.pincode}</p>}
                     </div>
 
                     <div className="flex gap-2 pt-2">
@@ -206,7 +237,9 @@ export function CustomerInfoSection() {
                             {customerInfo.fullAddress}
                             {customerInfo.landmark && `, ${customerInfo.landmark}`}
                             <br />
-                            {customerInfo.city}, {customerInfo.pincode}
+                            {customerInfo.city}, {customerInfo.state}
+                            <br />
+                            {customerInfo.pincode}
                         </p>
                     </div>
                 </div>
