@@ -33,7 +33,7 @@ export function PayViaSection({ amount, customer }: PayViaSectionProps) {
     const upiUrl = generateUPIUrl()
 
     return (
-        <Card className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <Card className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-48 lg:mb-0">
             <h2 className="text-lg font-semibold text-slate-800 mb-4">Pay Via UPI</h2>
 
             <div className="flex flex-col items-center justify-center space-y-4">
@@ -51,7 +51,7 @@ export function PayViaSection({ amount, customer }: PayViaSectionProps) {
                     <p className="text-lg font-bold text-green-600">₹{formatPrice(amount)}</p>
                 </div>
 
-                <div className="text-xs text-gray-500 text-center max-w-[240px]">
+                <div className="text-xs text-gray-500 text-center max-w-[240px] pb-8">
                     Open any UPI app and scan this QR code to complete your payment
                 </div>
             </div>

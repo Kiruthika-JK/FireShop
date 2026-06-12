@@ -5,6 +5,7 @@ import { useCartStore } from '@/lib/features/cart/store'
 import { formatPrice } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Trash2, Plus, Minus } from 'lucide-react'
+import { useEffect } from 'react'
 
 export default function CartPage() {
     const router = useRouter()
@@ -16,6 +17,10 @@ export default function CartPage() {
     const CartItemListView = ({ item }: { item: any }) => {
         const itemSavings = item.originalPrice ? item.originalPrice - item.price : 0
         const itemSavingsPercent = item.originalPrice ? Math.round((itemSavings / item.originalPrice) * 100) : 0
+
+        const handleIncrement = () => {
+            updateQuantity(item.productId, item.quantity + 1)
+        }
 
         return (
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
@@ -32,9 +37,9 @@ export default function CartPage() {
                     </div>
 
                     {/* Product Details */}
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 pr-2">
                         <h3 className="text-lg font-medium text-gray-900 truncate">{item.name}</h3>
-                        <div className="flex items-center gap-2 mt-1">
+                        <div className="flex flex-wrap items-center gap-2 mt-1">
                             <span className="text-xl font-bold text-gray-900">₹{formatPrice(item.price)}</span>
                             {item.originalPrice && item.originalPrice > item.price && (
                                 <>
@@ -67,7 +72,7 @@ export default function CartPage() {
                             </button>
                             <span className="w-8 text-center font-medium text-sm">{item.quantity}</span>
                             <button
-                                onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                                onClick={handleIncrement}
                                 className="w-8 h-8 rounded-md bg-white hover:bg-gray-50 flex items-center justify-center transition-colors"
                                 aria-label="Increase quantity"
                             >

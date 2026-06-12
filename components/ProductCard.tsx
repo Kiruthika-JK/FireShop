@@ -33,18 +33,6 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
     const altText = `${product.name} - ${tamilProductNames.join(', ')} - ${product.category} - ${tamilCategoryNames.join(', ')}`;
 
     const handleIncrement = (event?: React.MouseEvent) => {
-        // Trigger sparkle explosion at click coordinates
-        try {
-            if (event && (window as any).addClickSparkle) {
-                const rect = (event.target as HTMLElement).getBoundingClientRect();
-                const x = rect.left + rect.width / 2;
-                const y = rect.top + rect.height / 2;
-                (window as any).addClickSparkle(x, y);
-            }
-        } catch (error) {
-            console.error('Sparkle effect error:', error);
-        }
-
         addItem({
             productId: product.id,
             name: product.name,

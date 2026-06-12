@@ -24,10 +24,12 @@ export function ClickSparkle({ x, y, onComplete }: ClickSparkleProps) {
   const animationRef = useRef<number | null>(null);
   const particlesRef = useRef<SparkleParticle[]>([]);
   const [isClient, setIsClient] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [particles, setParticles] = useState<SparkleParticle[]>([]);
 
   useEffect(() => {
     setIsClient(true);
+    setIsMobile(window.innerWidth < 768);
   }, []);
 
   useEffect(() => {
@@ -47,14 +49,14 @@ export function ClickSparkle({ x, y, onComplete }: ClickSparkleProps) {
     // Create explosion of particles
     for (let i = 0; i < 15; i++) {
       const angle = (Math.PI * 2 * i) / 15;
-      const velocity = Math.random() * 2 + 1; // Slower velocity
+      const velocity = Math.random() * 2 + 1;
       newParticles.push({
         id: Math.random(),
         x,
         y,
         vx: Math.cos(angle) * velocity,
-        vy: Math.sin(angle) * velocity - 1.5, // Less upward bias
-        size: Math.random() * 6 + 3, // Larger particles
+        vy: Math.sin(angle) * velocity - 1.5,
+        size: Math.random() * 6 + 3,
         color: colors[Math.floor(Math.random() * colors.length)],
         life: 1,
       });
@@ -69,7 +71,7 @@ export function ClickSparkle({ x, y, onComplete }: ClickSparkleProps) {
         x: p.x + p.vx,
         y: p.y + p.vy,
         vy: p.vy + 0.1, // Less gravity for slower fall
-        life: p.life - 0.008, // Slower fade out (was 0.02)
+        life: p.life - 0.003, // Slower fade out for longer animation (was 0.008)
       })).filter(p => p.life > 0);
 
       particlesRef.current = updated;
