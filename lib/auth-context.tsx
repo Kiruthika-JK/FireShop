@@ -76,15 +76,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const loginWithGoogle = async () => {
         try {
-            // Detect if mobile device
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            
-            if (isMobile) {
-                // Use redirect for mobile devices (popup blockers on mobile)
-                await signInWithRedirect(auth, googleProvider);
-            } else {
-                // Use popup for desktop
+            // Try popup first (works on most devices)
+            try {
                 await signInWithPopup(auth, googleProvider);
+            } catch (popupError: any) {
+                console.log("Popup failed, trying redirect:", popupError);
+                // Fallback to redirect if popup fails (e.g., on mobile with popup blockers)
+                if (popupError.code === 'auth/popup-blocked' || popupError.code === 'auth/popup-closed-by-user') {
+                    await signInWithRedirect(auth, googleProvider);
+                } else {
+                    throw popupError;
+                }
             }
         } catch (error) {
             console.error("Error signing in with Google", error);

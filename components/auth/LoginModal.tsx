@@ -18,14 +18,29 @@ export function LoginModal({ children }: { children?: React.ReactNode }) {
     const { loginWithGoogle, user } = useAuth();
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleGoogleLogin = async () => {
         setLoading(true);
+        setError(null);
         try {
             await loginWithGoogle();
             setOpen(false);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Login failed", error);
+            
+            // Handle specific Firebase error codes
+            if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
+                setError('Login was cancelled. Please try again.');
+            } else if (error.code === 'auth/popup-blocked') {
+                setError('Popup was blocked. Please allow popups for this site.');
+            } else if (error.code === 'auth/unauthorized-domain') {
+                setError('This domain is not authorized. Please contact support.');
+            } else if (error.code === 'auth/network-request-failed') {
+                setError('Network error. Please check your connection and try again.');
+            } else {
+                setError('Login failed. Please try again.');
+            }
         } finally {
             setLoading(false);
         }
@@ -46,6 +61,11 @@ export function LoginModal({ children }: { children?: React.ReactNode }) {
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col gap-4 py-4">
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                            {error}
+                        </div>
+                    )}
                     <Button
                         variant="outline"
                         className="w-full flex gap-2"
