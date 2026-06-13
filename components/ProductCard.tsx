@@ -140,7 +140,14 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
                             placeholder="blur"
                         />
                     ) : (
-                        <span className="text-xs sm:text-lg opacity-50">600 × 400</span>
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+                            <OptimizedImage
+                                src="/logo.png"
+                                alt="GANISHKHA SRI CRACKERS Logo"
+                                className="w-16 h-16 object-contain"
+                                priority={true}
+                            />
+                        </div>
                     )}
                     
                     {/* Video Indicator */}
@@ -242,7 +249,7 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
         <MediaCarousel
             isOpen={showCarousel}
             onClose={() => setShowCarousel(false)}
-            images={product.previews || []}
+            images={product.previews && product.previews.length > 0 ? product.previews : (product.thumbnail ? [product.thumbnail] : ['/logo.png'])}
             videoId={product.youtubeVideoId}
             videoTitle={product.videoTitle}
             productName={product.name}

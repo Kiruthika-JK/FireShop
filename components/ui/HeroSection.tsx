@@ -26,14 +26,14 @@ export function HeroSection() {
 
           {/* Main Heading - Mobile First */}
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>
-            <span className="text-yellow-400">GANISHKHASRI</span>
+            <span className="text-yellow-400">GANISHKHA SRI</span>
             <br />
-            CRACKERS
+            CRACKERS - SIVAKASI
           </h1>
 
           {/* Short Tagline */}
           <p className="text-sm sm:text-base text-yellow-100 mb-6 max-w-xl mx-auto">
-            Premium Quality Firecrackers • Trusted Across India
+            Premium Sivakasi Firecrackers • Ganishkha Sri Traders • Best Cracker Shop in Tamil Nadu
           </p>
 
           {/* 3 Key Highlights - Compact */}

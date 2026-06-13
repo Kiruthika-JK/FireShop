@@ -39,12 +39,12 @@ export function TrendingProducts({ products }: TrendingProductsProps) {
           <div className="flex justify-center items-center gap-1 sm:gap-2 mb-0">
             <TrendingUp className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-300 animate-pulse" />
             <h2 className="text-lg sm:text-2xl font-bold text-white">
-              Our Special Celebration
+              Ganishkha Sri Special Celebration
             </h2>
             <Sparkles className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-300 animate-pulse" />
           </div>
           <p className="text-white/90 text-xs sm:text-sm mb-1 sm:mb-2 max-w-2xl mx-auto">
-            Premium celebration fireworks for your special moments. Experience the magic of our exclusive 10*10 Shot celebration function.
+            Premium Sivakasi celebration fireworks for your special moments. Best Ganishkha Sri crackers collection at factory prices.
           </p>
           
           {/* Special Products Preview */}

@@ -28,7 +28,7 @@ export function BrandsSection() {
                     <div>
                         <div className="flex items-center justify-center gap-3 mb-6">
                             <Award className="w-6 h-6 text-amber-400" />
-                            <h3 className="text-2xl font-bold text-amber-400">Trusted Brands</h3>
+                            <h3 className="text-2xl font-bold text-amber-400">Trusted Sivakasi Brands</h3>
                             <Award className="w-6 h-6 text-amber-400" />
                         </div>
                         <div className="flex flex-wrap justify-center gap-4 text-sm md:text-base text-slate-200">

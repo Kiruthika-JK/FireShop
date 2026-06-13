@@ -10,10 +10,10 @@ interface SEOHeadProps {
 }
 
 export function generateSEOHead({
-  title = "GANISHKHASRI CRACKERS - Buy Premium Firecrackers Online | Sivakasi, Tamil Nadu",
-  description = "Buy premium quality eco-friendly firecrackers online from Ganishkhasri Traders, Sivakasi. Direct factory price, largest collection of sparklers, flower pots, bombs, and aerial shots. Fast delivery across Tamil Nadu and India. Contact: 8248817401",
-  keywords = "Sivakasi crackers, Buy crackers online, Online crackers shopping India, Sivakasi firecrackers wholesale, Best crackers shop in Sivakasi, Diwali crackers online, Eco-friendly firecrackers, Fireworks manufacturer in Tamil Nadu, Factory price crackers Sivakasi, ganishkhasri crackers, sparklers online, indian fireworks, wholesale crackers",
-  canonical = "https://ganishkha-crackers-store.web.app",
+  title = "GANISHKHA SRI CRACKERS | Best Sivakasi Crackers Online Shop - Ganishkha Sri Traders",
+  description = "Ganishkha Sri Crackers - Premium Sivakasi firecrackers at factory prices. Buy sparklers, flower pots, bombs, rockets online from Ganishkha Sri Traders. Fast delivery across Tamil Nadu & India. Contact: 8248817401, 8148165318",
+  keywords = "ganishkha sri crackers, ganishkhasri crackers, sivakasi crackers, buy sivakasi crackers online, best crackers shop sivakasi, ganishkhasri traders, chinnakamanpatti crackers, wholesale crackers sivakasi, tamil nadu crackers online, diwali crackers sivakasi, sparklers online, flower pots sivakasi, bombs crackers, rockets fireworks, indian firecrackers, eco-friendly crackers, factory price crackers, crackers delivery india",
+  canonical = "https://project-i4vs6.vercel.app",
   ogImage = "/logo.png",
   noIndex = false
 }: SEOHeadProps): Metadata {

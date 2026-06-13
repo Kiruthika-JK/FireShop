@@ -97,9 +97,9 @@ export function MediaCarousel({ isOpen, onClose, images, videoId, videoTitle, pr
         <>
             {isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
-                    <div className="relative w-full max-w-6xl max-h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden">
+                    <div className="relative w-full max-w-6xl max-h-[95vh] bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col">
                         {/* Header */}
-                        <div className="flex items-center justify-between p-4 border-b">
+                        <div className="flex items-center justify-between p-4 border-b flex-shrink-0">
                             <h3 className="text-lg font-semibold text-gray-900">{productName}</h3>
                             <Button
                                 onClick={onClose}
@@ -112,7 +112,7 @@ export function MediaCarousel({ isOpen, onClose, images, videoId, videoTitle, pr
                         </div>
 
                         {/* Main Media Display */}
-                        <div className="relative aspect-video bg-black">
+                        <div className="relative w-full bg-black flex-shrink-0 flex items-center justify-center" style={{ minHeight: '300px', maxHeight: '50vh' }}>
                             {isVideo ? (
                                 <div className="relative w-full h-full">
                                     <iframe
@@ -145,12 +145,12 @@ export function MediaCarousel({ isOpen, onClose, images, videoId, videoTitle, pr
                                     </div>
                                 </div>
                             ) : (
-                                <div className="relative w-full h-full">
+                                <div className="relative w-full h-full flex items-center justify-center p-4">
                                     {currentImage && (
                                         <img
                                             src={currentImage}
                                             alt={`${productName} - Image ${currentIndex + 1}`}
-                                            className="w-full h-full object-contain"
+                                            className="max-w-full max-h-[calc(50vh-32px)] object-contain"
                                             onLoad={() => setIsLoading(false)}
                                             onError={(e) => {
                                                 const img = e.target as HTMLImageElement;

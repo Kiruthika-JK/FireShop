@@ -52,7 +52,7 @@ export function Navbar() {
 
             <div className="flex flex-col">
               <span className="font-serif font-bold text-base sm:text-lg lg:text-xl tracking-wide text-white uppercase" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>
-                GANISHKHASRI
+                GANISHKHA SRI
               </span>
               <span className="text-xs sm:text-sm text-yellow-400 uppercase hidden sm:inline">
                 CRACKERS

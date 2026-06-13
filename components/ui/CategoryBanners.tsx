@@ -23,7 +23,7 @@ export function CategoryBanners() {
       id: 'sparklers',
       name: 'Sparklers',
       icon: <Sparkles className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Electric & color sparklers',
+      description: 'Premium Sivakasi electric & color sparklers',
       gradient: 'from-yellow-500 to-red-500',
       count: 15
     },
@@ -31,7 +31,7 @@ export function CategoryBanners() {
       id: 'flowerpots',
       name: 'Flower Pots',
       icon: <Flower className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Bushvanam, poo chakram, malai pookal',
+      description: 'Best Sivakasi bushvanam, poo chakram, malai pookal',
       gradient: 'from-orange-500 to-yellow-500',
       count: 14
     },
@@ -39,7 +39,7 @@ export function CategoryBanners() {
       id: 'flowerpotbombs',
       name: 'Flower Pot Bombs',
       icon: <Bomb className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Ganga Jamuna flower pot bombs',
+      description: 'Ganishkha Sri Ganga Jamuna flower pot bombs',
       gradient: 'from-red-500 to-orange-500',
       count: 1
     },
@@ -47,7 +47,7 @@ export function CategoryBanners() {
       id: 'chakra',
       name: 'Chakra',
       icon: <Zap className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Ground chakkar, whizzling wheel',
+      description: 'Sivakasi ground chakkar, whizzling wheel',
       gradient: 'from-orange-500 to-yellow-500',
       count: 11
     },
@@ -55,7 +55,7 @@ export function CategoryBanners() {
       id: 'peacocks',
       name: 'Peacocks',
       icon: <Flame className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Peacock red & green',
+      description: 'Premium peacock red & green firecrackers',
       gradient: 'from-orange-500 to-yellow-500',
       count: 3
     },
@@ -63,7 +63,7 @@ export function CategoryBanners() {
       id: 'pencil',
       name: 'Pencil',
       icon: <Target className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Pencil shots, crackling pencil',
+      description: 'Sivakasi pencil shots, crackling pencil',
       gradient: 'from-yellow-500 to-red-500',
       count: 7
     },
@@ -71,7 +71,7 @@ export function CategoryBanners() {
       id: 'bijili',
       name: 'Bijili',
       icon: <Zap className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Red bijili, stripped bijili',
+      description: 'Ganishkha Sri red bijili, stripped bijili',
       gradient: 'from-orange-500 to-yellow-500',
       count: 2
     },
@@ -79,7 +79,7 @@ export function CategoryBanners() {
       id: 'specialcelebrationfunction',
       name: 'Special Celebration Function',
       icon: <Flame className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: '10*10 shot celebration function',
+      description: 'Ganishkha Sri 10*10 shot celebration function',
       gradient: 'from-red-500 to-orange-500',
       count: 1
     },
@@ -87,7 +87,7 @@ export function CategoryBanners() {
       id: 'twinklingstar',
       name: 'Twinkling Star',
       icon: <Sparkles className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: '1.5" & 4" twinkling stars',
+      description: 'Sivakasi 1.5" & 4" twinkling stars',
       gradient: 'from-yellow-500 to-red-500',
       count: 2
     },
@@ -95,7 +95,7 @@ export function CategoryBanners() {
       id: 'bombs',
       name: 'Bombs',
       icon: <Bomb className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'King bomb, DTX & paper bombs',
+      description: 'Premium Sivakasi king bomb, DTX & paper bombs',
       gradient: 'from-orange-600 to-red-600',
       count: 8
     },
@@ -103,7 +103,7 @@ export function CategoryBanners() {
       id: 'soundcrackers',
       name: 'Sound Crackers',
       icon: <Bomb className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'One sound, two sound crackers',
+      description: 'Ganishkha Sri one sound, two sound crackers',
       gradient: 'from-red-600 to-orange-600',
       count: 7
     },
@@ -111,7 +111,7 @@ export function CategoryBanners() {
       id: 'rockets',
       name: 'Rockets',
       icon: <Rocket className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Musical & sky rockets',
+      description: 'Best Sivakasi musical & sky rockets',
       gradient: 'from-orange-500 to-red-500',
       count: 4
     },
@@ -119,7 +119,7 @@ export function CategoryBanners() {
       id: 'aerialshot',
       name: 'Aerial Shot',
       icon: <Rocket className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Sky wala, star world, multi-shot',
+      description: 'Ganishkha Sri sky wala, star world, multi-shot',
       gradient: 'from-red-500 to-yellow-500',
       count: 28
     },
@@ -127,7 +127,7 @@ export function CategoryBanners() {
       id: 'tinseries',
       name: 'TIN Series',
       icon: <Package className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: '6" water queen, festival party',
+      description: 'Sivakasi 6" water queen, festival party',
       gradient: 'from-orange-500 to-red-500',
       count: 3
     },
@@ -135,7 +135,7 @@ export function CategoryBanners() {
       id: 'whistlingfountain',
       name: 'Whistling Fountain',
       icon: <Flame className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Siren, mega siren',
+      description: 'Ganishkha Sri siren, mega siren',
       gradient: 'from-yellow-500 to-red-500',
       count: 2
     },
@@ -143,7 +143,7 @@ export function CategoryBanners() {
       id: 'cracklingfountain',
       name: 'Crackling Fountain',
       icon: <Sparkles className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Colour, crackling, mega & double wonder fountains',
+      description: 'Premium Sivakasi colour, crackling, mega & double wonder fountains',
       gradient: 'from-orange-500 to-yellow-500',
       count: 40
     },
@@ -151,7 +151,7 @@ export function CategoryBanners() {
       id: 'digitalwala',
       name: 'Digital Wala',
       icon: <Target className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Magic whip, kungfu deluxe',
+      description: 'Ganishkha Sri magic whip, kungfu deluxe',
       gradient: 'from-red-500 to-orange-500',
       count: 2
     },
@@ -159,7 +159,7 @@ export function CategoryBanners() {
       id: 'childrennovelty',
       name: 'Children Novelty',
       icon: <Gift className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Photo flash, helicopter, drone',
+      description: 'Best Sivakasi photo flash, helicopter, drone',
       gradient: 'from-yellow-500 to-red-500',
       count: 19
     },
@@ -167,7 +167,7 @@ export function CategoryBanners() {
       id: 'giftbox',
       name: 'Gift Boxes',
       icon: <Gift className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: '25, 32, 42 & 50 items combo packs',
+      description: 'Ganishkha Sri 25, 32, 42 & 50 items combo packs',
       gradient: 'from-amber-600 to-yellow-600',
       count: 4
     }
