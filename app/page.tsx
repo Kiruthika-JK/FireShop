@@ -244,7 +244,7 @@ export default function ProductListPage() {
     <>
       <SEOMetaTags />
       <HeroSection />
-      <main className="min-h-screen bg-gradient-to-b from-gray-50 to-slate-100 pb-20 pt-8 sm:pt-12">
+      <main className="min-h-screen bg-gradient-to-b from-gray-50 to-slate-100 pb-20 pt-4 sm:pt-6">
         <div className="container mx-auto px-4 sm:px-6">
           {/* Trending Products Section */}
           <ProductProvider>

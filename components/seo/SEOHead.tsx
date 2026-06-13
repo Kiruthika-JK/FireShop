@@ -14,7 +14,7 @@ export function generateSEOHead({
   description = "Buy premium quality eco-friendly firecrackers online from Ganishkhasri Traders, Sivakasi. Direct factory price, largest collection of sparklers, flower pots, bombs, and aerial shots. Fast delivery across Tamil Nadu and India. Contact: 8248817401",
   keywords = "Sivakasi crackers, Buy crackers online, Online crackers shopping India, Sivakasi firecrackers wholesale, Best crackers shop in Sivakasi, Diwali crackers online, Eco-friendly firecrackers, Fireworks manufacturer in Tamil Nadu, Factory price crackers Sivakasi, ganishkhasri crackers, sparklers online, indian fireworks, wholesale crackers",
   canonical = "https://ganishkha-crackers-store.web.app",
-  ogImage = "/og-image.jpg",
+  ogImage = "/logo.png",
   noIndex = false
 }: SEOHeadProps): Metadata {
   return {

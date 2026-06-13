@@ -48,6 +48,29 @@ export default function ContactPage() {
                                     </p>
                                 </div>
                             </div>
+
+                            <div className="flex items-start gap-4">
+                                <div className="bg-primary/10 p-3 rounded-full shrink-0">
+                                    <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-medium text-gray-300 mb-1">Shipping Information</h3>
+                                    <div className="text-lg text-white leading-relaxed">
+                                        <p className="mb-2"><strong>Pan India Delivery:</strong> We deliver across all states in India</p>
+                                        <p className="mb-2"><strong>Delivery Time:</strong> 3-7 business days depending on location</p>
+                                        <p className="mb-3"><strong>Safe Packaging:</strong> All products are securely packed to ensure safe delivery</p>
+                                        <div className="bg-white/10 rounded-lg p-4 border border-white/20 mt-3">
+                                            <p className="font-semibold text-primary mb-2">⚠️ Important Note:</p>
+                                            <ul className="space-y-2 text-sm list-disc list-inside">
+                                                <li><strong>Tamil Nadu / Pondicherry:</strong> Delivery charges will be added based on location and can be paid after delivery to the courier partner. No GST applicable for orders within Tamil Nadu and Pondicherry.</li>
+                                                <li><strong>Other States:</strong> Flat 18% GST will be added to the order total. Delivery charges must be paid priorly along with the order amount.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>

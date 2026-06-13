@@ -51,21 +51,23 @@ export function BrandsSection() {
                                 <h4 className="text-lg font-semibold text-white">Nagalakshmi Saravanakarthikeyan</h4>
                                 <p className="text-slate-400 text-sm">Proprietor</p>
                             </div>
-                            <div className="flex flex-col gap-2">
-                                <a href="tel:8248817401" className="flex items-center justify-center gap-2 hover:text-amber-400 transition-colors cursor-pointer font-medium">
-                                    <Phone className="w-5 h-5" />
-                                    <span className="text-lg">82488 17401</span>
-                                </a>
-                                <a href="tel:8148165318" className="flex items-center justify-center gap-2 hover:text-amber-400 transition-colors cursor-pointer font-medium">
-                                    <Phone className="w-5 h-5" />
-                                    <span className="text-lg">81481 65318</span>
-                                </a>
-                            </div>
-                            <div className="text-center pt-2">
-                                <p className="text-slate-300 leading-relaxed">
-                                    Chinnakamanpatti,<br />
-                                    Sivakasi - 626189.
-                                </p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="flex flex-col gap-2">
+                                    <a href="tel:8248817401" className="flex items-center justify-center gap-2 hover:text-amber-400 transition-colors cursor-pointer font-medium">
+                                        <Phone className="w-5 h-5" />
+                                        <span className="text-lg">82488 17401</span>
+                                    </a>
+                                    <a href="tel:8148165318" className="flex items-center justify-center gap-2 hover:text-amber-400 transition-colors cursor-pointer font-medium">
+                                        <Phone className="w-5 h-5" />
+                                        <span className="text-lg">81481 65318</span>
+                                    </a>
+                                </div>
+                                <div className="flex items-center justify-center text-center">
+                                    <p className="text-slate-300 leading-relaxed">
+                                        Chinnakamanpatti,<br />
+                                        Sivakasi - 626189.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>

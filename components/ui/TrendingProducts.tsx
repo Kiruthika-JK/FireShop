@@ -34,7 +34,7 @@ export function TrendingProducts({ products }: TrendingProductsProps) {
   return (
     <div>
       {/* Trending Products Banner */}
-      <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 rounded-xl pt-1 px-2 sm:pt-1 sm:px-3 pb-1 sm:pb-2 shadow-xl transform transition-all duration-500 hover:scale-105">
+      <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 rounded-xl pt-1 px-2 sm:pt-1 sm:px-3 pb-0 sm:pb-0 shadow-xl transform transition-all duration-500 hover:scale-105">
         <div className="text-center">
           <div className="flex justify-center items-center gap-1 sm:gap-2 mb-0">
             <TrendingUp className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-300 animate-pulse" />

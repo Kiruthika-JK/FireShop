@@ -20,7 +20,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = generateSEOHead({});
+export const metadata: Metadata = {
+  ...generateSEOHead({}),
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
+};
 
 export default function RootLayout({
   children,
