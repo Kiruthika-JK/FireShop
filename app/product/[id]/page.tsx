@@ -11,6 +11,7 @@ import { useCartStore } from '@/lib/features/cart/store'
 import { formatPrice } from '@/lib/utils'
 import { FirestoreProductsDs } from '@/lib/features/product/data/sources/FirestoreProductsDs'
 import { ProductModel } from '@/lib/features/product/domain/models/ProductModel'
+import { AddToCartButton } from '../../../components/products/AddToCartButton'
 
 interface ProductPageProps {
   params: {
@@ -206,32 +207,5 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
         </div>
       </div>
     </>
-  )
-}
-
-function AddToCartButton({ product }: { product: ProductModel }) {
-  const addItem = useCartStore((state) => state.addItem)
-
-  const handleAddToCart = () => {
-    addItem({
-      productId: product.id,
-      name: product.name,
-      price: product.price,
-      originalPrice: product.originalPrice || product.price,
-      quantity: 1,
-      thumbnail: product.thumbnail
-    })
-  }
-
-  return (
-    <Button
-      onClick={handleAddToCart}
-      disabled={product.outOfStock}
-      className="w-full py-3 text-lg font-semibold"
-      size="lg"
-    >
-      <ShoppingCart className="w-5 h-5 mr-2" />
-      {product.outOfStock ? 'Out of Stock' : 'Add to Cart'}
-    </Button>
   )
 }

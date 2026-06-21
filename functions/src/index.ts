@@ -1,6 +1,5 @@
-import * as functions from 'firebase-functions'
+import * as functions from 'firebase-functions/v1'
 import * as admin from 'firebase-admin'
-import { DocumentSnapshot } from 'firebase-functions/lib/v1/firestore'
 
 // Initialize Firebase Admin SDK
 admin.initializeApp()
@@ -25,15 +24,11 @@ interface OrderData {
   status: string
 }
 
-interface AdminUser {
-  email: string
-  name?: string
-}
 
 // Cloud Function that triggers when a new order is created
 export const onOrderCreated = functions.firestore
   .document('orders/{orderId}')
-  .onCreate(async (snapshot: DocumentSnapshot, context: functions.EventContext) => {
+  .onCreate(async (snapshot: functions.firestore.DocumentSnapshot, context: functions.EventContext) => {
     try {
       const orderData = snapshot.data() as OrderData
       
@@ -246,7 +241,7 @@ async function sendEmailToAdmin(adminEmail: string, orderId: string, emailConten
       html: emailContent,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       status: 'failed',
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
       orderId: orderId
     })
   }

@@ -7,7 +7,7 @@
     "import": "node import-products.js"
   },
   "dependencies": {
-    "firebase": "^10.8.0"
+    "firebase": "12.15.0"
   },
   "keywords": ["firebase", "import", "firecrackers"],
   "author": "GANISHKHASRI CRACKERS",
