@@ -13,8 +13,9 @@ import { OrderItemsList } from '@/components/orders/OrderItemsList'
 import { PayViaSection } from '@/components/checkout/PayViaSection'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { formatPrice } from '@/lib/utils'
-import { getStatusColor } from '@/lib/features/orders/utils'
+import { buildGmailComposeUrl, getStatusColor } from '@/lib/features/orders/utils'
 
 export default function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter()
@@ -64,6 +65,11 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
         } catch (e) {
             return 'Invalid Date'
         }
+    }
+
+    const openAcknowledgeMail = () => {
+        if (!order?.customerInfo.emailId) return
+        window.open(buildGmailComposeUrl(order), '_blank', 'noopener,noreferrer')
     }
 
     if (authLoading || loading) {
@@ -159,6 +165,18 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                                     currentStatus={order.status}
                                     onUpdateComplete={(newStatus, comment) => setOrder({ ...order, status: newStatus, adminComment: comment || order.adminComment })}
                                 />
+                                <div className="rounded-lg border border-slate-200 bg-white p-4">
+                                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Customer Acknowledge Mail</p>
+                                    <Button
+                                        type="button"
+                                        className="w-full"
+                                        onClick={openAcknowledgeMail}
+                                        disabled={!order.customerInfo.emailId}
+                                    >
+                                        Send Acknowledge Mail
+                                    </Button>
+                                    <p className="text-xs text-slate-500 mt-2 break-all">To: {order.customerInfo.emailId || 'Customer email not available'}</p>
+                                </div>
                                 {order.adminComment && (
                                     <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 shadow-sm">
                                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Latest Comment on Order</p>
