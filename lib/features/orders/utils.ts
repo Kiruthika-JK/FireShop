@@ -79,7 +79,7 @@ export const buildAcknowledgeMailBody = (order: Order) => {
         '',
         'Courier charges are not included in the final total above and will be handled as per the delivery location policy.',
         '',
-        'Need help? Contact us'
+        'Need help? Contact us at 8248817401 | 8148165318 or email us at ganishkhasricrackers@gmail.com'
     ].join('\n')
 }
 
