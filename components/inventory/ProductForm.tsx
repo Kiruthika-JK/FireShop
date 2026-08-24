@@ -165,7 +165,7 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
         name: formData.name.trim(),
         content: formData.content.trim(),
         originalPrice: parseFloat(formData.originalPrice) || 0,
-        price: parseFloat(formData.price) || 0,
+        price: price,
         discountPercent: parseFloat(formData.discountPercent) || 0,
         outOfStock: formData.outOfStock,
         trending: formData.trending,
