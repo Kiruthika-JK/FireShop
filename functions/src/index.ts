@@ -36,7 +36,7 @@ interface MailPayload {
 }
 
 // Cloud Function that triggers when a new order is created
-export const onOrderCreated = functions.firestore
+export const onOrderCreated = functions.region('asia-south1').firestore
   .document('orders/{orderId}')
   .onCreate(async (snapshot: functions.firestore.DocumentSnapshot, context: functions.EventContext) => {
     try {
