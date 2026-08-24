@@ -34,13 +34,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "GANISHKHA SRI CRACKERS",
+    "alternateName": ["Ganishkha Sri Crackers", "Ganishkha Sri Traders"],
+    "url": "https://www.ganishkhasricrackers.in",
+  };
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "GANISHKHA SRI CRACKERS - Ganishkha Sri Traders",
     "alternateName": "Ganishkha Sri Crackers",
     "description": "Premium Sivakasi firecrackers at factory prices. Buy sparklers, flower pots, bombs, rockets online from Ganishkha Sri Traders in Chinnakamanpatti, Sivakasi.",
-    "url": "https://project-i4vs6.vercel.app",
+    "url": "https://www.ganishkhasricrackers.in",
     "telephone": "+918248817401",
     "address": {
       "@type": "PostalAddress",
@@ -63,6 +71,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
