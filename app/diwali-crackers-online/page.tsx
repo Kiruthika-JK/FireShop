@@ -122,9 +122,9 @@ export default function DiwaliCrackersOnlinePage() {
           <div className="mt-8">
             <Link
               href="/"
-              className="inline-block bg-yellow-400 text-black px-8 py-3 rounded-full font-bold hover:bg-yellow-300 transition-colors"
+              className="inline-block w-full sm:w-auto bg-yellow-400 text-black px-12 py-4 rounded-full font-bold text-lg hover:bg-yellow-300 transition-colors"
             >
-              View Crackers Price List
+              Shop Now
             </Link>
           </div>
         </div>

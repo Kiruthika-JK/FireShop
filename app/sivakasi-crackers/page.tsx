@@ -111,18 +111,12 @@ export default function SivakasiCrackersPage() {
           <p className="text-gray-300 max-w-2xl mx-auto">
             Premium Sivakasi crackers, pattasu, patakha, sparklers, flower pots, bombs, rockets, aerial shots and gift boxes from Ganishkha Sri Traders in Chinnakamanpatti, Sivakasi.
           </p>
-          <div className="mt-8 flex justify-center gap-4 flex-wrap">
+          <div className="mt-8">
             <Link
-              href="/diwali-crackers-online"
-              className="inline-block bg-yellow-400 text-black px-8 py-3 rounded-full font-bold hover:bg-yellow-300 transition-colors"
+              href="/"
+              className="inline-block w-full sm:w-auto bg-yellow-400 text-black px-12 py-4 rounded-full font-bold text-lg hover:bg-yellow-300 transition-colors"
             >
-              Diwali Crackers Online
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-block bg-white text-black px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors"
-            >
-              Contact Us
+              Shop Now
             </Link>
           </div>
         </div>
