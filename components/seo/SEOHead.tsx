@@ -14,7 +14,7 @@ export function generateSEOHead({
   description = "Ganishkha Sri Crackers - Premium Sivakasi firecrackers at factory prices. Buy sparklers, flower pots, bombs, rockets online from Ganishkha Sri Traders. Fast delivery across Tamil Nadu & India. Contact: 8248817401, 8148165318",
   keywords = "ganishkha sri crackers, ganishkhasri crackers, ganishka sri crackers, ganishka crackers, kanishka crackers, kanishka sri crackers, kanishkaa crackers, ganiska crackers, ganiskha crackers, ganishkha traders, ganishka traders, kanishka traders, sivakasi crackers, buy sivakasi crackers online, best crackers shop sivakasi, ganishkhasri traders, chinnakamanpatti crackers, wholesale crackers sivakasi, tamil nadu crackers online, diwali crackers sivakasi, diwali crackers online, buy diwali crackers online, diwali crackers 2026, diwali crackers price list, online crackers price list 2026, sivakasi crackers price list, buy pattasu online, pattasu online shopping, sivakasi pattasu online, online pattasu kadai, pataka online, buy pataka online, online crackers chennai, crackers online coimbatore, crackers online erode, crackers online pondicherry, online crackers andhra pradesh, online crackers hyderabad, online crackers booking, crackers home delivery, cheap crackers online, low price crackers sivakasi, best online crackers website india, trusted crackers website india, crackers near me, crackers shop near me, sparklers online, flower pots sivakasi, bombs crackers, rockets fireworks, indian firecrackers, eco-friendly crackers, factory price crackers, crackers delivery india",
   canonical = "https://www.ganishkhasricrackers.in",
-  ogImage = "/logo.png",
+  ogImage = "/logo.png?v=2",
   noIndex = false
 }: SEOHeadProps): Metadata {
   return {
@@ -26,6 +26,10 @@ export function generateSEOHead({
     metadataBase: new URL(canonical),
     alternates: {
       canonical: canonical,
+    },
+    icons: {
+      icon: '/icon.png',
+      apple: '/apple-icon.png',
     },
     appleWebApp: {
       title: "Ganishkha Sri Crackers",
@@ -39,8 +43,8 @@ export function generateSEOHead({
       images: [
         {
           url: ogImage,
-          width: 1200,
-          height: 630,
+          width: 1008,
+          height: 1053,
           alt: "GANISHKHASRI CRACKERS - Premium Firecrackers from Sivakasi",
         },
       ],
@@ -68,6 +72,8 @@ export function generateSEOHead({
       google: 'your-google-verification-code',
     },
     other: {
+      'author': 'Ganishkha Sri Crackers',
+      'publisher': 'Ganishkha Sri Crackers',
       'theme-color': '#000000',
       'msapplication-TileColor': '#000000',
       'business:contact_data:street_address': 'Chinnakamanpatti, Sattur Road, Sivakasi-626189',

@@ -23,9 +23,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   ...generateSEOHead({}),
   icons: {
-    icon: '/logo.png',
-    shortcut: '/logo.png',
-    apple: '/logo.png',
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/apple-icon.png',
   },
 };
 
@@ -40,6 +40,25 @@ export default function RootLayout({
     "name": "GANISHKHA SRI CRACKERS",
     "alternateName": ["Ganishkha Sri Crackers", "Ganishkha Sri Traders", "Ganishka Sri Crackers", "Ganishka Crackers", "Kanishka Crackers", "Kanishka Sri Crackers", "Kanishkaa Crackers", "Ganiska Crackers", "Ganiskha Crackers", "Ganishka Traders", "Kanishka Traders"],
     "url": "https://www.ganishkhasricrackers.in",
+  };
+
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "GANISHKHA SRI CRACKERS",
+    "alternateName": ["Ganishkha Sri Crackers", "Ganishkha Sri Traders", "Ganishka Sri Crackers", "Ganishka Crackers", "Kanishka Crackers", "Kanishka Sri Crackers", "Kanishkaa Crackers", "Ganiska Crackers", "Ganiskha Crackers", "Ganishka Traders", "Kanishka Traders"],
+    "url": "https://www.ganishkhasricrackers.in",
+    "logo": "https://www.ganishkhasricrackers.in/logo.png?v=2",
+    "image": "https://www.ganishkhasricrackers.in/logo.png?v=2",
+    "description": "Premium Sivakasi firecrackers at factory prices. Buy sparklers, flower pots, bombs, rockets online from Ganishkha Sri Traders.",
+    "telephone": "+918248817401",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+918248817401",
+      "contactType": "sales",
+      "areaServed": "IN",
+      "availableLanguage": ["Tamil", "English"]
+    }
   };
 
   const jsonLd = {
@@ -74,6 +93,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <script
           type="application/ld+json"

@@ -29,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const base = generateSEOHead({});
   const productNames = products.slice(0, 15).map(p => p.name).join(', ');
 
-  const pageTitle = 'Buy Diwali Crackers Online 2026 | Ganishkha Sri Crackers - Sivakasi';
+  const pageTitle = 'Ganishkha Sri Crackers | Buy Diwali Crackers Online 2026 - Sivakasi';
 
   const pageDescription = (products.length > 0
     ? `${base.description} Shop ${products.length}+ premium Sivakasi crackers online: ${productNames}. Best price list for Diwali fireworks, pattasu, pataka and gift boxes.`

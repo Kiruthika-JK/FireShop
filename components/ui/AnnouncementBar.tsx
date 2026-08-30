@@ -6,11 +6,12 @@ export function AnnouncementBar() {
     'Other States: Min order ₹6000, Flat 18% GST, delivery paid with order',
     'Need help? WhatsApp +91 8248817401'
   ];
-  const text = items.join('   •   ');
+  // Repeat enough times so one copy is always wider than the viewport; this removes the visible snap.
+  const text = Array.from({ length: 6 }, () => items).flat().join('   •   ');
 
   return (
     <div className="bg-amber-100 text-amber-900 py-2 overflow-hidden border-b border-amber-200">
-      <div className="flex whitespace-nowrap animate-marquee">
+      <div className="flex whitespace-nowrap animate-marquee will-change-transform">
         <span className="mx-6 text-sm font-medium">{text}</span>
         <span className="mx-6 text-sm font-medium">{text}</span>
       </div>
@@ -20,11 +21,11 @@ export function AnnouncementBar() {
           100% { transform: translateX(-50%); }
         }
         .animate-marquee {
-          animation: marquee 25s linear infinite;
+          animation: marquee 15s linear infinite;
         }
-        @media (max-width: 640px) {
-          .animate-marquee {
-            animation-duration: 15s;
+        @media (hover: hover) {
+          .animate-marquee:hover {
+            animation-play-state: paused;
           }
         }
       `}</style>
