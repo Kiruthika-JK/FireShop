@@ -5,9 +5,10 @@ import Link from 'next/link';
 const siteUrl = 'https://www.ganishkhasricrackers.in';
 
 export const metadata: Metadata = generateSEOHead({
-  title: 'Buy Diwali Crackers Online 2026 | Sivakasi Crackers at Factory Price',
+  title: 'Buy Diwali Crackers Online 2026 | Sivakasi Crackers | Ganishkha Sri Crackers',
   description: 'Buy Diwali crackers online 2026 directly from Sivakasi. Best price list for sparklers, flower pots, bombs, rockets, aerial shots. Wholesale crackers with pan-India delivery. Order now from Ganishkha Sri Crackers.',
   canonical: `${siteUrl}/diwali-crackers-online`,
+  keywords: 'diwali crackers, buy diwali crackers online, diwali crackers online, diwali crackers 2026, diwali fireworks, sivakasi crackers, sivakasi diwali crackers, diwali crackers wholesale, diwali crackers price list, diwali pattasu, diwali patakha, diwali gift boxes, diwali sparklers, diwali flower pots, diwali bombs, diwali rockets, online crackers, ganishkha sri crackers, chinnakamanpatti crackers, tamil nadu crackers',
 });
 
 const faqs = [
@@ -64,6 +65,34 @@ export default function DiwaliCrackersOnlinePage() {
     })),
   };
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to buy Diwali crackers online from Sivakasi',
+    description: 'Order Diwali crackers online from Ganishkha Sri Crackers in three simple steps.',
+    totalTime: 'PT10M',
+    step: [
+      {
+        '@type': 'HowToStep',
+        position: 1,
+        name: 'Browse Diwali crackers',
+        text: 'Explore sparklers, flower pots, bombs, rockets, aerial shots, gift boxes and more in the Diwali crackers catalog.',
+      },
+      {
+        '@type': 'HowToStep',
+        position: 2,
+        name: 'Add to cart',
+        text: 'Choose the quantity for each product and add them to your cart.',
+      },
+      {
+        '@type': 'HowToStep',
+        position: 3,
+        name: 'Checkout and confirm',
+        text: 'Enter your delivery details, complete payment and our team will call you to confirm transport.',
+      },
+    ],
+  };
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <script
@@ -73,6 +102,10 @@ export default function DiwaliCrackersOnlinePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
 
       <section className="bg-black text-white py-12 px-4 sm:px-6 lg:px-8">

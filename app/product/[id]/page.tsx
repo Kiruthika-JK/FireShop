@@ -25,8 +25,16 @@ export async function generateMetadata({ params, searchParams }: ProductPageProp
   const fallback = generateProductSEO(product, id);
   const title = product.seoTitle || fallback.seoTitle;
   const description = product.seoDescription || fallback.seoDescription;
-  const keywords = product.seoKeywords || fallback.seoKeywords;
-  const canonical = product.canonicalUrl || fallback.canonicalUrl;
+  const rawKeywords = product.seoKeywords || fallback.seoKeywords;
+  const keywords = typeof rawKeywords === 'string'
+    ? rawKeywords.split(',').filter(k => !/kanishka/i.test(k)).join(', ')
+    : rawKeywords;
+  const canonical = product.canonicalUrl?.startsWith('http')
+    ? product.canonicalUrl
+    : fallback.canonicalUrl;
+  const searchParamsResolved = await searchParams;
+  const previewUrl = resolveSearchParam(searchParamsResolved.url);
+  const imageUrl = previewUrl || product.thumbnail || '/logo.png';
 
   return {
     title,
@@ -37,7 +45,9 @@ export async function generateMetadata({ params, searchParams }: ProductPageProp
       title,
       description,
       url: canonical,
+      images: imageUrl ? [{ url: imageUrl }] : undefined,
     },
+    twitter: imageUrl ? { card: 'summary_large_image', title, description, images: [imageUrl] } : undefined,
   };
 }
 
@@ -53,15 +63,32 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
   const previewUrl = resolveSearchParam(searchParamsResolved.url);
   const imageUrl = previewUrl || product.thumbnail || '/logo.png';
 
-  const seo = product.structuredData
-    ? { ...product.structuredData, '@context': 'https://schema.org' }
-    : generateProductSEO(product, id).structuredData;
+  const seo = generateProductSEO(product, id).structuredData;
+  const canonicalUrl = product.canonicalUrl?.startsWith('http')
+    ? product.canonicalUrl
+    : `https://www.ganishkhasricrackers.in/product/${id}`;
+  const categoryName = product.category || 'Crackers';
+  const categorySlug = categoryName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.ganishkhasricrackers.in' },
+      { '@type': 'ListItem', position: 2, name: categoryName, item: `https://www.ganishkhasricrackers.in/category/${categorySlug}` },
+      { '@type': 'ListItem', position: 3, name: product.name, item: canonicalUrl },
+    ],
+  };
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(seo) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <ProductDetailClient product={product} imageUrl={imageUrl} />
     </>

@@ -2,10 +2,9 @@ import { Metadata } from 'next';
 import { generateSEOHead } from '@/components/seo/SEOHead';
 
 export const metadata: Metadata = generateSEOHead({
-  title: 'Contact Us | Ganishkha Sri Crackers - Sivakasi',
-  description: 'Contact Ganishkha Sri Crackers in Sivakasi. Phone: 82488 17401, 81481 65318. Chinnakamanpatti, Sivakasi - 626189. Premium Sivakasi firecrackers at factory prices.',
+  title: 'Contact Ganishkha Sri Crackers | Sivakasi Cracker Shop',
+  description: 'Contact Ganishkha Sri Crackers in Sivakasi. Phone: 82488 17401, 81481 65318. Chinnakamanpatti, Sivakasi - 626189. Buy Sivakasi crackers and Diwali crackers online at factory prices.',
   canonical: 'https://www.ganishkhasricrackers.in/contact',
-  noIndex: true,
 });
 
 export default function ContactPage() {

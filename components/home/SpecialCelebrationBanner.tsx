@@ -10,7 +10,9 @@ interface SpecialCelebrationBannerProps {
 export function SpecialCelebrationBanner({ productCount }: SpecialCelebrationBannerProps) {
   const handleClick = () => {
     if (typeof window === 'undefined') return;
-    const element = document.getElementById('category-special-celebration-function');
+    const targetId = 'category-special-celebration-function';
+    history.pushState(null, '', `#${targetId}`);
+    const element = document.getElementById(targetId);
     element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 

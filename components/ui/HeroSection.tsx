@@ -33,7 +33,7 @@ export function HeroSection() {
 
           {/* Short Tagline */}
           <p className="text-sm sm:text-base text-yellow-100 mb-6 max-w-xl mx-auto">
-            Premium Sivakasi Firecrackers • Ganishkha Sri Traders • Best Cracker Shop in Tamil Nadu
+            Buy Sivakasi Diwali Crackers Online • Premium Firecrackers • Ganishkha Sri Traders • Best Cracker Shop in Tamil Nadu
           </p>
 
           {/* 3 Key Highlights - Compact */}

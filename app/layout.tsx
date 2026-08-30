@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/ui/Footer";
 import { AuthProvider } from "@/lib/auth-context";
 import { BestSellersProvider } from "@/lib/best-sellers-context";
 import { SparkleAnimation } from "@/components/animations/SparkleAnimation";
@@ -38,7 +39,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "GANISHKHA SRI CRACKERS",
-    "alternateName": ["Ganishkha Sri Crackers", "Ganishkha Sri Traders", "Ganishka Sri Crackers", "Ganishka Crackers", "Kanishka Crackers", "Kanishka Sri Crackers", "Kanishkaa Crackers", "Ganiska Crackers", "Ganiskha Crackers", "Ganishka Traders", "Kanishka Traders"],
+    "alternateName": ["Ganishkha Sri Crackers", "Ganishkha Sri Traders", "Ganishka Sri Crackers", "Ganishka Crackers", "Ganisika Crackers", "Ganiskha Crackers", "Ganis Crackers", "Ganishka Traders", "Ganishkhasri Crackers", "Ganishka Sri Traders"],
     "url": "https://www.ganishkhasricrackers.in",
   };
 
@@ -46,11 +47,11 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "GANISHKHA SRI CRACKERS",
-    "alternateName": ["Ganishkha Sri Crackers", "Ganishkha Sri Traders", "Ganishka Sri Crackers", "Ganishka Crackers", "Kanishka Crackers", "Kanishka Sri Crackers", "Kanishkaa Crackers", "Ganiska Crackers", "Ganiskha Crackers", "Ganishka Traders", "Kanishka Traders"],
+    "alternateName": ["Ganishkha Sri Crackers", "Ganishkha Sri Traders", "Ganishka Sri Crackers", "Ganishka Crackers", "Ganisika Crackers", "Ganiskha Crackers", "Ganis Crackers", "Ganishka Traders", "Ganishkhasri Crackers", "Ganishka Sri Traders"],
     "url": "https://www.ganishkhasricrackers.in",
     "logo": "https://www.ganishkhasricrackers.in/logo.png?v=2",
     "image": "https://www.ganishkhasricrackers.in/logo.png?v=2",
-    "description": "Premium Sivakasi firecrackers at factory prices. Buy sparklers, flower pots, bombs, rockets online from Ganishkha Sri Traders.",
+    "description": "Buy Sivakasi crackers and Diwali crackers online at factory prices from Ganishkha Sri Traders. Wholesale sparklers, flower pots, bombs, rockets, aerial shots and gift boxes with pan-India delivery.",
     "telephone": "+918248817401",
     "contactPoint": {
       "@type": "ContactPoint",
@@ -65,8 +66,8 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "GANISHKHA SRI CRACKERS - Ganishkha Sri Traders",
-    "alternateName": ["Ganishkha Sri Crackers", "Ganishka Sri Crackers", "Ganishka Crackers", "Kanishka Crackers", "Kanishka Sri Crackers", "Kanishkaa Crackers", "Ganiska Crackers", "Ganiskha Crackers"],
-    "description": "Premium Sivakasi firecrackers at factory prices. Buy sparklers, flower pots, bombs, rockets online from Ganishkha Sri Traders in Chinnakamanpatti, Sivakasi.",
+    "alternateName": ["Ganishkha Sri Crackers", "Ganishka Sri Crackers", "Ganishka Crackers", "Ganisika Crackers", "Ganiskha Crackers", "Ganis Crackers", "Ganishkhasri Crackers"],
+    "description": "Buy Sivakasi crackers and Diwali crackers online 2026 at factory prices from Ganishkha Sri Traders in Chinnakamanpatti, Sivakasi. Wholesale sparklers, flower pots, bombs, rockets, aerial shots and gift boxes.",
     "url": "https://www.ganishkhasricrackers.in",
     "telephone": "+918248817401",
     "address": {
@@ -116,6 +117,7 @@ export default function RootLayout({
           </BestSellersProvider>
         </AuthProvider>
         <Analytics />
+        <Footer />
       </body>
     </html>
   );

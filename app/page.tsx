@@ -21,7 +21,7 @@ function buildKeywords(products: ProductModel[], baseKeywords: string): string {
     .filter(Boolean)
     .flatMap(text => (text as string).split(/[\s\(\)\/&,-]+/).filter(Boolean));
   const unique = Array.from(new Set([...baseKeywords.split(', '), ...productTokens]));
-  return unique.slice(0, 100).join(', ');
+  return unique.slice(0, 200).join(', ');
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -29,11 +29,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const base = generateSEOHead({});
   const productNames = products.slice(0, 15).map(p => p.name).join(', ');
 
-  const pageTitle = 'Ganishkha Sri Crackers | Buy Diwali Crackers Online 2026 - Sivakasi';
+  const pageTitle = 'Sivakasi Crackers | Buy Diwali Crackers Online 2026 | Ganishkha Sri Crackers';
 
   const pageDescription = (products.length > 0
-    ? `${base.description} Shop ${products.length}+ premium Sivakasi crackers online: ${productNames}. Best price list for Diwali fireworks, pattasu, pataka and gift boxes.`
-    : `${base.description} Best Sivakasi crackers price list 2026. Shop Diwali fireworks, pattasu, pataka and gift boxes online.`) || undefined;
+    ? `Buy Sivakasi crackers and Diwali crackers online 2026 at Ganishkha Sri Crackers. Shop ${products.length}+ premium firecrackers: ${productNames}. Best price list for sparklers, flower pots, bombs, rockets, gift boxes. Pan-India delivery.`
+    : `Buy Sivakasi crackers and Diwali crackers online 2026 at Ganishkha Sri Crackers. Best price list for sparklers, flower pots, bombs, rockets, gift boxes. Pan-India delivery.`) || undefined;
 
   const keywords = buildKeywords(products, typeof base.keywords === 'string' ? base.keywords : '');
 

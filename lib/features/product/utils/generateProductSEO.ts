@@ -6,13 +6,12 @@ const brand = 'Ganishkha Sri Crackers';
 const brandAlternates = [
   'Ganishka Sri Crackers',
   'Ganishka Crackers',
-  'Kanishka Crackers',
-  'Kanishka Sri Crackers',
-  'Kanishkaa Crackers',
-  'Ganiska Crackers',
+  'Ganisika Crackers',
   'Ganiskha Crackers',
+  'Ganis Crackers',
   'Ganishka Traders',
-  'Kanishka Traders',
+  'Ganishkhasri Crackers',
+  'Ganishka Sri Traders',
 ];
 
 function dedupe(arr: string[]): string[] {
@@ -47,8 +46,8 @@ export function generateProductSEO(product: ProductModel, id?: string): ProductS
   const productTamil = getTamilProductNames(name);
   const tamilKeywords = dedupe([...categoryTamil, ...productTamil]);
 
-  const title = `${name} - Buy ${category} Online | ${brand}`;
-  const description = `Buy ${name} at ${price > 0 ? `₹${price}` : 'wholesale price'}. ${content} of premium quality ${category} from Sivakasi. Fast delivery across Tamil Nadu & India. Contact 82488 17401, 81481 65318.`;
+  const title = `Buy ${name} Online | Sivakasi ${category} | ${brand}`;
+  const description = `Buy ${name} at ${price > 0 ? `₹${price}` : 'wholesale price'}. Premium Sivakasi ${category} for Diwali and celebrations. ${content} of quality ${category} with fast delivery across Tamil Nadu & India. Contact 82488 17401, 81481 65318.`;
 
   const keywordTokens = dedupe([
     name,
@@ -57,12 +56,19 @@ export function generateProductSEO(product: ProductModel, id?: string): ProductS
     'Ganishkha Sri Traders',
     ...brandAlternates,
     'Sivakasi crackers',
-    'buy crackers online',
+    'buy sivakasi crackers online',
     'Diwali crackers',
+    'buy diwali crackers online',
     'Deepavali pattasu',
+    'diwali pattasu',
+    'sivakasi pattasu',
     'wholesale crackers',
     'factory price crackers',
+    'best price crackers sivakasi',
     'Tamil Nadu fireworks',
+    `sivakasi ${category}`,
+    `diwali ${category}`,
+    `buy ${category} online`,
     ...name.split(/[\s\(\)\/&,-]+/),
     ...category.split(/[\s\(\)\/&,-]+/),
     ...tamilKeywords,

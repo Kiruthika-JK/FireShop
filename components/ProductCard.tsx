@@ -136,7 +136,7 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
                             src={product.thumbnail}
                             alt={altText}
                             className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 transition-transform duration-300 group-hover:scale-105"
-                            priority={true}
+                            priority={false}
                             placeholder="blur"
                         />
                     ) : (

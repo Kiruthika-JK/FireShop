@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/auth-context'
 import { getAuth } from 'firebase/auth'
 import { ProductModel } from '@/lib/features/product/domain/models/ProductModel'
 import { FirestoreProductsDs } from '@/lib/features/product/data/sources/FirestoreProductsDs'
+import { normalizeProductSEO } from '@/lib/features/product/utils/generateProductSEO'
 import { deleteProductImage, uploadProductImage, uploadProductPreview } from '@/lib/features/product/data/sources/ProductStorage'
 import { ProductForm } from '@/components/inventory/ProductForm'
 import { Button } from '@/components/ui/button'
@@ -430,22 +431,28 @@ export default function InventoryPage() {
                         fullProductData: productData
                     });
 
+                    // Generate SEO fields before saving
+                    const seoFields = normalizeProductSEO(productData as ProductModel, productData.id);
+                    const fullProductData = { ...productData, ...seoFields };
+
                     if (item.isNew) {
-                        const { id, ...data } = productData;
+                        const { id, ...data } = fullProductData;
                         console.log('Adding new product with data:', {
                             name: data.name,
                             thumbnail: data.thumbnail,
-                            previews: data.previews
+                            previews: data.previews,
+                            seoKeywords: data.seoKeywords
                         });
                         const docId = await FirestoreProductsDs.addProduct(data);
                         console.log('Successfully added new product:', docId, data.name);
                     } else {
-                        const { id, ...data } = productData;
+                        const { id, ...data } = fullProductData;
                         console.log('Updating product with data:', {
                             id: id,
                             name: data.name,
                             thumbnail: data.thumbnail,
-                            previews: data.previews
+                            previews: data.previews,
+                            seoKeywords: data.seoKeywords
                         });
                         await FirestoreProductsDs.updateProduct(id, data);
                         console.log('Successfully updated product:', id, data.name);

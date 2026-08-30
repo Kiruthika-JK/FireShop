@@ -11,6 +11,7 @@ interface OptimizedImageProps {
   height?: number;
   priority?: boolean;
   placeholder?: 'blur' | 'empty';
+  fallbackSrc?: string;
 }
 
 export function OptimizedImage({ 
@@ -20,7 +21,8 @@ export function OptimizedImage({
   width, 
   height, 
   priority = false,
-  placeholder = 'blur' 
+  placeholder = 'blur',
+  fallbackSrc = '/logo.png'
 }: OptimizedImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
@@ -66,18 +68,43 @@ export function OptimizedImage({
   const handleError = () => {
     setHasError(true);
     setIsLoaded(true); // Still consider it "loaded" to remove placeholder
+    console.error('Product thumbnail failed to load:', src);
   };
+
+  // Handle cached images that already loaded before the onLoad listener attached
+  useEffect(() => {
+    if (imgRef.current) {
+      if (imgRef.current.complete) {
+        if (imgRef.current.naturalWidth === 0) {
+          setHasError(true);
+        }
+        setIsLoaded(true);
+      }
+    }
+  }, [src, isInView]);
 
   // Generate blur placeholder
   const BlurPlaceholder = () => (
     <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse" />
   );
 
-  // Generate error placeholder
-  const ErrorPlaceholder = () => (
-    <div className="absolute inset-0 bg-gray-100 border border-gray-200 rounded-lg flex items-center justify-center">
-      <div className="w-8 h-8 bg-gray-300 rounded-full" />
-    </div>
+  // Generate fallback image (brand logo) for broken/missing images
+  const FallbackImage = () => (
+    <img
+      src={fallbackSrc}
+      alt={alt}
+      width={width}
+      height={height}
+      loading="lazy"
+      className={cn(
+        "w-full h-full object-contain transition-opacity duration-300 opacity-100",
+        className
+      )}
+      style={{
+        objectPosition: 'center',
+        padding: '4px'
+      }}
+    />
   );
 
   return (
@@ -112,7 +139,7 @@ export function OptimizedImage({
       )}
       
       {/* Error State */}
-      {hasError && <ErrorPlaceholder />}
+      {hasError && <FallbackImage />}
     </div>
   );
 }

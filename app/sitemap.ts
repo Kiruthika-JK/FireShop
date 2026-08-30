@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { FirestoreProductsDs } from '@/lib/features/product/data/sources/FirestoreProductsDs'
+import { categories } from '@/lib/data/categories'
 
 export const revalidate = 86400
 
@@ -14,6 +15,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
+      url: `${baseUrl}/sivakasi-crackers`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/diwali-crackers-online`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
@@ -23,9 +30,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
-      priority: 0.3,
+      priority: 0.5,
     },
   ]
+
+  const categoryUrls = categories.map((c) => ({
+    url: `${baseUrl}/category/${c.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }))
 
   try {
     const products = await FirestoreProductsDs.getProducts()
@@ -36,9 +50,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }))
 
-    return [...base, ...productUrls]
+    return [...base, ...categoryUrls, ...productUrls]
   } catch (error) {
     console.error('Failed to generate product sitemap entries:', error)
-    return base
+    return [...base, ...categoryUrls]
   }
 }
