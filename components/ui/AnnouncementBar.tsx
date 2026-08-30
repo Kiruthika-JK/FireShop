@@ -20,7 +20,12 @@ export function AnnouncementBar() {
           100% { transform: translateX(-50%); }
         }
         .animate-marquee {
-          animation: marquee 30s linear infinite;
+          animation: marquee 25s linear infinite;
+        }
+        @media (max-width: 640px) {
+          .animate-marquee {
+            animation-duration: 15s;
+          }
         }
       `}</style>
     </div>

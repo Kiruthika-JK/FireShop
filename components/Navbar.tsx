@@ -361,7 +361,7 @@ export function Navbar() {
                       }
                       setIsOpen(false);
                     }}>Children Novelty</button>
-                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-giftbox'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#giftbox'; setIsOpen(false); }}>Gift Boxes</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-gift-boxes'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#category-gift-boxes'; setIsOpen(false); }}>Gift Boxes</button>
                 </div>
               )}
             </div>

@@ -49,7 +49,7 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
             'doubleattraction': 'Double Attraction',
             'childrennovelties': 'Children Novelties',
             'colourmatchbox': 'Colour Match Box',
-            'giftbox': 'Gift Boxes'
+            'giftboxes': 'Gift Boxes',
         };
         
         return categoryMap[key] || cat.charAt(0).toUpperCase() + cat.slice(1);
@@ -104,7 +104,7 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
         'doubleattraction',
         'childrennovelties',
         'colourmatchbox',
-        'giftbox'
+        'giftboxes'
     ];
 
     // Order category IDs according to Indian market priority
