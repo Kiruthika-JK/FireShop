@@ -38,7 +38,12 @@ export default function ProductDetailClient({ product, imageUrl }: ProductDetail
                     src={imageUrl}
                     alt={product.name}
                     fill
-                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className={
+                      imageUrl === '/logo.png'
+                        ? 'object-contain p-8'
+                        : 'object-cover'
+                    }
                     priority
                   />
                 ) : (

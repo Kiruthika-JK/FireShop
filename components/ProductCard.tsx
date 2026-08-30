@@ -140,12 +140,12 @@ export function ProductCard({ product, className, variant = 'purchase' }: Produc
                             placeholder="blur"
                         />
                     ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-                            <OptimizedImage
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-2">
+                            <img
                                 src="/logo.png"
                                 alt="GANISHKHA SRI CRACKERS Logo"
-                                className="w-16 h-16 object-contain"
-                                priority={true}
+                                className="w-full h-full object-contain"
+                                loading="eager"
                             />
                         </div>
                     )}
