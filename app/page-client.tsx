@@ -34,7 +34,6 @@ export default function ProductListPageClient({ products }: ProductListPageClien
     { id: 'cracklingfountain', name: 'Crackling Fountain', count: 21 },
     { id: 'doublewonder', name: 'Double Wonder', count: 2 },
     { id: 'megacrackling', name: 'Mega Crackling', count: 6 },
-    { id: 'digitalwala', name: 'Digital Wala', count: 3 },
     { id: 'childrenNovelty', name: 'Children Novelty', count: 21 },
     { id: 'giftbox', name: 'Gift Boxes', count: 4 }
   ];
@@ -62,7 +61,7 @@ export default function ProductListPageClient({ products }: ProductListPageClien
       if (hash) {
         const element = document.querySelector(hash);
         if (element) {
-          setTimeout(() => element.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+          setTimeout(() => element.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
         }
       }
     };

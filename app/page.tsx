@@ -55,7 +55,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export default async function ProductListPage() {
   const products = await getProducts();
@@ -79,7 +79,11 @@ export default async function ProductListPage() {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: siteUrl,
+        item: {
+          '@type': 'WebPage',
+          '@id': siteUrl,
+          name: 'Home',
+        },
       },
     ],
   };

@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 interface Category {
   id: string;
   name: string;
+  targetId?: string;
   icon: React.ReactNode;
   description: string;
   gradient: string;
@@ -85,6 +86,7 @@ export function CategoryBanners() {
     },
     {
       id: 'twinklingstar',
+      targetId: 'twinkling-stars',
       name: 'Twinkling Star',
       icon: <Sparkles className="w-6 h-6 sm:w-8 sm:h-8" />,
       description: 'Sivakasi 1.5" & 4" twinkling stars',
@@ -117,6 +119,7 @@ export function CategoryBanners() {
     },
     {
       id: 'aerialshot',
+      targetId: 'aerial-shots',
       name: 'Aerial Shot',
       icon: <Rocket className="w-6 h-6 sm:w-8 sm:h-8" />,
       description: 'Ganishkha Sri sky wala, star world, multi-shot',
@@ -133,6 +136,7 @@ export function CategoryBanners() {
     },
     {
       id: 'whistlingfountain',
+      targetId: 'whistling-fountains',
       name: 'Whistling Fountain',
       icon: <Flame className="w-6 h-6 sm:w-8 sm:h-8" />,
       description: 'Ganishkha Sri siren, mega siren',
@@ -148,15 +152,8 @@ export function CategoryBanners() {
       count: 40
     },
     {
-      id: 'digitalwala',
-      name: 'Digital Wala',
-      icon: <Target className="w-6 h-6 sm:w-8 sm:h-8" />,
-      description: 'Ganishkha Sri magic whip, kungfu deluxe',
-      gradient: 'from-red-500 to-orange-500',
-      count: 2
-    },
-    {
       id: 'childrennovelty',
+      targetId: 'children-novelties',
       name: 'Children Novelty',
       icon: <Gift className="w-6 h-6 sm:w-8 sm:h-8" />,
       description: 'Best Sivakasi photo flash, helicopter, drone',
@@ -174,21 +171,17 @@ export function CategoryBanners() {
   ];
 
   const handleCategoryClick = (categoryId: string) => {
-    // Find the category name from the category ID
     const category = categories.find(cat => cat.id === categoryId);
-    if (category) {
-      // Generate the same category ID format as SinglePageProductGrid
-      const categoryHash = category.name.toLowerCase().replace(/\s+/g, '-');
-      router.push(`/#category-${categoryHash}`);
-      
-      // Scroll to category section after navigation
-      setTimeout(() => {
-        const element = document.getElementById(`category-${categoryHash}`);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    }
+    if (!category) return;
+    const categoryHash = (category as any).targetId ?? category.name.toLowerCase().replace(/\s+/g, '-');
+    router.push(`/#category-${categoryHash}`);
+
+    setTimeout(() => {
+      const element = document.getElementById(`category-${categoryHash}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
   };
 
   return (
