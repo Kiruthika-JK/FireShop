@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/admin/', '/api/'],
+      disallow: ['/cart', '/checkout', '/orders', '/inventory', '/product/*/preview', '/api/', '/admin/'],
     },
-    sitemap: 'https://ganishkha-crackers-store.web.app/sitemap.xml',
+    sitemap: 'https://www.ganishkhasricrackers.in/sitemap.xml',
   }
 }

@@ -21,8 +21,13 @@ export default function CheckoutPage() {
     const { items, clearCart } = useCartStore()
     const [isProcessing, setIsProcessing] = useState(false)
     const [isOrderConfirmed, setIsOrderConfirmed] = useState(false)
+    const [isHydrated, setIsHydrated] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [showErrorDialog, setShowErrorDialog] = useState(false)
+
+    useEffect(() => {
+        setIsHydrated(true)
+    }, [])
 
     // Calculate GST based on location
     const calculateGST = () => {
@@ -37,12 +42,7 @@ export default function CheckoutPage() {
     const gstAmount = calculateGST()
     const grandTotal = total + gstAmount
 
-    // Redirect to cart if no items (skip if order was just confirmed)
-    useEffect(() => {
-        if (items.length === 0 && !isOrderConfirmed) {
-            router.push('/cart')
-        }
-    }, [items.length, isOrderConfirmed, router])
+    // Do not auto-redirect: wait for hydration and show empty cart message if needed.
 
     const generateOrderId = () => {
         const now = new Date()
@@ -68,6 +68,16 @@ export default function CheckoutPage() {
             // 2. Validation
             if (!isComplete()) {
                 setError('Please complete all customer information fields.')
+                setShowErrorDialog(true)
+                return
+            }
+
+            const minOrder = (customerInfo.state === 'Tamil Nadu' || customerInfo.state === 'Pondicherry') ? 3000 : 6000
+            if (total < minOrder) {
+                const stateLabel = (customerInfo.state === 'Tamil Nadu' || customerInfo.state === 'Pondicherry')
+                    ? 'Tamil Nadu / Pondicherry'
+                    : 'your selected state'
+                setError(`Minimum order for ${stateLabel} is ₹${minOrder.toLocaleString('en-IN')}. Please add more items before placing the order.`)
                 setShowErrorDialog(true)
                 return
             }
@@ -120,11 +130,28 @@ export default function CheckoutPage() {
         }
     }
 
-    if (items.length === 0) {
+    if (!isHydrated) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
-                    <p className="text-gray-500">Redirecting to cart...</p>
+                    <p className="text-gray-500">Loading checkout...</p>
+                </div>
+            </div>
+        )
+    }
+
+    if (items.length === 0) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+                <div className="text-center max-w-md">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
+                    <p className="text-gray-600 mb-6">Add some crackers to your cart before checkout.</p>
+                    <button
+                        onClick={() => router.push('/')}
+                        className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors cursor-pointer"
+                    >
+                        Continue Shopping
+                    </button>
                 </div>
             </div>
         )

@@ -1,3 +1,12 @@
+import { Metadata } from 'next';
+import { generateSEOHead } from '@/components/seo/SEOHead';
+
+export const metadata: Metadata = generateSEOHead({
+  title: 'Contact Us | Ganishkha Sri Crackers - Sivakasi',
+  description: 'Contact Ganishkha Sri Crackers in Sivakasi. Phone: 82488 17401, 81481 65318. Chinnakamanpatti, Sivakasi - 626189. Premium Sivakasi firecrackers at factory prices.',
+  canonical: 'https://www.ganishkhasricrackers.in/contact',
+});
+
 export default function ContactPage() {
     return (
         <main className="min-h-screen bg-black text-white py-12 px-4">

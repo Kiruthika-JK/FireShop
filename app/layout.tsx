@@ -38,7 +38,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "GANISHKHA SRI CRACKERS",
-    "alternateName": ["Ganishkha Sri Crackers", "Ganishkha Sri Traders"],
+    "alternateName": ["Ganishkha Sri Crackers", "Ganishkha Sri Traders", "Ganishka Sri Crackers", "Ganishka Crackers", "Kanishka Crackers", "Kanishka Sri Crackers", "Kanishkaa Crackers", "Ganiska Crackers", "Ganiskha Crackers", "Ganishka Traders", "Kanishka Traders"],
     "url": "https://www.ganishkhasricrackers.in",
   };
 
@@ -46,7 +46,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "GANISHKHA SRI CRACKERS - Ganishkha Sri Traders",
-    "alternateName": "Ganishkha Sri Crackers",
+    "alternateName": ["Ganishkha Sri Crackers", "Ganishka Sri Crackers", "Ganishka Crackers", "Kanishka Crackers", "Kanishka Sri Crackers", "Kanishkaa Crackers", "Ganiska Crackers", "Ganiskha Crackers"],
     "description": "Premium Sivakasi firecrackers at factory prices. Buy sparklers, flower pots, bombs, rockets online from Ganishkha Sri Traders in Chinnakamanpatti, Sivakasi.",
     "url": "https://www.ganishkhasricrackers.in",
     "telephone": "+918248817401",

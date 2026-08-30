@@ -1,5 +1,6 @@
 const { initializeApp } = require('firebase/app');
 const { getFirestore, collection, addDoc, writeBatch, doc } = require('firebase/firestore');
+const { generateProductSEO } = require('./product-seo');
 const fs = require('fs');
 const path = require('path');
 
@@ -309,8 +310,10 @@ async function importProducts() {
     
     products.forEach((product, index) => {
       const docRef = doc(productsRef);
+      const seo = generateProductSEO(product, docRef.id);
       batch.set(docRef, {
         ...product,
+        ...seo,
         createdAt: new Date(),
         updatedAt: new Date()
       });

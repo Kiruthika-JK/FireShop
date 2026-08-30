@@ -1,44 +1,44 @@
 import { MetadataRoute } from 'next'
+import { FirestoreProductsDs } from '@/lib/features/product/data/sources/FirestoreProductsDs'
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://ganishkha-crackers-store.web.app'
+export const revalidate = 86400
 
-  return [
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = 'https://www.ganishkhasricrackers.in'
+
+  const base = [
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'daily',
+      changeFrequency: 'daily' as const,
       priority: 1,
     },
     {
-      url: `${baseUrl}/cart`,
+      url: `${baseUrl}/diwali-crackers-online`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/checkout`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/orders`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/inventory`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.5,
+      changeFrequency: 'monthly' as const,
+      priority: 0.3,
     },
   ]
+
+  try {
+    const products = await FirestoreProductsDs.getProducts()
+    const productUrls = products.map((product) => ({
+      url: `${baseUrl}/product/${product.id}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    }))
+
+    return [...base, ...productUrls]
+  } catch (error) {
+    console.error('Failed to generate product sitemap entries:', error)
+    return base
+  }
 }

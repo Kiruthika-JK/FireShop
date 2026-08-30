@@ -7,9 +7,14 @@
     "import": "node import-products.js"
   },
   "dependencies": {
-    "firebase": "12.15.0"
+    "firebase": "12.15.0",
+    "firebase-admin": "^14.3.0"
   },
-  "keywords": ["firebase", "import", "firecrackers"],
+  "keywords": [
+    "firebase",
+    "import",
+    "firecrackers"
+  ],
   "author": "GANISHKHASRI CRACKERS",
   "license": "MIT"
 }

@@ -18,6 +18,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Home, Menu, ShoppingCart, LogOut } from "lucide-react";
 import Image from "next/image";
 import { useBestSellers } from "@/lib/best-sellers-context";
+import { AnnouncementBar } from "@/components/ui/AnnouncementBar";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +45,7 @@ export function Navbar() {
             <div className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 shrink-0">
               <Image
                 src="/logo.png"
-                alt="FireShop Logo"
+                alt="Ganishkha Sri Crackers Logo"
                 fill
                 className="object-contain drop-shadow-md"
               />
@@ -84,115 +85,115 @@ export function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="center" className="w-96 bg-gradient-to-br from-gray-900 to-black text-white border-yellow-400/50 shadow-2xl">
                 <div className="grid grid-cols-3 gap-2 p-3">
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-yellow-500/20 focus:to-orange-500/20 focus:text-yellow-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-yellow-400/30" onClick={() => window.location.href = '/#category-sparklers'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-yellow-500/20 focus:to-orange-500/20 focus:text-yellow-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-yellow-400/30" onClick={() => window.location.href = '/#category-sparklers'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
                       Sparklers
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-orange-500/20 focus:to-yellow-500/20 focus:text-orange-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-orange-400/30" onClick={() => window.location.href = '/#category-flower-pots'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-orange-500/20 focus:to-yellow-500/20 focus:text-orange-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-orange-400/30" onClick={() => window.location.href = '/#category-flower-pots'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
                       Flower Pots
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-red-500/20 focus:to-orange-500/20 focus:text-red-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-red-400/30" onClick={() => window.location.href = '/#category-flower-pot-bombs'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-red-500/20 focus:to-orange-500/20 focus:text-red-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-red-400/30" onClick={() => window.location.href = '/#category-flower-pot-bombs'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-red-400 rounded-full"></div>
                       Flower Pot Bombs
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-orange-500/20 focus:to-yellow-500/20 focus:text-orange-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-orange-400/30" onClick={() => window.location.href = '/#category-chakra'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-orange-500/20 focus:to-yellow-500/20 focus:text-orange-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-orange-400/30" onClick={() => window.location.href = '/#category-chakra'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
                       Chakra
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-emerald-500/20 focus:to-teal-500/20 focus:text-emerald-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-emerald-400/30" onClick={() => window.location.href = '/#category-peacocks'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-emerald-500/20 focus:to-teal-500/20 focus:text-emerald-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-emerald-400/30" onClick={() => window.location.href = '/#category-peacocks'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
                       Peacocks
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-yellow-500/20 focus:to-amber-500/20 focus:text-yellow-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-yellow-400/30" onClick={() => window.location.href = '/#category-pencil'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-yellow-500/20 focus:to-amber-500/20 focus:text-yellow-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-yellow-400/30" onClick={() => window.location.href = '/#category-pencil'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
                       Pencil
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-amber-500/20 focus:to-yellow-500/20 focus:text-amber-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-amber-400/30" onClick={() => window.location.href = '/#category-bijili'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-amber-500/20 focus:to-yellow-500/20 focus:text-amber-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-amber-400/30" onClick={() => window.location.href = '/#category-bijili'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
                       Bijili
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-purple-500/20 focus:to-indigo-500/20 focus:text-purple-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-purple-400/30" onClick={() => window.location.href = '/#category-special-celebration-function'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-purple-500/20 focus:to-indigo-500/20 focus:text-purple-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-purple-400/30" onClick={() => window.location.href = '/#category-special-celebration-function'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
                       Special Celebration Function
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-cyan-500/20 focus:to-blue-500/20 focus:text-cyan-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-cyan-400/30" onClick={() => window.location.href = '/#category-twinkling-star'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-cyan-500/20 focus:to-blue-500/20 focus:text-cyan-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-cyan-400/30" onClick={() => window.location.href = '/#category-twinkling-star'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
                       Twinkling Star
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-purple-500/20 focus:to-indigo-500/20 focus:text-purple-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-purple-400/30" onClick={() => window.location.href = '/#category-bombs'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-purple-500/20 focus:to-indigo-500/20 focus:text-purple-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-purple-400/30" onClick={() => window.location.href = '/#category-bombs'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
                       Bombs
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-orange-500/20 focus:to-yellow-500/20 focus:text-orange-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-orange-400/30" onClick={() => window.location.href = '/#category-sound-crackers'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-orange-500/20 focus:to-yellow-500/20 focus:text-orange-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-orange-400/30" onClick={() => window.location.href = '/#category-sound-crackers'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
                       Sound Crackers
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-cyan-500/20 focus:to-blue-500/20 focus:text-cyan-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-cyan-400/30" onClick={() => window.location.href = '/#category-rockets'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-cyan-500/20 focus:to-blue-500/20 focus:text-cyan-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-cyan-400/30" onClick={() => window.location.href = '/#category-rockets'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
                       Rockets
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-indigo-500/20 focus:to-purple-500/20 focus:text-indigo-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-indigo-400/30" onClick={() => window.location.href = '/#category-aerial-shot'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-indigo-500/20 focus:to-purple-500/20 focus:text-indigo-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-indigo-400/30" onClick={() => window.location.href = '/#category-aerial-shot'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-indigo-400 rounded-full"></div>
                       Aerial Shot
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-teal-500/20 focus:to-cyan-500/20 focus:text-teal-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-teal-400/30" onClick={() => window.location.href = '/#category-tin-series'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-teal-500/20 focus:to-cyan-500/20 focus:text-teal-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-teal-400/30" onClick={() => window.location.href = '/#category-tin-series'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
                       TIN Series
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-cyan-500/20 focus:to-teal-500/20 focus:text-cyan-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-cyan-400/30" onClick={() => window.location.href = '/#category-whistling-fountain'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-cyan-500/20 focus:to-teal-500/20 focus:text-cyan-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-cyan-400/30" onClick={() => window.location.href = '/#category-whistling-fountain'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
                       Whistling Fountain
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-pink-500/20 focus:to-rose-500/20 focus:text-pink-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-pink-400/30" onClick={() => window.location.href = '/#category-crackling-fountain'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-pink-500/20 focus:to-rose-500/20 focus:text-pink-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-pink-400/30" onClick={() => window.location.href = '/#category-crackling-fountain'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
                       Crackling Fountain
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-green-500/20 focus:to-emerald-500/20 focus:text-green-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-green-400/30" onClick={() => window.location.href = '/#category-digital-wala'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-green-500/20 focus:to-emerald-500/20 focus:text-green-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-green-400/30" onClick={() => window.location.href = '/#category-digital-wala'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-green-400 rounded-full"></div>
                       Digital Wala
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-green-500/20 focus:to-emerald-500/20 focus:text-green-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-green-400/30" onClick={() => window.location.href = '/#category-children-novelty'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-green-500/20 focus:to-emerald-500/20 focus:text-green-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-green-400/30" onClick={() => window.location.href = '/#category-children-novelty'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
                       Children Novelty
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-amber-500/20 focus:to-orange-500/20 focus:text-amber-300 cursor-pointer text-xs rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-amber-400/30" onClick={() => window.location.href = '/#category-gift-boxes'}>
+                  <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-amber-500/20 focus:to-orange-500/20 focus:text-amber-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-amber-400/30" onClick={() => window.location.href = '/#category-gift-boxes'}>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
                       Gift Boxes
@@ -298,6 +299,8 @@ export function Navbar() {
         </div>
       </div>
 
+      <AnnouncementBar />
+
       {/* Mobile Menu - Optimized */}
       {isOpen && (
         <div className="md:hidden bg-black border-t border-gray-800 max-h-[80vh] overflow-y-auto z-[60] relative">
@@ -335,21 +338,21 @@ export function Navbar() {
               </button>
               {categoriesExpanded && (
                 <div className="grid grid-cols-2 gap-1">
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-sparklers'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#sparklers'; setIsOpen(false); }}>Sparklers</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-flowerpots'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#flowerpots'; setIsOpen(false); }}>Flower Pots</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-groundchakkar'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#groundchakkar'; setIsOpen(false); }}>Ground Chakkar</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-peacocks'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#peacocks'; setIsOpen(false); }}>Peacocks</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-bijili'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#bijili'; setIsOpen(false); }}>Bijili Crackers</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-twinklingstar'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#twinklingstar'; setIsOpen(false); }}>Twinkling Star</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-pencil'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#pencil'; setIsOpen(false); }}>Pencil Shots</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-bombs'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#bombs'; setIsOpen(false); }}>Bombs</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-saravadi'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#saravadi'; setIsOpen(false); }}>Sound Crackers</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-rockets'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#rockets'; setIsOpen(false); }}>Rockets</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-aerialshot'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#aerialshot'; setIsOpen(false); }}>Aerial Shot</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-whistlingfountain'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#whistlingfountain'; setIsOpen(false); }}>Whistling Fountain</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-cracklingfountain'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#cracklingfountain'; setIsOpen(false); }}>Crackling Fountain</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-digitalwala'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#digitalwala'; setIsOpen(false); }}>Digital Wala</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => {
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-sparklers'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#sparklers'; setIsOpen(false); }}>Sparklers</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-flowerpots'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#flowerpots'; setIsOpen(false); }}>Flower Pots</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-groundchakkar'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#groundchakkar'; setIsOpen(false); }}>Ground Chakkar</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-peacocks'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#peacocks'; setIsOpen(false); }}>Peacocks</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-bijili'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#bijili'; setIsOpen(false); }}>Bijili Crackers</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-twinklingstar'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#twinklingstar'; setIsOpen(false); }}>Twinkling Star</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-pencil'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#pencil'; setIsOpen(false); }}>Pencil Shots</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-bombs'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#bombs'; setIsOpen(false); }}>Bombs</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-saravadi'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#saravadi'; setIsOpen(false); }}>Sound Crackers</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-rockets'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#rockets'; setIsOpen(false); }}>Rockets</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-aerialshot'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#aerialshot'; setIsOpen(false); }}>Aerial Shot</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-whistlingfountain'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#whistlingfountain'; setIsOpen(false); }}>Whistling Fountain</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-cracklingfountain'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#cracklingfountain'; setIsOpen(false); }}>Crackling Fountain</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-digitalwala'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#digitalwala'; setIsOpen(false); }}>Digital Wala</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => {
                       const element = document.getElementById('category-childrennovelty');
                       if (element) {
                         element.scrollIntoView({ behavior: 'smooth' });
@@ -358,7 +361,7 @@ export function Navbar() {
                       }
                       setIsOpen(false);
                     }}>Children Novelty</button>
-                  <button className="text-white hover:text-yellow-400 text-xs py-1 text-left" onClick={() => { const element = document.getElementById('category-giftbox'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#giftbox'; setIsOpen(false); }}>Gift Boxes</button>
+                  <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { const element = document.getElementById('category-giftbox'); if (element) element.scrollIntoView({ behavior: 'smooth' }); else window.location.href = '/#giftbox'; setIsOpen(false); }}>Gift Boxes</button>
                 </div>
               )}
             </div>

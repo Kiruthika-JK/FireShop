@@ -15,6 +15,11 @@ export function OrderItemsSection() {
 
     const totalItems = items.reduce((sum, item) => sum + item.quantity, 0)
 
+    // Minimum order based on location
+    const minOrder = (customerInfo.state === 'Tamil Nadu' || customerInfo.state === 'Pondicherry') ? 3000 : 6000
+    const isStateSelected = customerInfo.state && customerInfo.state.trim() !== ''
+    const shortfall = isStateSelected ? Math.max(0, minOrder - total) : 0
+
     // Calculate GST based on location
     const calculateGST = () => {
         const isTNOrPondicherry = customerInfo.state === 'Tamil Nadu' || customerInfo.state === 'Pondicherry'
@@ -53,6 +58,14 @@ export function OrderItemsSection() {
                         <p className="text-sm font-semibold text-gray-700">Total</p>
                         <p className="text-lg text-green-600 font-bold">₹{formatPrice(grandTotal)} + delivery charges</p>
                     </div>
+
+                    {/* Minimum Order Notice */}
+                    {shortfall > 0 && (
+                        <div className="mt-3 p-3 rounded-lg text-xs font-medium bg-red-50 text-red-800 border border-red-200">
+                            <p>Minimum order for {customerInfo.state} is ₹{formatPrice(minOrder)}.</p>
+                            <p className="mt-1">Add items worth ₹{formatPrice(shortfall)} more to place the order.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </Card>

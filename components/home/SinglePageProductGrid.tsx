@@ -11,10 +11,12 @@ interface SinglePageProductGridProps {
 }
 
 export function SinglePageProductGrid({ products, activeCategory }: SinglePageProductGridProps) {
+    const normalizeCat = (cat: string) => (cat || '').toLowerCase().replace(/\s+/g, '');
     const getCatName = (cat: string) => {
         if (!cat?.trim()) return 'Unlisted';
+        const key = normalizeCat(cat);
         
-        // Map category IDs to display names
+        // Map category IDs to display names (only categories currently in Firebase)
         const categoryMap: { [key: string]: string } = {
             'sparklers': 'Sparklers',
             'flowerpots': 'Flower Pots',
@@ -23,21 +25,34 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
             'peacocks': 'Peacocks',
             'pencil': 'Pencil',
             'bijili': 'Bijili',
-            'twinklingstar': 'Twinkling Star',
+            'twinklingstar': 'Twinkling Stars',
+            'twinklingstars': 'Twinkling Stars',
             'specialcelebrationfunction': 'Special Celebration Function',
+            'digitalwala': 'Sound Crackers',
             'bombs': 'Bombs',
             'soundcrackers': 'Sound Crackers',
             'rockets': 'Rockets',
-            'aerialshot': 'Aerial Shot',
+            'fancyfountain': 'Fancy Fountain',
+            'nightaerialfunction(smallsize)': 'Night Aerial Function',
+            'nightaerialfunction': 'Night Aerial Function',
+            'whistlingshot': 'Whistling Shots',
+            'whistlingshots': 'Whistling Shots',
+            'aerialshot': 'Aerial Shots',
+            'aerialshots': 'Aerial Shots',
+            'aerialfancyshot': 'Aerial Fancy Shots',
+            'aerialfancyshots': 'Aerial Fancy Shots',
             'tinseries': 'TIN Series',
-            'whistlingfountain': 'Whistling Fountain',
+            'whistlingfountain': 'Whistling Fountains',
+            'whistlingfountains': 'Whistling Fountains',
             'cracklingfountain': 'Crackling Fountain',
-            'digitalwala': 'Digital Wala',
-            'childrennovelty': 'Children Novelty',
+            'doublewonder': 'Double Wonder',
+            'doubleattraction': 'Double Attraction',
+            'childrennovelties': 'Children Novelties',
+            'colourmatchbox': 'Colour Match Box',
             'giftbox': 'Gift Boxes'
         };
         
-        return categoryMap[cat] || cat.charAt(0).toUpperCase() + cat.slice(1);
+        return categoryMap[key] || cat.charAt(0).toUpperCase() + cat.slice(1);
     };
 
     // Get unique category IDs from products
@@ -57,7 +72,7 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
         );
     };
 
-    // Define category order based on Indian market priority
+    // Define category order based on the user's catalog list (only existing Firebase categories)
     const categoryOrder = [
         'sparklers',
         'flowerpots',
@@ -67,23 +82,35 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
         'pencil',
         'bijili',
         'twinklingstar',
+        'twinklingstars',
         'specialcelebrationfunction',
-        'bombs',
         'soundcrackers',
+        'bombs',
         'rockets',
+        'fancyfountain',
+        'nightaerialfunction(smallsize)',
+        'nightaerialfunction',
+        'whistlingshot',
+        'whistlingshots',
         'aerialshot',
+        'aerialshots',
+        'aerialfancyshot',
+        'aerialfancyshots',
         'tinseries',
         'whistlingfountain',
+        'whistlingfountains',
         'cracklingfountain',
-        'digitalwala',
-        'childrennovelty',
+        'doublewonder',
+        'doubleattraction',
+        'childrennovelties',
+        'colourmatchbox',
         'giftbox'
     ];
 
     // Order category IDs according to Indian market priority
     const orderedCategoryIds = categoryOrder
-        .filter(catId => availableCategoryIds.includes(catId))
-        .concat(availableCategoryIds.filter(catId => !categoryOrder.includes(catId)));
+        .filter(catId => availableCategoryIds.some(a => normalizeCat(a) === catId))
+        .concat(availableCategoryIds.filter(catId => !categoryOrder.includes(normalizeCat(catId))));
 
     // Convert ordered category IDs to display names
     const sortedCategories = orderedCategoryIds.map(catId => getCatName(catId)).filter(cat => cat !== 'Unlisted');
@@ -118,17 +145,17 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
                             category === 'Ground Chakkars' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-300/50' :
                             category === 'Pencil' ? 'bg-gradient-to-r from-yellow-500 to-red-500 text-white border-yellow-300/50' :
                             category === 'Bijili' ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-orange-300/50' :
-                            category === 'Twinkling Star' ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white border-red-300/50' :
+                            category === 'Twinkling Stars' ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white border-red-300/50' :
                             category === 'Special Celebration Function' ? 'bg-gradient-to-r from-yellow-500 to-red-500 text-white border-yellow-300/50' :
                             category === 'Bombs' ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white border-orange-300/50' :
                             category === 'Sound Crackers' ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white border-red-300/50' :
                             category === 'Rockets' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white border-orange-300/50' :
-                            category === 'Aerial Shot' ? 'bg-gradient-to-r from-red-500 to-yellow-500 text-white border-red-300/50' :
+                            category === 'Aerial Shots' ? 'bg-gradient-to-r from-red-500 to-yellow-500 text-white border-red-300/50' :
                             category === 'TIN Series' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white border-orange-300/50' :
-                            category === 'Whistling Fountain' ? 'bg-gradient-to-r from-yellow-500 to-red-500 text-white border-yellow-300/50' :
+                            category === 'Whistling Fountains' ? 'bg-gradient-to-r from-yellow-500 to-red-500 text-white border-yellow-300/50' :
                             category === 'Crackling Fountain' ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-orange-300/50' :
                             category === 'Digital Wala' ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white border-red-300/50' :
-                            category === 'Children Novelty' ? 'bg-gradient-to-r from-yellow-500 to-red-500 text-white border-yellow-300/50' :
+                            category === 'Children Novelties' ? 'bg-gradient-to-r from-yellow-500 to-red-500 text-white border-yellow-300/50' :
                             category === 'Gift Boxes' ? 'bg-gradient-to-r from-amber-600 to-yellow-600 text-white border-amber-300/50' :
                             'bg-gradient-to-r from-gray-400 to-gray-500 text-white border-gray-300/50'
                         }`}

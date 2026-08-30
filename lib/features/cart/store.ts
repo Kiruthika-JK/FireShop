@@ -69,15 +69,6 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'cart-storage',
-      onRehydrateStorage: () => (state) => {
-        // Always reset to clean state first
-        if (state) {
-          state.items = [];
-          state.total = 0;
-          state.formattedTotal = '0.00';
-          state.discount = 0;
-        }
-      },
     }
   )
 )
