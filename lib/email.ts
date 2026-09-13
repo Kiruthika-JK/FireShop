@@ -16,10 +16,10 @@ export interface EmailData {
 export async function sendEmail(emailData: EmailData) {
     const emailDoc = {
         to: emailData.to,
-        from: emailData.from || 'noreply@fireshop.com',
+        from: emailData.from || 'ganishkhasricrackers@gmail.com',
         subject: emailData.subject,
         html: emailData.html,
-        replyTo: emailData.replyTo || 'support@fireshop.com',
+        replyTo: emailData.replyTo || 'ganishkhasricrackers@gmail.com',
         createdAt: new Date().toISOString()
     }
 

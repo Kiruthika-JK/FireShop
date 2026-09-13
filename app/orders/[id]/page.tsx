@@ -16,7 +16,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { formatPrice, normalizePhoneNumber } from '@/lib/utils'
-import { buildGmailComposeUrl, getStatusColor } from '@/lib/features/orders/utils'
+import { buildGmailComposeUrl, buildWhatsAppAcknowledgeUrl, getStatusColor } from '@/lib/features/orders/utils'
 
 export default function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter()
@@ -30,8 +30,11 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const savedVerified = sessionStorage.getItem(`order-phone-${id}`) || ''
+            const guestPhone = normalizePhoneNumber(sessionStorage.getItem('guest-order-phone') || '')
             if (savedVerified) {
                 setVerifiedPhone(savedVerified)
+            } else if (guestPhone) {
+                setVerifiedPhone(guestPhone)
             }
         }
     }, [id])
@@ -87,8 +90,12 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
     }
 
     const openAcknowledgeMail = () => {
-        if (!order?.customerInfo.emailId) return
-        window.open(buildGmailComposeUrl(order), '_blank', 'noopener,noreferrer')
+        if (!order) return
+        if (order.customerInfo.emailId) {
+            window.open(buildGmailComposeUrl(order), '_blank', 'noopener,noreferrer')
+        } else {
+            window.open(buildWhatsAppAcknowledgeUrl(order), '_blank', 'noopener,noreferrer')
+        }
     }
 
     if (authLoading || loading) {
@@ -206,20 +213,22 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                                     onUpdateComplete={(newStatus, comment) => setOrder({ ...order, status: newStatus, adminComment: comment || order.adminComment })}
                                 />
                                 <div className="rounded-lg border border-slate-200 bg-white p-4">
-                                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Customer Acknowledge Mail</p>
+                                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Customer Acknowledge</p>
                                     <Button
                                         type="button"
                                         className="w-full"
                                         onClick={openAcknowledgeMail}
-                                        disabled={!order.customerInfo.emailId}
+                                        disabled={!order.customerInfo.emailId && !order.customerInfo.mobileNo}
                                     >
-                                        Send Acknowledge Mail
+                                        {order.customerInfo.emailId ? 'Send Acknowledge Mail' : 'Send WhatsApp Acknowledge'}
                                     </Button>
-                                    <p className="text-xs text-slate-500 mt-2 break-all">To: {order.customerInfo.emailId || 'Customer email not available'}</p>
+                                    <p className="text-xs text-slate-500 mt-2 break-all">
+                                        To: {order.customerInfo.emailId || `+91 ${order.customerInfo.mobileNo}`}
+                                    </p>
                                 </div>
                                 {order.adminComment && (
                                     <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 shadow-sm">
-                                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Latest Comment on Order</p>
+                                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Latest Reason</p>
                                         <p className="text-sm text-slate-700 italic">&quot;{order.adminComment}&quot;</p>
                                     </div>
                                 )}

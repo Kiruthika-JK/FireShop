@@ -13,7 +13,7 @@ Firebase Trigger Email extension is the most reliable way to send emails from yo
    - **SMTP Server:** Choose your provider (SendGrid, Mailgun, Gmail, etc.)
    - **SMTP Credentials:** Your email service credentials
    - **Collection Name:** `mail` (default)
-   - **From Address:** `noreply@fireshop.com` (or your domain email)
+   - **From Address:** `ganishkhasricrackers@gmail.com` (or your domain email)
 
 ### 2. SMTP Provider Setup
 
@@ -49,11 +49,11 @@ The extension watches the `mail` collection. Documents should have this structur
 ```javascript
 {
   to: "customer@example.com",
-  from: "noreply@fireshop.com",
+  from: "ganishkhasricrackers@gmail.com",
   subject: "Order Confirmation - #12345",
   html: "<h1>Your order is confirmed!</h1>...",
   text: "Your order is confirmed!...",
-  replyTo: "support@fireshop.com",
+  replyTo: "ganishkhasricrackers@gmail.com",
   headers: {
     "X-Priority": "1"
   }
@@ -80,11 +80,11 @@ export class FirebaseTriggerEmail {
   }) {
     const emailDoc = {
       to: emailData.to,
-      from: emailData.from || 'noreply@fireshop.com',
+      from: emailData.from || 'ganishkhasricrackers@gmail.com',
       subject: emailData.subject,
       html: emailData.html,
       text: emailData.text || this.htmlToText(emailData.html),
-      replyTo: emailData.replyTo || 'support@fireshop.com',
+      replyTo: emailData.replyTo || 'ganishkhasricrackers@gmail.com',
       createdAt: new Date().toISOString(),
       status: 'pending'
     }
@@ -115,7 +115,7 @@ export class CustomerNotificationService {
       to: orderData.customerInfo.emailId,
       subject: `Order Confirmation - #${orderData.orderId}`,
       html: emailHtml,
-      replyTo: 'orders@fireshop.com'
+      replyTo: 'ganishkhasricrackers@gmail.com'
     })
   }
 
@@ -126,7 +126,7 @@ export class CustomerNotificationService {
       to: orderData.customerInfo.emailId,
       subject: `Order Status Update - #${orderData.orderId}`,
       html: emailHtml,
-      replyTo: 'orders@fireshop.com'
+      replyTo: 'ganishkhasricrackers@gmail.com'
     })
   }
 }

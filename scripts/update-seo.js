@@ -17,7 +17,7 @@ const db = getFirestore();
 const force = process.argv.includes('--force');
 
 function hasValidCanonical(product) {
-    const expected = `https://www.ganishkhasricrackers.in/product/${product.id}`;
+    const expected = generateProductSEO(product, product.id).canonicalUrl;
     return product.canonicalUrl === expected;
 }
 

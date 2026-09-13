@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { FirestoreProductsDs } from '@/lib/features/product/data/sources/FirestoreProductsDs';
 import { generateProductSEO } from '@/lib/features/product/utils/generateProductSEO';
 import { getProductIdFromSlug, getProductUrl } from '@/lib/features/product/utils/productUrl';
@@ -22,6 +22,10 @@ export async function generateMetadata({ params, searchParams }: ProductPageProp
 
     if (!product) {
         return { title: 'Product Not Found | Ganishkha Sri Crackers' };
+    }
+
+    if (rawId !== getProductUrl(product).slice('/product/'.length)) {
+        permanentRedirect(getProductUrl(product));
     }
 
     const fallback = generateProductSEO(product, id);
@@ -60,6 +64,10 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
 
     if (!product) {
         notFound();
+    }
+
+    if (rawId !== getProductUrl(product).slice('/product/'.length)) {
+        permanentRedirect(getProductUrl(product));
     }
 
     const searchParamsResolved = await searchParams;

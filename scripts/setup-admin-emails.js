@@ -14,9 +14,7 @@ const db = getFirestore(app);
 // Admin email configuration
 const adminConfig = {
     emails: [
-        'admin@fireshop.com',
-        'orders@fireshop.com',
-        'manager@fireshop.com',
+        'ganishkhasricrackers@gmail.com',
     // Add your actual admin emails here
     ],
     updatedAt: new Date().toISOString(),

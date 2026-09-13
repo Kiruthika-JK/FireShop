@@ -52,6 +52,10 @@ function tokenize(str) {
     return (str || '').split(/[\s\(\)\/&,-]+/).filter(Boolean);
 }
 
+function slugify(text) {
+    return (text || '').toString().toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
 function generateProductSEO(product, id) {
     const name = (product.name || '').replace(/\s+/g, ' ').trim();
     const category = (product.category || '').replace(/\s+/g, ' ').trim();
@@ -59,7 +63,7 @@ function generateProductSEO(product, id) {
     const originalPrice = product.originalPrice || price;
     const content = product.content || '1 Box';
     const thumbnail = product.thumbnail || '/logo.png';
-    const canonicalUrl = `${siteUrl}/product/${id}`;
+    const canonicalUrl = `${siteUrl}/product/${slugify(name)}-${id}`;
 
     const tamilNames = dedupe([...getTamilNames(category), ...commonTamil]);
     const title = `Buy ${name} Online | Sivakasi ${category} | ${brand}`;

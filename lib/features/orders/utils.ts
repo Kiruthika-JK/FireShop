@@ -55,11 +55,12 @@ export const buildAcknowledgeMailBody = (order: Order) => {
     const addressLine = `${order.customerInfo.city} - ${order.customerInfo.pincode}`
 
     return [
-        '=====Order Confirmed=====',
+        `===== Order Status: ${order.status} =====`,
         `Thanks for shopping with Ganishkha Sri Crackers. Order #${order.id}`,
         '',
         `Order Date: ${formattedDate}`,
         `Status: ${order.status}`,
+        ...(order.adminComment ? ['', `Reason: ${order.adminComment}`] : []),
         '',
         '=====Delivery Address=====',
         `${order.customerInfo.name}`,
@@ -85,9 +86,35 @@ export const buildAcknowledgeMailBody = (order: Order) => {
 
 export const buildGmailComposeUrl = (order: Order) => {
     const to = encodeURIComponent(order.customerInfo.emailId)
-    const subject = encodeURIComponent(`Order Confirmation - #${order.id}`)
+    const subject = encodeURIComponent(`Order Update - #${order.id} - ${order.status}`)
     const body = encodeURIComponent(buildAcknowledgeMailBody(order))
     return `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`
+}
+
+export const buildWhatsAppAcknowledgeUrl = (order: Order) => {
+    const rawPhone = order.customerInfo.mobileNo.replace(/\D/g, '')
+    const phone = rawPhone.length === 10 ? `91${rawPhone}` : rawPhone
+    const reasonLine = order.adminComment ? `\nReason: ${order.adminComment}` : ''
+
+    const getStatusText = (status: OrderStatus) => {
+        switch (status) {
+            case OrderStatus.Canceled:
+                return 'has been canceled. Please contact us if you need any help.'
+            case OrderStatus.Delivered:
+                return 'has been delivered. Thank you for shopping with us!'
+            case OrderStatus.Shipped:
+                return 'has been shipped. Please contact 8248817401 for any assistance.'
+            case OrderStatus.ReadyToShip:
+                return 'is ready to ship. We will share delivery details shortly.'
+            case OrderStatus.Ordered:
+            case OrderStatus.Processing:
+            default:
+                return 'is now being processed. We will contact you shortly for payment and delivery details.'
+        }
+    }
+
+    const message = `Hi ${order.customerInfo.name},\n\nYour order #${order.id} at Ganishkha Sri Crackers ${getStatusText(order.status)}${reasonLine}\n\nTotal: ₹${formatPrice(order.totalPrice)}\n\nThank you!`
+    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
 }
 
 export const buildWhatsAppMessage = (order: Order) => {

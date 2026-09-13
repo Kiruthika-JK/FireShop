@@ -56,9 +56,9 @@ export function OrderStatusUpdate({ orderId, currentStatus, onUpdateComplete }: 
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Admin Comment (Optional)</label>
+                    <label className="text-sm font-medium text-gray-700">Reason (Optional)</label>
                     <Textarea
-                        placeholder="Add a note to this update..."
+                        placeholder="Add a reason for this status update..."
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                         className="resize-none h-20"

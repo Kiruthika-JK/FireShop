@@ -152,6 +152,10 @@ function generateAdminEmailContent(orderData: OrderData): string {
         minute: '2-digit'
     })
 
+    const siteUrl = process.env.SITE_URL || 'https://www.ganishkhasricrackers.in'
+    const orderUrl = `${siteUrl}/orders/${escapeHtml(orderData.id)}`
+    const whatsappUrl = `https://wa.me/91${orderData.customerInfo.mobileNo}?text=${encodeURIComponent(`Hi ${orderData.customerInfo.name}, regarding your FireShop order #${orderData.id}`)}`
+
     const productsTable = orderData.products.map(product => `
     <tr>
       <td style="padding: 10px; border: 1px solid #e5e7eb;">${escapeHtml(product.name)}</td>
@@ -246,7 +250,8 @@ function generateAdminEmailContent(orderData: OrderData): string {
               </tbody>
             </table>
             <div class="cta-wrap">
-              <a href="mailto:${escapeHtml(orderData.customerInfo.emailId)}" class="btn">Contact Customer</a>
+              <a href="${orderData.customerInfo.emailId ? `mailto:${escapeHtml(orderData.customerInfo.emailId)}` : whatsappUrl}" class="btn">${orderData.customerInfo.emailId ? 'Email Customer' : 'WhatsApp Customer'}</a>
+              <a href="${orderUrl}" class="btn" style="background: #047857; margin-left: 8px;">View & Update Order</a>
             </div>
           </div>
 
@@ -271,7 +276,7 @@ async function sendEmail(mail: MailPayload): Promise<void> {
 
             const msg = {
                 to: mail.to,
-                from: mail.from || 'noreply@fireshop.com',
+                from: mail.from || 'ganishkhasricrackers@gmail.com',
                 subject: mail.subject,
                 html: mail.html,
                 replyTo: mail.replyTo,
@@ -311,8 +316,8 @@ async function sendEmail(mail: MailPayload): Promise<void> {
         // Method 3: Save to Firestore for manual sending
         await admin.firestore().collection('email-queue').add({
             to: mail.to,
-            from: mail.from || 'noreply@fireshop.com',
-            replyTo: mail.replyTo || 'support@fireshop.com',
+            from: mail.from || 'ganishkhasricrackers@gmail.com',
+            replyTo: mail.replyTo || 'ganishkhasricrackers@gmail.com',
             subject: mail.subject,
             html: mail.html,
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -328,8 +333,8 @@ async function sendEmail(mail: MailPayload): Promise<void> {
         // Save to queue as fallback
         await admin.firestore().collection('email-queue').add({
             to: mail.to,
-            from: mail.from || 'noreply@fireshop.com',
-            replyTo: mail.replyTo || 'support@fireshop.com',
+            from: mail.from || 'ganishkhasricrackers@gmail.com',
+            replyTo: mail.replyTo || 'ganishkhasricrackers@gmail.com',
             subject: mail.subject,
             html: mail.html,
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
