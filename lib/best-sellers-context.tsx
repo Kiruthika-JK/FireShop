@@ -10,19 +10,19 @@ interface BestSellersContextType {
 const BestSellersContext = createContext<BestSellersContextType | undefined>(undefined)
 
 export function BestSellersProvider({ children }: { children: ReactNode }) {
-  const [showBestSellersOnly, setShowBestSellersOnly] = useState(false)
+    const [showBestSellersOnly, setShowBestSellersOnly] = useState(false)
 
-  return (
-    <BestSellersContext.Provider value={{ showBestSellersOnly, setShowBestSellersOnly }}>
-      {children}
-    </BestSellersContext.Provider>
-  )
+    return (
+        <BestSellersContext.Provider value={{ showBestSellersOnly, setShowBestSellersOnly }}>
+            {children}
+        </BestSellersContext.Provider>
+    )
 }
 
 export function useBestSellers() {
-  const context = useContext(BestSellersContext)
-  if (context === undefined) {
-    throw new Error('useBestSellers must be used within a BestSellersProvider')
-  }
-  return context
+    const context = useContext(BestSellersContext)
+    if (context === undefined) {
+        throw new Error('useBestSellers must be used within a BestSellersProvider')
+    }
+    return context
 }

@@ -10,27 +10,27 @@ interface ProductProviderProps {
 }
 
 export function ProductProvider({ children, loadingComponent }: ProductProviderProps) {
-  const [products, setProducts] = useState<ProductModel[]>([]);
-  const [loading, setLoading] = useState(true);
+    const [products, setProducts] = useState<ProductModel[]>([]);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const fetchedProducts = await FirestoreProductsDs.getProducts();
-        setProducts(fetchedProducts);
-      } catch (error) {
-        console.error('Error loading products:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    useEffect(() => {
+        const loadProducts = async () => {
+            try {
+                const fetchedProducts = await FirestoreProductsDs.getProducts();
+                setProducts(fetchedProducts);
+            } catch (error) {
+                console.error('Error loading products:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    loadProducts();
-  }, []);
+        loadProducts();
+    }, []);
 
-  if (loading) {
-    return <>{loadingComponent || <div>Loading products...</div>}</>;
-  }
+    if (loading) {
+        return <>{loadingComponent || <div>Loading products...</div>}</>;
+    }
 
-  return <>{children(products)}</>;
+    return <>{children(products)}</>;
 }

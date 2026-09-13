@@ -29,6 +29,7 @@ export interface CustomerInfo {
     emailId: string;
     address: string;
     city: string;
+    state?: string;
     pincode: string;
 }
 
@@ -36,9 +37,12 @@ export interface Order {
     id: string;
     createdAt: string; // ISO String
     totalPrice: number;
+    gstAmount?: number;
+    grandTotal?: number;
     status: OrderStatus;
     products: OrderItem[];
     customerInfo: CustomerInfo;
+    userId?: string;
     adminComment?: string;
 }
 

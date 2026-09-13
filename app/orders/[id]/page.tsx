@@ -14,7 +14,8 @@ import { PayViaSection } from '@/components/checkout/PayViaSection'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { formatPrice } from '@/lib/utils'
+import { Input } from '@/components/ui/input'
+import { formatPrice, normalizePhoneNumber } from '@/lib/utils'
 import { buildGmailComposeUrl, getStatusColor } from '@/lib/features/orders/utils'
 
 export default function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
@@ -23,31 +24,49 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
     const { id } = React.use(params)
     const [order, setOrder] = useState<Order | null>(null)
     const [loading, setLoading] = useState(true)
+    const [phoneInput, setPhoneInput] = useState('')
+    const [verifiedPhone, setVerifiedPhone] = useState('')
 
     useEffect(() => {
-        if (!authLoading && user) {
+        if (typeof window !== 'undefined') {
+            const savedVerified = sessionStorage.getItem(`order-phone-${id}`) || ''
+            if (savedVerified) {
+                setVerifiedPhone(savedVerified)
+            }
+        }
+    }, [id])
+
+    useEffect(() => {
+        if (!authLoading) {
             loadOrder()
         }
-    }, [authLoading, user, id])
+    }, [authLoading, id])
 
     const loadOrder = async () => {
         try {
             setLoading(true)
             const data = await OrderService.getOrderById(id)
-            if (data) {
-                // simple ownership check for users
-                if (!isAdmin && data.customerInfo.emailId !== user?.email) {
-                    router.push('/orders')
-                    return
-                }
-                setOrder(data)
-            } else {
-                setOrder(null)
-            }
+            setOrder(data || null)
         } catch (error) {
             console.error("Failed to load order:", error)
         } finally {
             setLoading(false)
+        }
+    }
+
+    const isAuthorized = order && (
+        isAdmin ||
+        order.customerInfo.emailId === user?.email ||
+        order.userId === user?.uid ||
+        (verifiedPhone && order.customerInfo.mobileNo === verifiedPhone)
+    )
+
+    const handlePhoneVerify = (e: React.FormEvent) => {
+        e.preventDefault()
+        const normalized = normalizePhoneNumber(phoneInput)
+        setVerifiedPhone(normalized)
+        if (typeof window !== 'undefined') {
+            sessionStorage.setItem(`order-phone-${id}`, normalized)
         }
     }
 
@@ -76,11 +95,32 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
         return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-primary" /></div>
     }
 
-    if (!user || !order) {
+    if (!order) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center">
-                <p className="text-gray-500 mb-4">Order not found or you don't have access.</p>
+                <p className="text-gray-500 mb-4">Order not found.</p>
                 <button onClick={() => router.push('/orders')} className="text-primary hover:underline">Return to Orders</button>
+            </div>
+        )
+    }
+
+    if (!isAuthorized) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center p-4">
+                <Card className="p-8 max-w-sm w-full text-center">
+                    <h2 className="text-xl font-bold text-slate-900 mb-2">Verify to View Order</h2>
+                    <p className="text-gray-600 mb-6">Enter the mobile number used while placing this order.</p>
+                    <form onSubmit={handlePhoneVerify} className="flex flex-col gap-3">
+                        <Input
+                            type="tel"
+                            value={phoneInput}
+                            onChange={(e) => setPhoneInput(e.target.value)}
+                            placeholder="Enter mobile number"
+                            className="text-center"
+                        />
+                        <Button type="submit" className="w-full">Verify</Button>
+                    </form>
+                </Card>
             </div>
         )
     }
@@ -180,7 +220,7 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                                 {order.adminComment && (
                                     <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 shadow-sm">
                                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Latest Comment on Order</p>
-                                        <p className="text-sm text-slate-700 italic">"{order.adminComment}"</p>
+                                        <p className="text-sm text-slate-700 italic">&quot;{order.adminComment}&quot;</p>
                                     </div>
                                 )}
                             </div>

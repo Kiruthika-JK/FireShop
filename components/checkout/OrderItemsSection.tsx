@@ -60,10 +60,19 @@ export function OrderItemsSection() {
                     </div>
 
                     {/* Minimum Order Notice */}
-                    {shortfall > 0 && (
-                        <div className="mt-3 p-3 rounded-lg text-xs font-medium bg-red-50 text-red-800 border border-red-200">
-                            <p>Minimum order for {customerInfo.state} is ₹{formatPrice(minOrder)}.</p>
-                            <p className="mt-1">Add items worth ₹{formatPrice(shortfall)} more to place the order.</p>
+                    {(!isStateSelected || shortfall > 0) && (
+                        <div className={`mt-3 p-3 rounded-lg text-xs font-medium border ${shortfall > 0 ? 'bg-red-50 text-red-800 border-red-200' : 'bg-blue-50 text-blue-800 border-blue-200'}`}>
+                            {isStateSelected ? (
+                                <>
+                                    <p>Minimum order for {customerInfo.state} is ₹{formatPrice(minOrder)}.</p>
+                                    <p className="mt-1">Add items worth ₹{formatPrice(shortfall)} more to place the order.</p>
+                                </>
+                            ) : (
+                                <>
+                                    <p>Minimum order: ₹3,000 for Tamil Nadu / Pondicherry and ₹6,000 for other states.</p>
+                                    <p className="mt-1">Select your state in the customer information section to see your exact minimum.</p>
+                                </>
+                            )}
                         </div>
                     )}
                 </div>

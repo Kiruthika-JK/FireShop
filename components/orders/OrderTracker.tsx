@@ -60,12 +60,12 @@ export function OrderTracker({ status }: OrderTrackerProps) {
                                     : isCompleted
                                         ? 'border-green-500 bg-green-500 text-white'
                                         : 'border-gray-300 bg-white text-gray-400'
-                                    }`}
+                                }`}
                             >
                                 {isLastStepCanceled ? <X className="h-3 w-3 sm:h-4 sm:w-4" /> : <Check className="h-3 w-3 sm:h-4 sm:w-4" />}
                             </div>
                             <span className={`text-[9px] sm:text-xs font-medium text-center whitespace-nowrap overflow-hidden text-ellipsis w-full ${isCompleted ? 'text-slate-800' : 'text-gray-400'
-                                }`}>
+                            }`}>
                                 {step.length > 10 ? step.substring(0, 8) + '...' : step}
                             </span>
                         </div>

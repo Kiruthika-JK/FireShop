@@ -266,7 +266,7 @@ export function CategoryBanner({ category, productCount, categoryId, children }:
                                             </div>
                                         ) : (
                                             <div className="relative w-full h-full bg-gradient-to-br from-gray-900 to-gray-700 flex items-center justify-center cursor-pointer group"
-                                                 onClick={handlePlayVideo}>
+                                                onClick={handlePlayVideo}>
                                                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
                                                 <div className="relative z-10 flex flex-col items-center text-white">
                                                     <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
@@ -276,8 +276,9 @@ export function CategoryBanner({ category, productCount, categoryId, children }:
                                                 </div>
                                                 <img
                                                     src={`https://img.youtube.com/vi/${config.videoId}/maxresdefault.jpg`}
-                                                    alt={`${config.title} preview`}
+                                                    alt={`${config.title} - Sivakasi Crackers Demo`}
                                                     className="absolute inset-0 w-full h-full object-cover opacity-30"
+                                                    loading="lazy"
                                                     onError={(e) => {
                                                         e.currentTarget.style.display = 'none'
                                                     }}
@@ -315,9 +316,9 @@ export function CategoryBanner({ category, productCount, categoryId, children }:
             {/* Video Modal (Optional - for larger video viewing) */}
             {showVideo && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-                     onClick={handleCloseVideo}>
+                    onClick={handleCloseVideo}>
                     <div className="relative w-full max-w-4xl aspect-video"
-                         onClick={(e) => e.stopPropagation()}>
+                        onClick={(e) => e.stopPropagation()}>
                         <iframe
                             className="w-full h-full rounded-lg"
                             src={`https://www.youtube.com/embed/${config.videoId}?autoplay=1&mute=${isMuted ? 1 : 0}&rel=0`}

@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions/v1'
 import * as admin from 'firebase-admin'
+import * as https from 'https'
 
 // Initialize Firebase Admin SDK
 admin.initializeApp()
@@ -37,108 +38,121 @@ interface MailPayload {
 
 // Cloud Function that triggers when a new order is created
 export const onOrderCreated = functions
-  .runWith({
-    secrets: ['GMAIL_USER', 'GMAIL_PASS'],
-    timeoutSeconds: 60,
-  })
-  .region('asia-south1')
-  .firestore
-  .document('orders/{orderId}')
-  .onCreate(async (snapshot: functions.firestore.DocumentSnapshot, context: functions.EventContext) => {
-    try {
-      const orderData = snapshot.data() as OrderData
+    .runWith({
+        secrets: [
+            'GMAIL_USER',
+            'GMAIL_PASS',
+            'WHATSAPP_ACCESS_TOKEN',
+            'WHATSAPP_PHONE_NUMBER_ID',
+            'WHATSAPP_CUSTOMER_TEMPLATE_NAME',
+        ],
+        timeoutSeconds: 60,
+    })
+    .region('asia-south1')
+    .firestore
+    .document('orders/{orderId}')
+    .onCreate(async (snapshot: functions.firestore.DocumentSnapshot, context: functions.EventContext) => {
+        try {
+            const orderData = snapshot.data() as OrderData
       
-      if (!orderData) {
-        console.log('No order data found')
-        return
-      }
+            if (!orderData) {
+                console.log('No order data found')
+                return
+            }
 
-      console.log(`New order created: ${context.params.orderId}`)
+            console.log(`New order created: ${context.params.orderId}`)
 
-      // Get admin emails from Firestore
-      const adminEmails = await getAdminEmails()
+            // Get admin emails from Firestore
+            const adminEmails = await getAdminEmails()
 
-      // Generate email content
-      const adminEmailContent = generateAdminEmailContent(orderData)
+            // Generate email content
+            const adminEmailContent = generateAdminEmailContent(orderData)
 
-      // TODO: Change to Admin mail group to save costs. For now, sending to all admins
-      for (const adminEmail of adminEmails) {
-        await sendEmail({
-          to: adminEmail,
-          subject: `New Order Received - Order #${orderData.id}`,
-          html: adminEmailContent,
-        })
-      }
+            // TODO: Change to Admin mail group to save costs. For now, sending to all admins
+            for (const adminEmail of adminEmails) {
+                await sendEmail({
+                    to: adminEmail,
+                    subject: `New Order Received - Order #${orderData.id}`,
+                    html: adminEmailContent,
+                })
+            }
 
-      console.log(`Order notifications sent to ${adminEmails.length} admins`)
+            console.log(`Order notifications sent to ${adminEmails.length} admins`)
 
-    } catch (error) {
-      console.error('Error processing order notification:', error)
-    }
-  })
+            // 3. WhatsApp order confirmation to customer number
+            try {
+                await sendWhatsAppConfirmationToCustomer(orderData)
+            } catch (waError) {
+                console.error('WhatsApp customer confirmation failed:', waError)
+            }
+
+        } catch (error) {
+            console.error('Error processing order notification:', error)
+        }
+    })
 
 // Get admin emails from Firestore.
 // Preferred scheme: each admin is a document in `admins/{email}` (matches frontend admin check).
 // Legacy scheme: `admins/config` doc with an `emails` array (kept for backward compatibility).
 async function getAdminEmails(): Promise<string[]> {
-  try {
-    const snapshot = await admin.firestore().collection('admins').get()
-    const emails = new Set<string>()
+    try {
+        const snapshot = await admin.firestore().collection('admins').get()
+        const emails = new Set<string>()
 
-    snapshot.forEach((docSnap: admin.firestore.QueryDocumentSnapshot) => {
-      // Legacy: admins/config with an `emails` array
-      if (docSnap.id === 'config') {
-        const data = docSnap.data() as { emails?: unknown }
-        if (Array.isArray(data?.emails)) {
-          data.emails.forEach(e => {
-            if (typeof e === 'string' && isValidEmail(e)) emails.add(e)
-          })
-        }
-        return
-      }
-      // Preferred: doc id is the admin's email
-      if (isValidEmail(docSnap.id)) emails.add(docSnap.id)
-    })
+        snapshot.forEach((docSnap: admin.firestore.QueryDocumentSnapshot) => {
+            // Legacy: admins/config with an `emails` array
+            if (docSnap.id === 'config') {
+                const data = docSnap.data() as { emails?: unknown }
+                if (Array.isArray(data?.emails)) {
+                    data.emails.forEach(e => {
+                        if (typeof e === 'string' && isValidEmail(e)) emails.add(e)
+                    })
+                }
+                return
+            }
+            // Preferred: doc id is the admin's email
+            if (isValidEmail(docSnap.id)) emails.add(docSnap.id)
+        })
 
-    return Array.from(emails)
-  } catch (error) {
-    console.error('Failed to get admin emails:', error)
-    return []
-  }
+        return Array.from(emails)
+    } catch (error) {
+        console.error('Failed to get admin emails:', error)
+        return []
+    }
 }
 
 function isValidEmail(email: string | undefined): boolean {
-  if (!email) return false
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    if (!email) return false
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
 function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;')
+    return value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;')
 }
 
 function formatMoney(value: number): string {
-  return new Intl.NumberFormat('en-IN', {
-    maximumFractionDigits: 0,
-    minimumFractionDigits: 0
-  }).format(value)
+    return new Intl.NumberFormat('en-IN', {
+        maximumFractionDigits: 0,
+        minimumFractionDigits: 0
+    }).format(value)
 }
 
 // Generate HTML email content for admin notifications
 function generateAdminEmailContent(orderData: OrderData): string {
-  const formattedDate = new Date(orderData.createdAt).toLocaleString('en-IN', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
+    const formattedDate = new Date(orderData.createdAt).toLocaleString('en-IN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    })
 
-  const productsTable = orderData.products.map(product => `
+    const productsTable = orderData.products.map(product => `
     <tr>
       <td style="padding: 10px; border: 1px solid #e5e7eb;">${escapeHtml(product.name)}</td>
       <td style="padding: 10px; border: 1px solid #e5e7eb; text-align: center;">${product.quantity}</td>
@@ -147,9 +161,9 @@ function generateAdminEmailContent(orderData: OrderData): string {
     </tr>
   `).join('')
 
-  const finalTotal = orderData.grandTotal || orderData.totalPrice
+    const finalTotal = orderData.grandTotal || orderData.totalPrice
 
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -248,78 +262,179 @@ function generateAdminEmailContent(orderData: OrderData): string {
 
 // Send email via provider if configured, otherwise queue in Firestore.
 async function sendEmail(mail: MailPayload): Promise<void> {
-  try {
+    try {
     // Method 1: Using Firebase Admin SDK with SendGrid (if configured)
-    if (process.env.SENDGRID_API_KEY) {
-      const sgMail = require('@sendgrid/mail')
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+        if (process.env.SENDGRID_API_KEY) {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
+            const sgMail = require('@sendgrid/mail')
+            sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-      const msg = {
-        to: mail.to,
-        from: mail.from || 'noreply@fireshop.com',
-        subject: mail.subject,
-        html: mail.html,
-        replyTo: mail.replyTo,
-      }
+            const msg = {
+                to: mail.to,
+                from: mail.from || 'noreply@fireshop.com',
+                subject: mail.subject,
+                html: mail.html,
+                replyTo: mail.replyTo,
+            }
 
-      await sgMail.send(msg)
-      console.log(`Email sent to ${mail.to} via SendGrid`)
-      return
+            await sgMail.send(msg)
+            console.log(`Email sent to ${mail.to} via SendGrid`)
+            return
+        }
+
+        // Method 2: Using Nodemailer with Gmail (if configured)
+        if (process.env.GMAIL_USER && process.env.GMAIL_PASS) {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
+            const nodemailer = require('nodemailer')
+
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.GMAIL_USER,
+                    pass: process.env.GMAIL_PASS,
+                },
+            })
+
+            const mailOptions = {
+                from: mail.from || process.env.GMAIL_USER,
+                to: mail.to,
+                subject: mail.subject,
+                html: mail.html,
+                replyTo: mail.replyTo,
+            }
+
+            await transporter.sendMail(mailOptions)
+            console.log(`Email sent to ${mail.to} via Gmail`)
+            return
+        }
+
+        // Method 3: Save to Firestore for manual sending
+        await admin.firestore().collection('email-queue').add({
+            to: mail.to,
+            from: mail.from || 'noreply@fireshop.com',
+            replyTo: mail.replyTo || 'support@fireshop.com',
+            subject: mail.subject,
+            html: mail.html,
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            status: 'pending',
+            source: 'onOrderCreated'
+        })
+
+        console.log(`Email saved to queue for ${mail.to}`)
+
+    } catch (error) {
+        console.error(`Failed to send email to ${mail.to}:`, error)
+
+        // Save to queue as fallback
+        await admin.firestore().collection('email-queue').add({
+            to: mail.to,
+            from: mail.from || 'noreply@fireshop.com',
+            replyTo: mail.replyTo || 'support@fireshop.com',
+            subject: mail.subject,
+            html: mail.html,
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            status: 'failed',
+            error: error instanceof Error ? error.message : String(error),
+            source: 'onOrderCreated'
+        })
+    }
+}
+
+function buildCustomerWhatsAppTemplateParams(orderData: OrderData): { type: string; text: string }[] {
+    const finalTotal = orderData.grandTotal || orderData.totalPrice
+    const productsText = orderData.products
+        .map(p => `${p.name} x${p.quantity}`)
+        .join(', ')
+        .slice(0, 500)
+
+    return [
+        { type: 'text', text: orderData.id },
+        { type: 'text', text: `Rs.${formatMoney(finalTotal)}` },
+        { type: 'text', text: productsText || 'N/A' },
+    ]
+}
+
+function normalizeWhatsAppNumber(num: string): string {
+    const digits = num.replace(/\D/g, '')
+    if (digits.length === 10) return `91${digits}`
+    return digits
+}
+
+async function sendWhatsAppTemplate(to: string, templateName: string, parameters: { type: string; text: string }[]): Promise<void> {
+    const accessToken = process.env.WHATSAPP_ACCESS_TOKEN
+    const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID
+
+    if (!accessToken || !phoneNumberId) {
+        throw new Error('Missing WHATSAPP_ACCESS_TOKEN or WHATSAPP_PHONE_NUMBER_ID')
     }
 
-    // Method 2: Using Nodemailer with Gmail (if configured)
-    if (process.env.GMAIL_USER && process.env.GMAIL_PASS) {
-      const nodemailer = require('nodemailer')
-      
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: process.env.GMAIL_USER,
-          pass: process.env.GMAIL_PASS,
-        },
-      })
-
-      const mailOptions = {
-        from: mail.from || process.env.GMAIL_USER,
-        to: mail.to,
-        subject: mail.subject,
-        html: mail.html,
-        replyTo: mail.replyTo,
-      }
-
-      await transporter.sendMail(mailOptions)
-      console.log(`Email sent to ${mail.to} via Gmail`)
-      return
+    const body = {
+        messaging_product: 'whatsapp',
+        recipient_type: 'individual',
+        to: normalizeWhatsAppNumber(to),
+        type: 'template',
+        template: {
+            name: templateName,
+            language: { code: 'en' },
+            components: [
+                {
+                    type: 'body',
+                    parameters,
+                }
+            ]
+        }
     }
 
-    // Method 3: Save to Firestore for manual sending
-    await admin.firestore().collection('email-queue').add({
-      to: mail.to,
-      from: mail.from || 'noreply@fireshop.com',
-      replyTo: mail.replyTo || 'support@fireshop.com',
-      subject: mail.subject,
-      html: mail.html,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      status: 'pending',
-      source: 'onOrderCreated'
+    const json = JSON.stringify(body)
+
+    return new Promise((resolve, reject) => {
+        const req = https.request(
+            `https://graph.facebook.com/v20.0/${phoneNumberId}/messages`,
+            {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Content-Length': Buffer.byteLength(json),
+                }
+            },
+            (res) => {
+                let data = ''
+                res.on('data', (chunk) => { data += chunk })
+                res.on('end', () => {
+                    if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
+                        console.log('WhatsApp template sent:', data)
+                        resolve()
+                    } else {
+                        console.error('WhatsApp template failed:', res.statusCode, data)
+                        reject(new Error(`WhatsApp template failed: ${res.statusCode} ${data}`))
+                    }
+                })
+            }
+        )
+        req.on('error', (err) => reject(err))
+        req.write(json)
+        req.end()
     })
+}
 
-    console.log(`Email saved to queue for ${mail.to}`)
+async function sendWhatsAppConfirmationToCustomer(orderData: OrderData): Promise<void> {
+    const templateName = process.env.WHATSAPP_CUSTOMER_TEMPLATE_NAME || 'order_confirmation'
+    const customerNumber = orderData.customerInfo.mobileNo
 
-  } catch (error) {
-    console.error(`Failed to send email to ${mail.to}:`, error)
+    if (!customerNumber) {
+        console.log('WhatsApp customer confirmation skipped: no customer mobile number')
+        return
+    }
 
-    // Save to queue as fallback
-    await admin.firestore().collection('email-queue').add({
-      to: mail.to,
-      from: mail.from || 'noreply@fireshop.com',
-      replyTo: mail.replyTo || 'support@fireshop.com',
-      subject: mail.subject,
-      html: mail.html,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      status: 'failed',
-      error: error instanceof Error ? error.message : String(error),
-      source: 'onOrderCreated'
-    })
-  }
+    const parameters = buildCustomerWhatsAppTemplateParams(orderData)
+
+    // Template in Meta Business Manager should look like:
+    // Thank you for shopping with Ganishkha Sri Crackers!
+    //
+    // Your order #{{1}} has been received.
+    // Total: {{2}}
+    // Products: {{3}}
+    // We will contact you on this WhatsApp number for payment and delivery updates.
+    return sendWhatsAppTemplate(customerNumber, templateName, parameters)
 }

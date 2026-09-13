@@ -19,7 +19,7 @@ export interface ProductModel {
     metaTitle?: string;
     metaDescription?: string;
     canonicalUrl?: string;
-    structuredData?: any;
+    structuredData?: Record<string, unknown>;
     // YouTube Video Fields
     youtubeVideoId?: string;
     videoThumbnail?: string;

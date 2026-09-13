@@ -255,8 +255,8 @@ export default function InventoryPage() {
     ) => {
         setItems(prev => {
             const newItems = [...prev];
-            let itemCategory = productData.category;
-            let newCategoryPosition = productData.categoryPosition;
+            const itemCategory = productData.category;
+            const newCategoryPosition = productData.categoryPosition;
             let didCategoryPositionChange = false;
 
             if (editingItemIndex === -1) {
@@ -386,7 +386,7 @@ export default function InventoryPage() {
                 });
                 updateProgress(`Saving ${item.product.name}...`);
 
-                let productData = { ...item.product };
+                const productData = { ...item.product };
                 const fileChanges = item.fileChanges;
 
                 try {

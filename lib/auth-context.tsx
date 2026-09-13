@@ -79,10 +79,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             // Try popup first (works on most devices)
             try {
                 await signInWithPopup(auth, googleProvider);
-            } catch (popupError: any) {
+            } catch (popupError: unknown) {
                 console.log("Popup failed, trying redirect:", popupError);
                 // Fallback to redirect if popup fails (e.g., on mobile with popup blockers)
-                if (popupError.code === 'auth/popup-blocked' || popupError.code === 'auth/popup-closed-by-user') {
+                const error = popupError as { code?: string } | undefined
+                if (error?.code === 'auth/popup-blocked' || error?.code === 'auth/popup-closed-by-user') {
                     await signInWithRedirect(auth, googleProvider);
                 } else {
                     throw popupError;

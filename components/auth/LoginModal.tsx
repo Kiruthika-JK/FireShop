@@ -26,17 +26,18 @@ export function LoginModal({ children }: { children?: React.ReactNode }) {
         try {
             await loginWithGoogle();
             setOpen(false);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Login failed", error);
-            
+
             // Handle specific Firebase error codes
-            if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
+            const err = error as { code?: string } | undefined
+            if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') {
                 setError('Login was cancelled. Please try again.');
-            } else if (error.code === 'auth/popup-blocked') {
+            } else if (err?.code === 'auth/popup-blocked') {
                 setError('Popup was blocked. Please allow popups for this site.');
-            } else if (error.code === 'auth/unauthorized-domain') {
+            } else if (err?.code === 'auth/unauthorized-domain') {
                 setError('This domain is not authorized. Please contact support.');
-            } else if (error.code === 'auth/network-request-failed') {
+            } else if (err?.code === 'auth/network-request-failed') {
                 setError('Network error. Please check your connection and try again.');
             } else {
                 setError('Login failed. Please try again.');

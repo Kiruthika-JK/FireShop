@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { formatPrice } from '@/lib/utils'
 import { ChevronRight, Search, Loader2 } from 'lucide-react'
 import { useAuth } from '@/lib/auth-context'
+import { useCustomerInfoStore } from '@/lib/features/checkout/customer-info-store'
 import { OrderService } from '@/lib/features/orders/service'
 import { Order, OrderStatus, ORDER_STATUSES } from '@/lib/features/orders/types'
 import { DocumentSnapshot } from 'firebase/firestore'
@@ -17,6 +18,7 @@ import { getStatusColor } from '@/lib/features/orders/utils'
 export default function OrdersPage() {
     const router = useRouter()
     const { user, isAdmin, loading: authLoading } = useAuth()
+    const { customerInfo } = useCustomerInfoStore()
 
     // State
     const [orders, setOrders] = useState<Order[]>([])
@@ -28,6 +30,8 @@ export default function OrdersPage() {
     const [statusFilter, setStatusFilter] = useState<OrderStatus | 'All'>('All')
     const [isSearchExpanded, setIsSearchExpanded] = useState(false)
     const [debouncedSearch, setDebouncedSearch] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [phoneSubmitted, setPhoneSubmitted] = useState(false)
 
     // Redirect if not logged in — must be before any early returns to keep hooks order stable
     useEffect(() => {
@@ -51,7 +55,7 @@ export default function OrdersPage() {
         search: string,
         status: OrderStatus | 'All'
     ) => {
-        if (!user) return
+        if (!user || (!isAdmin && !user.email)) return
 
         try {
             if (isLoadMore) {
@@ -87,13 +91,55 @@ export default function OrdersPage() {
         }
     }, [user, isAdmin])
 
+    const fetchByPhone = useCallback(async (phone: string) => {
+        setLoading(true)
+        try {
+            const result = await OrderService.fetchOrdersByPhone(phone.trim())
+            setOrders(result)
+        } catch (error) {
+            console.error("Failed to fetch orders by phone", error)
+        } finally {
+            setLoading(false)
+        }
+    }, [])
+
     // Initial Load & Filter Change — reset and re-fetch when filters or user changes
     useEffect(() => {
         if (!authLoading && user) {
-            setLastDoc(null)
-            loadOrders(false, null, debouncedSearch, statusFilter)
+            if (isAdmin || user.email) {
+                setLastDoc(null)
+                loadOrders(false, null, debouncedSearch, statusFilter)
+            } else {
+                const savedPhone = typeof window !== 'undefined' ? sessionStorage.getItem('guest-order-phone') || '' : ''
+                const savedSubmitted = typeof window !== 'undefined' ? sessionStorage.getItem('guest-phone-submitted') === 'true' : false
+                const recentPhone = customerInfo.mobileNumber || ''
+                const phoneToUse = savedPhone || recentPhone
+                if (phoneToUse && (savedSubmitted || recentPhone)) {
+                    setPhoneNumber(phoneToUse)
+                    setPhoneSubmitted(true)
+                    if (typeof window !== 'undefined') {
+                        sessionStorage.setItem('guest-order-phone', phoneToUse)
+                        sessionStorage.setItem('guest-phone-submitted', 'true')
+                    }
+                    fetchByPhone(phoneToUse)
+                } else {
+                    setLoading(false)
+                    setPhoneSubmitted(false)
+                }
+            }
         }
-    }, [authLoading, user, isAdmin, debouncedSearch, statusFilter, loadOrders])
+    }, [authLoading, user, isAdmin, debouncedSearch, statusFilter, loadOrders, fetchByPhone, customerInfo.mobileNumber])
+
+    const handlePhoneSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!phoneNumber.trim()) return
+        setPhoneSubmitted(true)
+        if (typeof window !== 'undefined') {
+            sessionStorage.setItem('guest-order-phone', phoneNumber)
+            sessionStorage.setItem('guest-phone-submitted', 'true')
+        }
+        fetchByPhone(phoneNumber)
+    }
 
     const formatDate = (dateString: string) => {
         try {
@@ -161,25 +207,69 @@ export default function OrdersPage() {
                     )}
                 </div>
 
-                {/* Orders List */}
-                {loading && orders.length === 0 ? (
-                    <div className="flex justify-center p-12">
-                        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                    </div>
-                ) : orders.length === 0 ? (
+                {/* Phone lookup for guest users */}
+                {!isAdmin && !user.email && !phoneSubmitted && (
                     <Card className="p-12 text-center">
-                        <p className="text-gray-500 text-lg mb-4">No orders found</p>
-                        {!isAdmin && (
+                        <h2 className="text-xl font-bold text-slate-900 mb-2">View Your Orders</h2>
+                        <p className="text-gray-600 mb-6">Enter the mobile number used while placing the order.</p>
+                        <form onSubmit={handlePhoneSubmit} className="max-w-sm mx-auto flex flex-col gap-3">
+                            <Input
+                                type="tel"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                placeholder="Enter mobile number"
+                                className="text-center"
+                            />
                             <button
-                                onClick={() => router.push('/')}
-                                className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors cursor-pointer"
+                                type="submit"
+                                className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors cursor-pointer font-medium"
                             >
-                                Start Shopping
+                                Show My Orders
                             </button>
-                        )}
+                        </form>
                     </Card>
-                ) : (
-                    <div className="space-y-4">
+                )}
+
+                {/* Orders List */}
+                {(isAdmin || user.email || phoneSubmitted) && (
+                    loading && orders.length === 0 ? (
+                        <div className="flex justify-center p-12">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                    ) : orders.length === 0 ? (
+                        <Card className="p-12 text-center">
+                            <p className="text-gray-500 text-lg mb-4">No orders found</p>
+                            {phoneSubmitted && (
+                                <p className="text-sm text-gray-500 mb-4">
+                                    No orders found for {phoneNumber}.
+                                </p>
+                            )}
+                            {!isAdmin && !user.email && phoneSubmitted && (
+                                <button
+                                    onClick={() => {
+                                        setPhoneSubmitted(false)
+                                        setPhoneNumber('')
+                                        if (typeof window !== 'undefined') {
+                                            sessionStorage.removeItem('guest-order-phone')
+                                            sessionStorage.removeItem('guest-phone-submitted')
+                                        }
+                                    }}
+                                    className="text-primary hover:underline mr-4"
+                                >
+                                    Try another number
+                                </button>
+                            )}
+                            {!isAdmin && user.email && (
+                                <button
+                                    onClick={() => router.push('/')}
+                                    className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors cursor-pointer"
+                                >
+                                    Start Shopping
+                                </button>
+                            )}
+                        </Card>
+                    ) : (
+                        <div className="space-y-4">
                         {orders.map((order) => (
                             <Card
                                 key={order.id}
@@ -231,7 +321,7 @@ export default function OrdersPage() {
                             )}
                         </div>
                     </div>
-                )}
+                ))}
             </div>
         </div>
     )

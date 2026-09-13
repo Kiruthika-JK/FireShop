@@ -10,58 +10,60 @@ interface Sparkle {
   animationDuration: number;
 }
 
-export function SparkleAnimation() {
-  const [sparkles, setSparkles] = useState<Sparkle[]>([]);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isClient) return;
-    
-    const generateSparkles = () => {
-      const newSparkles: Sparkle[] = [];
-      for (let i = 0; i < 15; i++) {
+function generateSparkles(): Sparkle[] {
+    const newSparkles: Sparkle[] = [];
+    for (let i = 0; i < 15; i++) {
         newSparkles.push({
-          id: Math.random(),
-          left: Math.random() * 100,
-          top: Math.random() * 100,
-          size: Math.random() * 3 + 1,
-          animationDuration: Math.random() * 2 + 1,
+            id: Math.random(),
+            left: Math.random() * 100,
+            top: Math.random() * 100,
+            size: Math.random() * 3 + 1,
+            animationDuration: Math.random() * 2 + 1,
         });
-      }
-      setSparkles(newSparkles);
-    };
+    }
+    return newSparkles;
+}
 
-    generateSparkles();
-    const interval = setInterval(generateSparkles, 3000);
+export function SparkleAnimation() {
+    const [sparkles, setSparkles] = useState<Sparkle[]>(() => generateSparkles());
+    const [isClient, setIsClient] = useState(false);
 
-    return () => clearInterval(interval);
-  }, [isClient]);
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setIsClient(true);
+    }, []);
 
-  if (!isClient) {
-    return null;
-  }
+    useEffect(() => {
+        if (!isClient) return;
 
-  return (
-    <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden">
-      {sparkles.map((sparkle) => (
-        <div
-          key={sparkle.id}
-          className="absolute animate-pulse"
-          style={{
-            left: `${sparkle.left}%`,
-            top: `${sparkle.top}%`,
-            width: `${sparkle.size}px`,
-            height: `${sparkle.size}px`,
-            animationDuration: `${sparkle.animationDuration}s`,
-          }}
-        >
-          <div className="w-full h-full bg-yellow-300 rounded-full opacity-60 animate-ping" />
+        const interval = setInterval(() => {
+            setSparkles(generateSparkles());
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [isClient]);
+
+    if (!isClient) {
+        return null;
+    }
+
+    return (
+        <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden">
+            {sparkles.map((sparkle) => (
+                <div
+                    key={sparkle.id}
+                    className="absolute animate-pulse"
+                    style={{
+                        left: `${sparkle.left}%`,
+                        top: `${sparkle.top}%`,
+                        width: `${sparkle.size}px`,
+                        height: `${sparkle.size}px`,
+                        animationDuration: `${sparkle.animationDuration}s`,
+                    }}
+                >
+                    <div className="w-full h-full bg-yellow-300 rounded-full opacity-60 animate-ping" />
+                </div>
+            ))}
         </div>
-      ))}
-    </div>
-  );
+    );
 }

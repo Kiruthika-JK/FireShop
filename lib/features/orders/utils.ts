@@ -89,3 +89,22 @@ export const buildGmailComposeUrl = (order: Order) => {
     const body = encodeURIComponent(buildAcknowledgeMailBody(order))
     return `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`
 }
+
+export const buildWhatsAppMessage = (order: Order) => {
+    const { customerInfo, products, totalPrice } = order
+    const productsList = products
+        .map(p => `${p.name}: ${p.quantity} x ₹${formatPrice(p.discountedPrice)} = ₹${formatPrice(p.quantity * p.discountedPrice)}`)
+        .join('\n')
+
+    return [
+        'Hi Ganishkha Sri Crackers, I placed an order:',
+        `Order #${order.id}`,
+        `Customer: ${customerInfo.name}`,
+        `Mobile: ${customerInfo.mobileNo}`,
+        `Total: ₹${formatPrice(totalPrice)}`,
+        `Address: ${customerInfo.address}, ${customerInfo.city}${customerInfo.state ? `, ${customerInfo.state}` : ''} - ${customerInfo.pincode}`,
+        '',
+        'Products:',
+        productsList,
+    ].join('\n')
+}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useLayoutEffect, useRef } from 'react'
 import { X, ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -27,63 +27,83 @@ export function MediaCarousel({ isOpen, onClose, images, videoId, videoTitle, pr
 
     // Calculate total media items (images + video)
     const totalItems = images.length + (videoId ? 1 : 0)
-    
-    
-    // Reset index when modal opens/closes
+
+    // Keep a ref of the latest currentIndex so navigation callbacks don't need it as a dependency
+    const currentIndexRef = useRef(currentIndex)
     useEffect(() => {
+        currentIndexRef.current = currentIndex
+    }, [currentIndex])
+
+    const updatePlayStateForIndex = useCallback((index: number) => {
+        if (videoId && images.length > 0 && index === images.length) {
+            // Landed on the video slide, keep the existing play state
+            return
+        }
+        setIsPlaying(false)
+    }, [images.length, videoId])
+
+    const navigate = useCallback((direction: 'prev' | 'next') => {
+        setIsLoading(true)
+        const next = direction === 'prev'
+            ? (currentIndexRef.current - 1 + totalItems) % totalItems
+            : (currentIndexRef.current + 1) % totalItems
+        setCurrentIndex(next)
+        updatePlayStateForIndex(next)
+    }, [totalItems, updatePlayStateForIndex])
+
+    const goToIndex = useCallback((index: number) => {
+        setIsLoading(true)
+        setCurrentIndex(index)
+        updatePlayStateForIndex(index)
+    }, [updatePlayStateForIndex])
+
+    // Reset index when modal opens/closes
+    /* eslint-disable react-hooks/set-state-in-effect */
+    useLayoutEffect(() => {
         if (isOpen) {
             setCurrentIndex(0)
             setIsPlaying(false)
         }
     }, [isOpen])
+    /* eslint-enable react-hooks/set-state-in-effect */
 
-    // Handle keyboard navigation
+    // Handle keyboard navigation using refs so the listener is only attached once per open state
+    const navigateRef = useRef(navigate)
+    const onCloseRef = useRef(onClose)
+
+    useEffect(() => {
+        navigateRef.current = navigate
+    }, [navigate])
+
+    useEffect(() => {
+        onCloseRef.current = onClose
+    }, [onClose])
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (!isOpen) return
-            
+
             switch (e.key) {
                 case 'ArrowLeft':
-                    navigate('prev')
+                    navigateRef.current('prev')
                     break
                 case 'ArrowRight':
-                    navigate('next')
+                    navigateRef.current('next')
                     break
                 case 'Escape':
-                    onClose()
+                    onCloseRef.current()
                     break
             }
         }
 
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [isOpen, currentIndex])
-
-    const navigate = (direction: 'prev' | 'next') => {
-        setIsLoading(true)
-        if (direction === 'prev') {
-            setCurrentIndex((prev) => (prev - 1 + totalItems) % totalItems)
-        } else {
-            setCurrentIndex((prev) => (prev + 1) % totalItems)
-        }
-        // Pause video when navigating away from it
-        if (isPlaying && !(images.length > 0 && currentIndex === images.length)) {
-            setIsPlaying(false)
-        }
-    }
-
-    const goToIndex = (index: number) => {
-        setIsLoading(true)
-        setCurrentIndex(index)
-        if (isPlaying && !(images.length > 0 && index === images.length)) {
-            setIsPlaying(false)
-        }
-    }
+    }, [isOpen])
 
     const isVideo = videoId && currentIndex === images.length
     const currentImage = !isVideo && images[currentIndex]
 
-    const handleVideoStateChange = (event: React.SyntheticEvent<HTMLIFrameElement>) => {
+    const handleVideoStateChange = () => {
         console.log('MediaCarousel - Video iframe loaded:', videoId)
         setIsLoading(false)
     }

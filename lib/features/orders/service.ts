@@ -1,5 +1,6 @@
 import { firestore } from "@/lib/firebase";
 import { collection, query, where, orderBy, limit, startAfter, getDocs, QueryConstraint, Timestamp, DocumentSnapshot } from "firebase/firestore";
+import { normalizePhoneNumber } from "@/lib/utils";
 import { Order, OrderFilters, OrderStatus } from "./types";
 
 const ORDERS_COLLECTION = "orders";
@@ -88,6 +89,33 @@ export const OrderService = {
             lastDoc: snapshot.docs[snapshot.docs.length - 1] || null,
             hasMore: snapshot.docs.length === PAGE_LIMIT
         };
+    },
+
+    async fetchOrdersByPhone(phone: string): Promise<Order[]> {
+        const normalizedPhone = normalizePhoneNumber(phone)
+        const ordersRef = collection(firestore, ORDERS_COLLECTION);
+        const q = query(
+            ordersRef,
+            where("customerInfo.mobileNo", "==", normalizedPhone)
+        );
+        const snapshot = await getDocs(q);
+
+        const orders: Order[] = snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                ...data,
+                createdAt: data.createdAt instanceof Timestamp
+                    ? data.createdAt.toDate().toISOString()
+                    : data.createdAt || new Date().toISOString()
+            } as Order;
+        });
+
+        return orders.sort((a, b) => {
+            const dateA = new Date(a.createdAt).getTime()
+            const dateB = new Date(b.createdAt).getTime()
+            return dateB - dateA
+        })
     },
 
     async getOrderById(orderId: string): Promise<Order | null> {

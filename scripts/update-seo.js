@@ -17,40 +17,40 @@ const db = getFirestore();
 const force = process.argv.includes('--force');
 
 function hasValidCanonical(product) {
-  const expected = `https://www.ganishkhasricrackers.in/product/${product.id}`;
-  return product.canonicalUrl === expected;
+    const expected = `https://www.ganishkhasricrackers.in/product/${product.id}`;
+    return product.canonicalUrl === expected;
 }
 
 async function updateSEO() {
-  const productsRef = db.collection('products');
-  const snapshot = await productsRef.get();
+    const productsRef = db.collection('products');
+    const snapshot = await productsRef.get();
 
-  if (snapshot.empty) {
-    console.log('No products found.');
-    return;
-  }
-
-  let updated = 0;
-  let skipped = 0;
-
-  for (const docSnap of snapshot.docs) {
-    const product = { id: docSnap.id, ...docSnap.data() };
-
-    if (!force && product.seoTitle && product.structuredData && hasValidCanonical(product)) {
-      skipped++;
-      continue;
+    if (snapshot.empty) {
+        console.log('No products found.');
+        return;
     }
 
-    const seo = generateProductSEO(product, docSnap.id);
-    await docSnap.ref.update(seo);
-    updated++;
-    console.log(`Updated: ${product.name}`);
-  }
+    let updated = 0;
+    let skipped = 0;
 
-  console.log(`\nDone. Updated ${updated}, skipped ${skipped}, total ${snapshot.size}`);
+    for (const docSnap of snapshot.docs) {
+        const product = { id: docSnap.id, ...docSnap.data() };
+
+        if (!force && product.seoTitle && product.structuredData && hasValidCanonical(product)) {
+            skipped++;
+            continue;
+        }
+
+        const seo = generateProductSEO(product, docSnap.id);
+        await docSnap.ref.update(seo);
+        updated++;
+        console.log(`Updated: ${product.name}`);
+    }
+
+    console.log(`\nDone. Updated ${updated}, skipped ${skipped}, total ${snapshot.size}`);
 }
 
 updateSEO().catch((err) => {
-  console.error('SEO update failed:', err);
-  process.exit(1);
+    console.error('SEO update failed:', err);
+    process.exit(1);
 });

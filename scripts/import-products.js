@@ -6,13 +6,13 @@ const path = require('path');
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDDwLF6i3Br1IN5maBcfpqKUz3ZDxyX6uw",
-  authDomain: "ganishkha-crackers-store.firebaseapp.com",
-  projectId: "ganishkha-crackers-store",
-  storageBucket: "ganishkha-crackers-store.firebasestorage.app",
-  messagingSenderId: "109389928446",
-  appId: "1:109389928446:web:dd2d7ea7f660a1decfd2af",
-  measurementId: "G-RMHTSTXCJD"
+    apiKey: "AIzaSyDDwLF6i3Br1IN5maBcfpqKUz3ZDxyX6uw",
+    authDomain: "ganishkha-crackers-store.firebaseapp.com",
+    projectId: "ganishkha-crackers-store",
+    storageBucket: "ganishkha-crackers-store.firebasestorage.app",
+    messagingSenderId: "109389928446",
+    appId: "1:109389928446:web:dd2d7ea7f660a1decfd2af",
+    measurementId: "G-RMHTSTXCJD"
 };
 
 // Initialize Firebase
@@ -192,43 +192,43 @@ const productData = `S.No Procdut Name Content Price SPARKLERS Discount@ 80% Fin
 
 // Category mapping
 const categoryMap = {
-  'sparklers': 'sparklers',
-  'flower pots': 'flowerpots',
-  'ground chakkar': 'chakras',
-  'wheel': 'chakras',
-  'peacock': 'special',
-  'pencil': 'novelty',
-  'bijili': 'bombs',
-  'twinkling star': 'sparklers',
-  'shot': 'aerial',
-  'bomb': 'bombs',
-  'lakshmi': 'bombs',
-  'crackers': 'bombs',
-  'rocket': 'rockets',
-  'aerial': 'aerial',
-  'fancy': 'aerial',
-  'tin': 'aerial',
-  'whistling': 'flowerpots',
-  'colour': 'flowerpots',
-  'crackling': 'flowerpots',
-  'double': 'aerial',
-  'mega': 'flowerpots',
-  'children': 'novelty',
-  'gift': 'giftbox',
-  'digital': 'novelty'
+    'sparklers': 'sparklers',
+    'flower pots': 'flowerpots',
+    'ground chakkar': 'chakras',
+    'wheel': 'chakras',
+    'peacock': 'special',
+    'pencil': 'novelty',
+    'bijili': 'bombs',
+    'twinkling star': 'sparklers',
+    'shot': 'aerial',
+    'bomb': 'bombs',
+    'lakshmi': 'bombs',
+    'crackers': 'bombs',
+    'rocket': 'rockets',
+    'aerial': 'aerial',
+    'fancy': 'aerial',
+    'tin': 'aerial',
+    'whistling': 'flowerpots',
+    'colour': 'flowerpots',
+    'crackling': 'flowerpots',
+    'double': 'aerial',
+    'mega': 'flowerpots',
+    'children': 'novelty',
+    'gift': 'giftbox',
+    'digital': 'novelty'
 };
 
 function parseProductData(data) {
-  const lines = data.trim().split('\n');
-  const products = [];
-  let currentCategory = 'sparklers';
+    const lines = data.trim().split('\n');
+    const products = [];
+    let currentCategory = 'sparklers';
   
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (!line || line.startsWith('S.No') || line.startsWith('Terms')) continue;
+    for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line || line.startsWith('S.No') || line.startsWith('Terms')) continue;
     
-    // Check for category headers
-    if (line.includes('SPARKLERS') || line.includes('FLOWER POTS') || 
+        // Check for category headers
+        if (line.includes('SPARKLERS') || line.includes('FLOWER POTS') || 
         line.includes('GROUND CHAKKARS') || line.includes('WHEEL') || 
         line.includes('PEACOCKS') || line.includes('PENCIL') || 
         line.includes('BIJILI') || line.includes('TWINKLING STARS') || 
@@ -240,98 +240,98 @@ function parseProductData(data) {
         line.includes('MEGA') || line.includes('CHILDREN') || 
         line.includes('GIFT') || line.includes('DIGITAL')) {
       
-      const categoryName = line.toLowerCase().replace(/[^a-z\s]/g, '').trim();
-      for (const [key, value] of Object.entries(categoryMap)) {
-        if (categoryName.includes(key)) {
-          currentCategory = value;
-          break;
+            const categoryName = line.toLowerCase().replace(/[^a-z\s]/g, '').trim();
+            for (const [key, value] of Object.entries(categoryMap)) {
+                if (categoryName.includes(key)) {
+                    currentCategory = value;
+                    break;
+                }
+            }
+            continue;
         }
-      }
-      continue;
+    
+        // Parse product line
+        const parts = line.split(/\s+/).filter(p => p);
+        if (parts.length < 5) continue;
+    
+        let productName = '';
+        let content = '';
+        let price = 0;
+        let finalPrice = 0;
+        let quantity = 0;
+    
+        // Extract serial number
+        const serialMatch = parts[0].match(/^\d+$/);
+        if (!serialMatch) continue;
+    
+        // Find price values (look for numbers with decimals)
+        const numbers = parts.map(p => parseFloat(p)).filter(n => !isNaN(n));
+        if (numbers.length >= 2) {
+            finalPrice = numbers[numbers.length - 2]; // Second to last number
+            quantity = numbers[numbers.length - 1]; // Last number
+        }
+    
+        // Extract product name (everything between serial number and prices)
+        const serialIndex = parts.findIndex(p => p.match(/^\d+$/));
+        if (serialIndex !== -1) {
+            const nameParts = parts.slice(serialIndex + 1);
+            const priceIndex = nameParts.findIndex(p => !isNaN(parseFloat(p)) && parseFloat(p) > 10);
+            if (priceIndex !== -1) {
+                productName = nameParts.slice(0, priceIndex).join(' ');
+            }
+        }
+    
+        if (productName && finalPrice > 0) {
+            products.push({
+                name: productName.trim(),
+                originalPrice: Math.round(finalPrice / 0.8), // Calculate original price (80% discount)
+                price: finalPrice,
+                category: currentCategory,
+                description: `${content} - Premium quality firecrackers`,
+                stock: 50, // Default stock
+                featured: Math.random() > 0.7, // 30% featured
+                thumbnail: null,
+                previews: []
+            });
+        }
     }
-    
-    // Parse product line
-    const parts = line.split(/\s+/).filter(p => p);
-    if (parts.length < 5) continue;
-    
-    let productName = '';
-    let content = '';
-    let price = 0;
-    let finalPrice = 0;
-    let quantity = 0;
-    
-    // Extract serial number
-    const serialMatch = parts[0].match(/^\d+$/);
-    if (!serialMatch) continue;
-    
-    // Find price values (look for numbers with decimals)
-    const numbers = parts.map(p => parseFloat(p)).filter(n => !isNaN(n));
-    if (numbers.length >= 2) {
-      finalPrice = numbers[numbers.length - 2]; // Second to last number
-      quantity = numbers[numbers.length - 1]; // Last number
-    }
-    
-    // Extract product name (everything between serial number and prices)
-    const serialIndex = parts.findIndex(p => p.match(/^\d+$/));
-    if (serialIndex !== -1) {
-      const nameParts = parts.slice(serialIndex + 1);
-      const priceIndex = nameParts.findIndex(p => !isNaN(parseFloat(p)) && parseFloat(p) > 10);
-      if (priceIndex !== -1) {
-        productName = nameParts.slice(0, priceIndex).join(' ');
-      }
-    }
-    
-    if (productName && finalPrice > 0) {
-      products.push({
-        name: productName.trim(),
-        originalPrice: Math.round(finalPrice / 0.8), // Calculate original price (80% discount)
-        price: finalPrice,
-        category: currentCategory,
-        description: `${content} - Premium quality firecrackers`,
-        stock: 50, // Default stock
-        featured: Math.random() > 0.7, // 30% featured
-        thumbnail: null,
-        previews: []
-      });
-    }
-  }
   
-  return products;
+    return products;
 }
 
 async function importProducts() {
-  try {
-    const products = parseProductData(productData);
-    console.log(`Parsed ${products.length} products`);
+    try {
+        const products = parseProductData(productData);
+        console.log(`Parsed ${products.length} products`);
     
-    // Create batch for bulk import
-    const batch = writeBatch(db);
-    const productsRef = collection(db, 'products');
+        // Create batch for bulk import
+        const batch = writeBatch(db);
+        const productsRef = collection(db, 'products');
     
-    products.forEach((product, index) => {
-      const docRef = doc(productsRef);
-      const seo = generateProductSEO(product, docRef.id);
-      batch.set(docRef, {
-        ...product,
-        ...seo,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      });
-    });
+        products.forEach((product, index) => {
+            const docRef = doc(productsRef);
+            const seo = generateProductSEO(product, docRef.id);
+            batch.set(docRef, {
+                ...product,
+                ...seo,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            });
+        });
     
-    // Commit batch
-    await batch.commit();
-    console.log(`Successfully imported ${products.length} products to Firebase!`);
+        // Commit batch
+        await batch.commit();
+        console.log(`Successfully imported ${products.length} products to Firebase!`);
     
-    // Log sample products
-    console.log('\nSample products:');
-    products.slice(0, 5).forEach((p, i) => {
-      console.log(`${i + 1}. ${p.name} - ₹${p.price} (${p.category})`);
-    });
+        // Log sample products
+        console.log('\nSample products:');
+        products.slice(0, 5).forEach((p, i) => {
+            console.log(`${i + 1}. ${p.name} - ₹${p.price} (${p.category})`);
+        });
     
-  } catch (error) {
-    console.error('Error importing products:', error);
-  }
+    } catch (error) {
+        console.error('Error importing products:', error);
+    }
 }
 
 // Run the import

@@ -1,6 +1,7 @@
 'use client'
 
 import { Card } from '@/components/ui/card'
+import { formatPhoneNumber } from '@/lib/utils'
 import { CustomerInfo } from '@/lib/features/orders/types'
 
 interface DeliveryAddressCardProps {
@@ -20,7 +21,7 @@ export function DeliveryAddressCard({ customerInfo }: DeliveryAddressCardProps) 
 
                 <div>
                     <p className="text-sm text-gray-500 uppercase tracking-wider font-semibold">Mobile Number</p>
-                    <p className="font-medium text-slate-900">+91 {customerInfo.mobileNo}</p>
+                    <p className="font-medium text-slate-900">{formatPhoneNumber(customerInfo.mobileNo)}</p>
                 </div>
 
                 <div>

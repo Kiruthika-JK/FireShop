@@ -114,18 +114,21 @@ export function CustomerInfoSection() {
 
                     <div>
                         <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Mobile Number <span className="text-red-500">*</span>
+                            WhatsApp Number <span className="text-red-500">*</span>
                         </label>
                         <Input
                             value={formData.mobileNumber}
                             onChange={(e) => handleChange('mobileNumber', e.target.value)}
-                            placeholder="10 digit mobile number"
+                            placeholder="10 digit WhatsApp number"
                             maxLength={10}
                             className={errors.mobileNumber ? 'border-red-500' : ''}
                         />
                         {errors.mobileNumber && (
                             <p className="text-red-500 text-xs mt-1">{errors.mobileNumber}</p>
                         )}
+                        <p className="text-green-600 text-xs mt-1">
+                            We will send order tracking and delivery updates on this WhatsApp number.
+                        </p>
                     </div>
 
                     <div>
@@ -138,7 +141,7 @@ export function CustomerInfoSection() {
                             placeholder="Enter your complete address"
                             rows={3}
                             className={`w-full px-3 py-2 rounded-md border ${errors.fullAddress ? 'border-red-500' : 'border-gray-300'
-                                } focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent`}
+                            } focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent`}
                         />
                         {errors.fullAddress && (
                             <p className="text-red-500 text-xs mt-1">{errors.fullAddress}</p>
@@ -187,11 +190,13 @@ export function CustomerInfoSection() {
                                 <option value="Kerala">Kerala</option>
                                 <option value="Telangana">Telangana</option>
                                 <option value="Maharashtra">Maharashtra</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+                                <option value="Jammu & Kashmir">Jammu & Kashmir</option>
                                 <option value="Gujarat">Gujarat</option>
                                 <option value="Rajasthan">Rajasthan</option>
                                 <option value="Delhi">Delhi</option>
-                                <option value="Uttar Pradesh">Uttar Pradesh</option>
-                                <option value="West Bengal">West Bengal</option>
                                 <option value="Other">Other</option>
                             </select>
                             {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
@@ -234,7 +239,7 @@ export function CustomerInfoSection() {
                     </div>
 
                     <div>
-                        <p className="text-sm text-gray-600">Mobile Number</p>
+                        <p className="text-sm text-gray-600">WhatsApp Number</p>
                         <p className="text-base text-slate-900 font-medium">{customerInfo.mobileNumber}</p>
                     </div>
 
