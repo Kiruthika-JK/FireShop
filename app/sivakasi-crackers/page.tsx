@@ -6,7 +6,7 @@ import Link from 'next/link';
 const siteUrl = 'https://www.ganishkhasricrackers.in';
 
 export const metadata: Metadata = generateSEOHead({
-    title: 'Ganishkha Sri Crackers | Sivakasi Crackers Online 2026 | Top Dealers',
+    title: 'Buy Sivakasi Crackers Online | Ganishkha Sri Crackers',
     description: 'Ganishkha Sri Crackers - top cracker dealers in Sivakasi. Buy 100% genuine Sivakasi crackers online 2026. Wholesale firecrackers, pattasu, patakha, sparklers, flower pots, bombs, rockets, gift boxes. Best online crackers shop with delivery across Jammu & Kashmir, West Bengal, Karnataka, Kerala, Tamil Nadu, Andhra Pradesh, Telangana, Maharashtra, Uttar Pradesh & Uttarakhand.',
     canonical: `${siteUrl}/sivakasi-crackers`,
     keywords: 'sivakasi crackers, buy sivakasi crackers online, genuine sivakasi crackers, sivakasi crackers online, sivakasi crackers wholesale, sivakasi crackers price list, sivakasi crackers 2026, sivakasi firecrackers, sivakasi fireworks, sivakasi pattasu, sivakasi patakha, sivakasi bomb, sivakasi rocket, sivakasi gift box, sivakasi crackers shop, best sivakasi crackers, wholesale sivakasi crackers, online crackers sivakasi, online crackers, top cracker dealers, top cracker dealers in sivakasi, diwali 2026, diwali 2026 crackers, ganishkha sri crackers, ganishkha traders sivakasi, chinnakamanpatti crackers, tamil nadu crackers, diwali crackers sivakasi, diwali fireworks sivakasi, sivakasi pattasu online, online pattasu sivakasi, pattasu online shopping, pattasu online 2026',

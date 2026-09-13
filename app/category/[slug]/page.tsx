@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const name = category.name;
 
     return generateSEOHead({
-        title: `Buy ${name} Online | Sivakasi Crackers Diwali 2026 | Ganishkha Sri Crackers`,
+        title: `Buy ${name} Online | Ganishkha Sri Crackers`,
         description: `Buy 100% genuine ${name} online from Sivakasi. Top cracker dealers for Diwali 2026. Best price for ${name} crackers, Diwali fireworks and wholesale ${name} from Ganishkha Sri Crackers. Online crackers delivery across Jammu & Kashmir, West Bengal, Karnataka, Kerala, Tamil Nadu, Andhra Pradesh, Telangana, Maharashtra, Uttar Pradesh & Uttarakhand.`,
         canonical: `${siteUrl}/category/${category.slug}`,
         keywords: `${name.toLowerCase()}, buy ${name.toLowerCase()} online, sivakasi ${name.toLowerCase()}, diwali ${name.toLowerCase()}, diwali 2026 ${name.toLowerCase()}, ${name.toLowerCase()} wholesale, ${name.toLowerCase()} price, ${name.toLowerCase()} pattasu online, buy ${name.toLowerCase()} pattasu online, sivakasi crackers, diwali crackers, diwali 2026 crackers, online crackers, top cracker dealers, ganishkha sri crackers`,

@@ -1,6 +1,5 @@
 import * as functions from 'firebase-functions/v1'
 import * as admin from 'firebase-admin'
-import * as https from 'https'
 
 // Initialize Firebase Admin SDK
 admin.initializeApp()
@@ -42,9 +41,6 @@ export const onOrderCreated = functions
         secrets: [
             'GMAIL_USER',
             'GMAIL_PASS',
-            'WHATSAPP_ACCESS_TOKEN',
-            'WHATSAPP_PHONE_NUMBER_ID',
-            'WHATSAPP_CUSTOMER_TEMPLATE_NAME',
         ],
         timeoutSeconds: 60,
     })
@@ -78,13 +74,6 @@ export const onOrderCreated = functions
             }
 
             console.log(`Order notifications sent to ${adminEmails.length} admins`)
-
-            // 3. WhatsApp order confirmation to customer number
-            try {
-                await sendWhatsAppConfirmationToCustomer(orderData)
-            } catch (waError) {
-                console.error('WhatsApp customer confirmation failed:', waError)
-            }
 
         } catch (error) {
             console.error('Error processing order notification:', error)
@@ -345,101 +334,4 @@ async function sendEmail(mail: MailPayload): Promise<void> {
     }
 }
 
-function buildCustomerWhatsAppTemplateParams(orderData: OrderData): { type: string; text: string }[] {
-    const finalTotal = orderData.grandTotal || orderData.totalPrice
-    const productsText = orderData.products
-        .map(p => `${p.name} x${p.quantity}`)
-        .join(', ')
-        .slice(0, 500)
 
-    return [
-        { type: 'text', text: orderData.id },
-        { type: 'text', text: `Rs.${formatMoney(finalTotal)}` },
-        { type: 'text', text: productsText || 'N/A' },
-    ]
-}
-
-function normalizeWhatsAppNumber(num: string): string {
-    const digits = num.replace(/\D/g, '')
-    if (digits.length === 10) return `91${digits}`
-    return digits
-}
-
-async function sendWhatsAppTemplate(to: string, templateName: string, parameters: { type: string; text: string }[]): Promise<void> {
-    const accessToken = process.env.WHATSAPP_ACCESS_TOKEN
-    const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID
-
-    if (!accessToken || !phoneNumberId) {
-        throw new Error('Missing WHATSAPP_ACCESS_TOKEN or WHATSAPP_PHONE_NUMBER_ID')
-    }
-
-    const body = {
-        messaging_product: 'whatsapp',
-        recipient_type: 'individual',
-        to: normalizeWhatsAppNumber(to),
-        type: 'template',
-        template: {
-            name: templateName,
-            language: { code: 'en' },
-            components: [
-                {
-                    type: 'body',
-                    parameters,
-                }
-            ]
-        }
-    }
-
-    const json = JSON.stringify(body)
-
-    return new Promise((resolve, reject) => {
-        const req = https.request(
-            `https://graph.facebook.com/v20.0/${phoneNumberId}/messages`,
-            {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                    'Content-Length': Buffer.byteLength(json),
-                }
-            },
-            (res) => {
-                let data = ''
-                res.on('data', (chunk) => { data += chunk })
-                res.on('end', () => {
-                    if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
-                        console.log('WhatsApp template sent:', data)
-                        resolve()
-                    } else {
-                        console.error('WhatsApp template failed:', res.statusCode, data)
-                        reject(new Error(`WhatsApp template failed: ${res.statusCode} ${data}`))
-                    }
-                })
-            }
-        )
-        req.on('error', (err) => reject(err))
-        req.write(json)
-        req.end()
-    })
-}
-
-async function sendWhatsAppConfirmationToCustomer(orderData: OrderData): Promise<void> {
-    const templateName = process.env.WHATSAPP_CUSTOMER_TEMPLATE_NAME || 'order_confirmation'
-    const customerNumber = orderData.customerInfo.mobileNo
-
-    if (!customerNumber) {
-        console.log('WhatsApp customer confirmation skipped: no customer mobile number')
-        return
-    }
-
-    const parameters = buildCustomerWhatsAppTemplateParams(orderData)
-
-    // Template in Meta Business Manager should look like:
-    // Thank you for shopping with Ganishkha Sri Crackers!
-    //
-    // Your order #{{1}} has been received.
-    // Total: {{2}}
-    // Products: {{3}}
-    // We will contact you on this WhatsApp number for payment and delivery updates.
-    return sendWhatsAppTemplate(customerNumber, templateName, parameters)
-}

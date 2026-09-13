@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
     const base = generateSEOHead({});
     const productNames = products.slice(0, 15).map(p => p.name).join(', ');
 
-    const pageTitle = 'Ganishkha Sri Crackers | Sivakasi Crackers Online 2026 | Top Cracker Dealers';
+    const pageTitle = 'Buy Sivakasi Crackers Online | Ganishkha Sri Crackers';
 
     const pageDescription = (products.length > 0
         ? `Ganishkha Sri Crackers - top cracker dealers in Sivakasi. Buy 100% genuine Sivakasi crackers and Diwali 2026 crackers online. Best online crackers shop with ${products.length}+ firecrackers: ${productNames}. Factory price list. Delivery across Jammu & Kashmir, West Bengal, Karnataka, Kerala, Tamil Nadu, Andhra Pradesh, Telangana, Maharashtra, Uttar Pradesh & Uttarakhand.`

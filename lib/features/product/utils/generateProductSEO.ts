@@ -48,7 +48,7 @@ export function generateProductSEO(product: ProductModel, id?: string): ProductS
     const productTamil = getTamilProductNames(name);
     const tamilKeywords = dedupe([...categoryTamil, ...productTamil]);
 
-    const title = `${name} | Sivakasi Crackers Online | Ganishkha Sri`;
+    const title = `${name} | Ganishkha Sri Crackers`;
     const description = `Buy ${name} at ${price > 0 ? `₹${formatPrice(price)}` : 'wholesale price'}. Genuine Sivakasi ${category} from Ganishkha Sri Crackers. Pan-India delivery. Order online!`;
 
     const keywordTokens = dedupe([
