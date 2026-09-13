@@ -1,7 +1,7 @@
 import { firestore } from "@/lib/firebase";
 import { collection, query, where, orderBy, limit, startAfter, getDocs, QueryConstraint, Timestamp, DocumentSnapshot } from "firebase/firestore";
 import { normalizePhoneNumber } from "@/lib/utils";
-import { Order, OrderFilters, OrderStatus } from "./types";
+import { Order, OrderFilters, OrderStatus, PaymentStatus } from "./types";
 
 const ORDERS_COLLECTION = "orders";
 const PAGE_LIMIT = 50;
@@ -155,6 +155,27 @@ export const OrderService = {
             await updateDoc(orderRef, updateData);
         } catch (error) {
             console.error("Error updating order status:", error);
+            throw error;
+        }
+    },
+
+    async updatePaymentStatus(
+        orderId: string,
+        paymentStatus: PaymentStatus,
+        paidAmount: number,
+        remainingAmount: number
+    ): Promise<void> {
+        try {
+            const { doc, updateDoc } = await import("firebase/firestore");
+            const orderRef = doc(firestore, ORDERS_COLLECTION, orderId);
+
+            await updateDoc(orderRef, {
+                paymentStatus,
+                paidAmount,
+                remainingAmount
+            });
+        } catch (error) {
+            console.error("Error updating payment status:", error);
             throw error;
         }
     }

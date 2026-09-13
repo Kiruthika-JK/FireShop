@@ -5,6 +5,7 @@ import {
     onAuthStateChanged,
     signInWithPopup,
     signInWithRedirect,
+    signInAnonymously,
     signOut,
     User,
     getRedirectResult
@@ -17,6 +18,7 @@ interface AuthContextType {
     loading: boolean;
     isAdmin: boolean;
     loginWithGoogle: () => Promise<void>;
+    loginAsGuest: () => Promise<void>;
     logout: () => Promise<void>;
 }
 
@@ -95,6 +97,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
+    const loginAsGuest = async () => {
+        try {
+            await signInAnonymously(auth);
+        } catch (error) {
+            console.error("Error signing in as guest", error);
+            throw error;
+        }
+    };
+
     const logout = async () => {
         try {
             await signOut(auth);
@@ -106,7 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, isAdmin, loginWithGoogle, logout }}>
+        <AuthContext.Provider value={{ user, loading, isAdmin, loginWithGoogle, loginAsGuest, logout }}>
             {children}
         </AuthContext.Provider>
     );

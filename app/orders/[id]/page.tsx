@@ -8,6 +8,7 @@ import { useAuth } from '@/lib/auth-context'
 import { Loader2 } from 'lucide-react'
 import { OrderTracker } from '@/components/orders/OrderTracker'
 import { OrderStatusUpdate } from '@/components/orders/OrderStatusUpdate'
+import { PaymentStatusUpdate } from '@/components/orders/PaymentStatusUpdate'
 import { DeliveryAddressCard } from '@/components/orders/DeliveryAddressCard'
 import { OrderItemsList } from '@/components/orders/OrderItemsList'
 import { PayViaSection } from '@/components/checkout/PayViaSection'
@@ -166,6 +167,11 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
         mobileNumber: order.customerInfo.mobileNo
     }
 
+    const currentPaymentStatus = order.paymentStatus || 'Unpaid'
+    const showPayment = (order.status === 'Ordered' || order.status === 'Processing') &&
+        currentPaymentStatus !== 'Fully Paid'
+    const paymentAmount = order.remainingAmount ?? order.grandTotal ?? order.totalPrice
+
     return (
         <div className="min-h-screen bg-gray-50 py-8">
             <div className="container mx-auto px-4 max-w-6xl">
@@ -212,6 +218,12 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                                     currentStatus={order.status}
                                     onUpdateComplete={(newStatus, comment) => setOrder({ ...order, status: newStatus, adminComment: comment || order.adminComment })}
                                 />
+                                <PaymentStatusUpdate
+                                    order={order}
+                                    onUpdateComplete={(paymentStatus, paidAmount, remainingAmount) =>
+                                        setOrder({ ...order, paymentStatus, paidAmount, remainingAmount })
+                                    }
+                                />
                                 <div className="rounded-lg border border-slate-200 bg-white p-4">
                                     <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Customer Acknowledge</p>
                                     <Button
@@ -239,17 +251,43 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                         <DeliveryAddressCard customerInfo={order.customerInfo} />
 
                         {/* 4. Pay Via Section (Hidden on Mobile here, shown at bottom) */}
+                        {/* Payment Info for Customer */}
                         {!isAdmin && (
+                            <Card className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                                <h2 className="text-lg font-semibold text-slate-800 mb-4">Payment Details</h2>
+                                <div className="space-y-2 text-sm">
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-600">Payment Status</span>
+                                        <span className="font-semibold text-slate-800">{currentPaymentStatus}</span>
+                                    </div>
+                                    {order.paidAmount !== undefined && order.paidAmount > 0 && (
+                                        <div className="flex justify-between">
+                                            <span className="text-gray-600">Paid Amount</span>
+                                            <span className="font-semibold text-green-600">₹{formatPrice(order.paidAmount)}</span>
+                                        </div>
+                                    )}
+                                    {paymentAmount > 0 && (
+                                        <div className="flex justify-between">
+                                            <span className="text-gray-600">{'Remaining Amount'}</span>
+                                            <span className="font-semibold text-slate-800">₹{formatPrice(paymentAmount)}</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </Card>
+                        )}
+
+                        {/* 4. Pay Via Section (Hidden on Mobile here, shown at bottom) */}
+                        {!isAdmin && showPayment && (
                             <div className="hidden lg:block">
-                                <PayViaSection amount={order.totalPrice} customer={customerModelInfo} />
+                                <PayViaSection amount={paymentAmount} customer={customerModelInfo} />
                             </div>
                         )}
                     </div>
 
                     {/* Mobile Only Pay Via Section (Rendered Last) */}
-                    {!isAdmin && (
+                    {!isAdmin && showPayment && (
                         <div className="lg:hidden w-full order-5 mt-6">
-                            <PayViaSection amount={order.totalPrice} customer={customerModelInfo} />
+                            <PayViaSection amount={paymentAmount} customer={customerModelInfo} />
                         </div>
                     )}
 

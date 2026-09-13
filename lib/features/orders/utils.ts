@@ -20,8 +20,21 @@ export const buildAcknowledgeMailBody = (order: Order) => {
         year: 'numeric'
     })
 
-    const gstAmount = 0
-    const finalTotal = order.totalPrice
+    const gstAmount = order.gstAmount ?? 0
+    const finalTotal = order.grandTotal ?? order.totalPrice
+    const paymentStatus = order.paymentStatus || 'Unpaid'
+    const paidAmount = order.paidAmount ?? 0
+    const remainingAmount = order.remainingAmount ?? finalTotal
+
+    const paymentLines = paymentStatus === 'Fully Paid'
+        ? ['', '=====Payment Details=====', 'Payment Status: Fully Paid', `Total Paid: Rs.${formatPrice(finalTotal)}`]
+        : [
+            '',
+            '=====Payment Details=====',
+            `Payment Status: ${paymentStatus}`,
+            `Paid: Rs.${formatPrice(paidAmount)}`,
+            `Remaining: Rs.${formatPrice(remainingAmount)}`
+        ]
 
     const maxItemNameLength = order.products.reduce(
         (maxLength, product) => Math.max(maxLength, product.name.length),
@@ -77,6 +90,7 @@ export const buildAcknowledgeMailBody = (order: Order) => {
         `Subtotal: Rs.${formatPrice(order.totalPrice)}`,
         `GST: Rs.${formatPrice(gstAmount)}`,
         `Final Total: Rs.${formatPrice(finalTotal)}`,
+        ...paymentLines,
         '',
         'Courier charges are not included in the final total above and will be handled as per the delivery location policy.',
         '',
@@ -96,6 +110,11 @@ export const buildWhatsAppAcknowledgeUrl = (order: Order) => {
     const phone = rawPhone.length === 10 ? `91${rawPhone}` : rawPhone
     const reasonLine = order.adminComment ? `\nReason: ${order.adminComment}` : ''
 
+    const totalDue = order.grandTotal ?? order.totalPrice
+    const paymentStatus = order.paymentStatus || 'Unpaid'
+    const paidAmount = order.paidAmount ?? 0
+    const remainingAmount = order.remainingAmount ?? totalDue
+
     const getStatusText = (status: OrderStatus) => {
         switch (status) {
             case OrderStatus.Canceled:
@@ -109,11 +128,21 @@ export const buildWhatsAppAcknowledgeUrl = (order: Order) => {
             case OrderStatus.Ordered:
             case OrderStatus.Processing:
             default:
-                return 'is now being processed. We will contact you shortly for payment and delivery details.'
+                return `is now ${status}.`
         }
     }
 
-    const message = `Hi ${order.customerInfo.name},\n\nYour order #${order.id} at Ganishkha Sri Crackers ${getStatusText(order.status)}${reasonLine}\n\nTotal: ₹${formatPrice(order.totalPrice)}\n\nThank you!`
+    const getPaymentText = () => {
+        if (paymentStatus === 'Fully Paid') {
+            return 'Your payment has been fully received. Thank you!'
+        }
+        if (paymentStatus === 'Partially Paid') {
+            return `You have paid ₹${formatPrice(paidAmount)}. Remaining amount ₹${formatPrice(remainingAmount)} to be paid.`
+        }
+        return 'We will contact you shortly for payment and delivery details.'
+    }
+
+    const message = `Hi ${order.customerInfo.name},\n\nYour order #${order.id} at Ganishkha Sri Crackers ${getStatusText(order.status)} ${getPaymentText()}${reasonLine}\n\nTotal: ₹${formatPrice(totalDue)}\n\nThank you!`
     return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
 }
 

@@ -1,3 +1,7 @@
+export type PaymentStatus = 'Unpaid' | 'Partially Paid' | 'Fully Paid';
+
+export const PAYMENT_STATUSES: PaymentStatus[] = ['Unpaid', 'Partially Paid', 'Fully Paid'];
+
 export enum OrderStatus {
     Ordered = 'Ordered',
     Processing = 'Processing',
@@ -44,6 +48,9 @@ export interface Order {
     customerInfo: CustomerInfo;
     userId?: string;
     adminComment?: string;
+    paymentStatus?: PaymentStatus;
+    paidAmount?: number;
+    remainingAmount?: number;
 }
 
 export interface OrderFilters {

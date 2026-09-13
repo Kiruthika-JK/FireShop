@@ -15,7 +15,7 @@ import { useAuth } from '@/lib/auth-context'
 import { CustomerInfoSection } from '@/components/checkout/CustomerInfoSection'
 import { PayViaSection } from '@/components/checkout/PayViaSection'
 import { OrderItemsSection } from '@/components/checkout/OrderItemsSection'
-import { OrderStatus } from '@/lib/features/orders/types'
+import { OrderStatus, PaymentStatus } from '@/lib/features/orders/types'
 
 export default function CheckoutPage() {
     const router = useRouter()
@@ -148,7 +148,10 @@ export default function CheckoutPage() {
                 },
                 userId: currentUser?.uid || '',
                 createdAt: new Date().toISOString(),
-                status: OrderStatus.Ordered
+                status: OrderStatus.Ordered,
+                paymentStatus: 'Unpaid' as PaymentStatus,
+                paidAmount: 0,
+                remainingAmount: grandTotal
             }
 
             // 5. Upload to Firestore

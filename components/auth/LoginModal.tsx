@@ -15,8 +15,9 @@ import { useState } from "react";
 // import Image from "next/image"; // Verify if Image is needed, or just use text/SVG
 
 export function LoginModal({ children }: { children?: React.ReactNode }) {
-    const { loginWithGoogle, user } = useAuth();
+    const { loginWithGoogle, loginAsGuest, user } = useAuth();
     const [loading, setLoading] = useState(false);
+    const [guestLoading, setGuestLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -47,6 +48,27 @@ export function LoginModal({ children }: { children?: React.ReactNode }) {
         }
     };
 
+    const handleGuestLogin = async () => {
+        setGuestLoading(true);
+        setError(null);
+        try {
+            await loginAsGuest();
+            setOpen(false);
+        } catch (error: unknown) {
+            console.error("Guest login failed", error);
+            const err = error as { code?: string } | undefined
+            if (err?.code === 'auth/admin-restricted-operation' || err?.code === 'auth/operation-not-allowed') {
+                setError('Guest sign-in is disabled. Please enable Anonymous sign-in in Firebase Console.');
+            } else if (err?.code === 'auth/network-request-failed') {
+                setError('Network error. Please check your connection and try again.');
+            } else {
+                setError('Guest login failed. Please try again.');
+            }
+        } finally {
+            setGuestLoading(false);
+        }
+    };
+
     if (user) return null;
 
     return (
@@ -58,7 +80,7 @@ export function LoginModal({ children }: { children?: React.ReactNode }) {
                 <DialogHeader>
                     <DialogTitle className="text-center text-2xl">Welcome Back</DialogTitle>
                     <DialogDescription className="text-center">
-                        Sign in to your account to continue
+                        Sign in to your account or continue as guest
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col gap-4 py-4">
@@ -71,7 +93,7 @@ export function LoginModal({ children }: { children?: React.ReactNode }) {
                         variant="outline"
                         className="w-full flex gap-2"
                         onClick={handleGoogleLogin}
-                        disabled={loading}
+                        disabled={loading || guestLoading}
                     >
                         {loading ? (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -96,6 +118,23 @@ export function LoginModal({ children }: { children?: React.ReactNode }) {
                             </svg>
                         )}
                         Sign in with Google
+                    </Button>
+
+                    <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                            <span className="w-full border-t border-gray-200" />
+                        </div>
+                        <span className="relative bg-white px-3 text-sm text-gray-500 mx-auto block w-max">or</span>
+                    </div>
+
+                    <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={handleGuestLogin}
+                        disabled={loading || guestLoading}
+                    >
+                        {guestLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                        Continue as guest
                     </Button>
                 </div>
             </DialogContent>

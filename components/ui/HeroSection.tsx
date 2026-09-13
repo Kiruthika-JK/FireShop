@@ -26,7 +26,7 @@ export function HeroSection() {
 
                     {/* Main Heading - Mobile First */}
                     <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 leading-tight" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>
-                        <span className="text-xl sm:text-2xl md:text-3xl text-gray-200">Sivakasi Crackers Online Wholesale</span>
+                        <span className="text-xl sm:text-2xl md:text-3xl text-gray-200">Sivakasi Crackers Online</span>
                         <br />
                         <span className="text-yellow-400">Ganishkha Sri 2026</span>
                     </h1>
