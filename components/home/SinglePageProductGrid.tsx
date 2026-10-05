@@ -18,6 +18,7 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
         
         // Map category IDs to display names (only categories currently in Firebase)
         const categoryMap: { [key: string]: string } = {
+            'diwalicombooffer': 'Diwali Combo Offer',
             'sparklers': 'Sparklers',
             'flowerpots': 'Flower Pots',
             'flowerpotbombs': 'Flower Pot Bombs',
@@ -83,7 +84,7 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
         'twinklingstar',
         'twinklingstars',
         'specialcelebrationfunction',
-        'soundcrackers',
+        'digitalwala',
         'bombs',
         'rockets',
         'fancyfountain',
@@ -103,6 +104,7 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
         'doubleattraction',
         'childrennovelties',
         'colourmatchbox',
+        'diwalicombooffer',
         'giftboxes'
     ];
 
@@ -132,11 +134,12 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
                 const categoryId = category.toLowerCase().replace(/\s+/g, '-');
 
                 return (
-                    <div key={category} id={`category-${categoryId}`} className="mb-8">
+                    <div key={category} id={`category-${categoryId}`} className="mb-8 scroll-mt-[160px]">
                         <div 
                             onClick={() => toggleCategory(category)}
                             className={`relative overflow-hidden rounded-2xl shadow-2xl border-2 cursor-pointer transition-all duration-300 hover:shadow-3xl ${
-                                category === 'Sparklers' ? 'bg-gradient-to-r from-red-500 to-yellow-500 text-white border-red-300/50' :
+                                category === 'Diwali Combo Offer' ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white border-rose-300/50' :
+                                    category === 'Sparklers' ? 'bg-gradient-to-r from-red-500 to-yellow-500 text-white border-red-300/50' :
                                     category === 'Flower Pots' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white border-orange-300/50' :
                                         category === 'Flower Pot Bombs' ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-yellow-300/50' :
                                             category === 'Chakra' ? 'bg-gradient-to-r from-green-500 to-blue-500 text-white border-green-300/50' :
@@ -155,8 +158,16 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
                                                                                                 category === 'Crackling Fountain' ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-orange-300/50' :
                                                                                                     category === 'Digital Wala' ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white border-red-300/50' :
                                                                                                         category === 'Children Novelties' ? 'bg-gradient-to-r from-yellow-500 to-red-500 text-white border-yellow-300/50' :
-                                                                                                            category === 'Gift Boxes' ? 'bg-gradient-to-r from-amber-600 to-yellow-600 text-white border-amber-300/50' :
-                                                                                                                'bg-gradient-to-r from-gray-400 to-gray-500 text-white border-gray-300/50'
+                                                                                                            category === 'Aerial Fancy Shots' ? 'bg-gradient-to-r from-violet-500 to-purple-500 text-white border-violet-300/50' :
+                                                                                                                category === 'Fancy Fountain' ? 'bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white border-fuchsia-300/50' :
+                                                                                                                    category === 'Night Aerial Function' ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-blue-400/50' :
+                                                                                                                        category === 'Whistling Shots' ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white border-cyan-300/50' :
+                                                                                                                            category === 'Double Wonder' ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white border-rose-300/50' :
+                                                                                                                                category === 'Double Attraction' ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white border-teal-300/50' :
+                                                                                                                                    category === 'Colour Match Box' ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white border-pink-300/50' :
+                                                                                                                                        category === 'Bijili' ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white border-emerald-300/50' :
+                                                                                                                                            category === 'Gift Boxes' ? 'bg-gradient-to-r from-amber-600 to-yellow-600 text-white border-amber-300/50' :
+                                                                                                                                                'bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-indigo-300/50'
                             }`}
                             aria-label={`${expandedCategories.includes(category) ? 'Collapse' : 'Expand'} ${category} category`}
                         >

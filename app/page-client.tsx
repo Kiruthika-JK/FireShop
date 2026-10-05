@@ -8,7 +8,7 @@ import { HeroSection } from '@/components/ui/HeroSection';
 import { TrendingProducts } from '@/components/ui/TrendingProducts';
 import { ScrollToTop } from '@/components/ui/ScrollToTop';
 import { BrandsSection } from '@/components/ui/BrandsSection';
-import { SpecialCelebrationBanner } from '@/components/home/SpecialCelebrationBanner';
+import { DiwaliComboOfferBanner } from '@/components/home/DiwaliComboOfferBanner';
 import { DeliveryStates } from '@/components/home/DeliveryStates';
 import { LatestBlog } from '@/components/home/LatestBlog';
 
@@ -19,26 +19,33 @@ interface ProductListPageClientProps {
 
 export default function ProductListPageClient({ products, homeFaqs }: ProductListPageClientProps) {
     const [activeCategory, setActiveCategory] = useState<string | null>(null);
-    const specialCount = products.filter(p => p.category === 'Special Celebration Function').length;
+    const comboCount = products.filter(p => p.category === 'Diwali Combo Offer').length;
 
     const categories = [
+        { id: 'diwali-combo-offer', name: 'Diwali Combo Offer', count: 4 },
         { id: 'sparklers', name: 'Sparklers', count: 15 },
-        { id: 'flowerpots', name: 'Flower Pots', count: 15 },
-        { id: 'groundchakkar', name: 'Ground Chakkar', count: 18 },
-        { id: 'peacocks', name: 'Peacocks', count: 3 },
+        { id: 'flowerpots', name: 'Flower Pots', count: 17 },
+        { id: 'flowerpotbombs', name: 'Flower Pot Bombs', count: 1 },
+        { id: 'groundchakkar', name: 'Ground Chakkar', count: 13 },
+        { id: 'peacocks', name: 'Peacocks', count: 4 },
         { id: 'bijili', name: 'Bijili Crackers', count: 2 },
         { id: 'twinklingstar', name: 'Twinkling Star', count: 2 },
-        { id: 'pencil', name: 'Pencil Shots', count: 1 },
-        { id: 'bombs', name: 'Bombs', count: 13 },
-        { id: 'saravadi', name: 'Saravadi', count: 8 },
-        { id: 'rockets', name: 'Rockets', count: 4 },
-        { id: 'aerialshot', name: 'Aerial Shot', count: 22 },
-        { id: 'whistlingfountain', name: 'Whistling Fountain', count: 3 },
-        { id: 'cracklingfountain', name: 'Crackling Fountain', count: 21 },
-        { id: 'doublewonder', name: 'Double Wonder', count: 2 },
-        { id: 'megacrackling', name: 'Mega Crackling', count: 6 },
-        { id: 'childrenNovelty', name: 'Children Novelty', count: 21 },
-        { id: 'giftbox', name: 'Gift Boxes', count: 4 }
+        { id: 'pencil', name: 'Pencil Shots', count: 12 },
+        { id: 'bombs', name: 'Bombs', count: 11 },
+        { id: 'rockets', name: 'Rockets', count: 3 },
+        { id: 'aerialshot', name: 'Aerial Shot', count: 9 },
+        { id: 'aerialfancyshot', name: 'Aerial Fancy Shots', count: 17 },
+        { id: 'whistlingfountain', name: 'Whistling Fountain', count: 2 },
+        { id: 'cracklingfountain', name: 'Crackling Fountain', count: 23 },
+        { id: 'fancyfountain', name: 'Fancy Fountain', count: 5 },
+        { id: 'doublewonder', name: 'Double Wonder', count: 4 },
+        { id: 'doubleattraction', name: 'Double Attraction', count: 4 },
+        { id: 'nightaerialfunction', name: 'Night Aerial Function', count: 4 },
+        { id: 'whistlingshot', name: 'Whistling Shots', count: 2 },
+        { id: 'tinseries', name: 'TIN Series', count: 6 },
+        { id: 'childrenNovelty', name: 'Children Novelty', count: 16 },
+        { id: 'colourmatchbox', name: 'Colour Match Box', count: 3 },
+        { id: 'giftbox', name: 'Gift Boxes', count: 10 }
     ];
 
     useEffect(() => {
@@ -48,7 +55,7 @@ export default function ProductListPageClient({ products, homeFaqs }: ProductLis
                 setActiveCategory(hash);
                 const element = document.getElementById(`category-${hash}`);
                 if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }
         };
@@ -64,7 +71,7 @@ export default function ProductListPageClient({ products, homeFaqs }: ProductLis
             if (hash) {
                 const element = document.querySelector(hash);
                 if (element) {
-                    setTimeout(() => element.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+                    setTimeout(() => element.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
                 }
             }
         };
@@ -77,7 +84,7 @@ export default function ProductListPageClient({ products, homeFaqs }: ProductLis
     return (
         <>
             <HeroSection />
-            <SpecialCelebrationBanner productCount={specialCount} />
+            <DiwaliComboOfferBanner productCount={comboCount} />
             <main className="min-h-screen bg-gradient-to-b from-gray-50 to-slate-100 pb-20 pt-4 sm:pt-6">
                 <div className="container mx-auto px-4 sm:px-6">
                     <TrendingProducts products={products} />

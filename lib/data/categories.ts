@@ -4,6 +4,7 @@ export interface Category {
 }
 
 export const categories: Category[] = [
+    { slug: 'diwali-combo-offer', name: 'Diwali Combo Offer' },
     { slug: 'sparklers', name: 'Sparklers' },
     { slug: 'flower-pots', name: 'Flower Pots' },
     { slug: 'ground-chakkar', name: 'Chakra' },

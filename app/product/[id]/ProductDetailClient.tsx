@@ -132,6 +132,21 @@ export default function ProductDetailClient({ product, imageUrl }: ProductDetail
                             <p className="text-gray-700">
                                 {product.seoDescription || `Buy ${product.name} at best price in Sivakasi. Fast delivery across Tamil Nadu and India.`}
                             </p>
+                            <h3 className="text-lg font-bold mt-4 mb-2">Why Choose {product.name}?</h3>
+                            <ul className="text-gray-700 space-y-1">
+                                <li>100% genuine Sivakasi manufacturing</li>
+                                <li>Factory-direct wholesale pricing</li>
+                                <li>Safe and certified quality</li>
+                                <li>Consistent performance and effects</li>
+                                <li>Pan-India delivery available</li>
+                            </ul>
+                            <h3 className="text-lg font-bold mt-4 mb-2">Specifications</h3>
+                            <ul className="text-gray-700 space-y-1">
+                                <li>Category: {product.category}</li>
+                                <li>Content: {product.content}</li>
+                                <li>Origin: Sivakasi, Tamil Nadu</li>
+                                <li>Brand: Premium Sivakasi Quality</li>
+                            </ul>
                         </div>
 
                         <Card className="p-4 bg-yellow-50 border-yellow-200">

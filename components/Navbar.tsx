@@ -29,7 +29,7 @@ export function Navbar() {
     const goToCategory = (id: string) => {
         const element = document.getElementById(`category-${id}`);
         if (pathname === '/' && element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else {
             window.location.href = `/#category-${id}`;
         }
@@ -95,6 +95,12 @@ export function Navbar() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="center" className="w-96 bg-gradient-to-br from-gray-900 to-black text-white border-yellow-400/50 shadow-2xl">
                                 <div className="grid grid-cols-3 gap-2 p-3">
+                                    <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-yellow-500/20 focus:to-orange-500/20 focus:text-yellow-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-yellow-400/30" onClick={() => goToCategory('diwali-combo-offer')}>
+                                        <div className="flex items-center gap-1">
+                                            <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                      Diwali Combo
+                                        </div>
+                                    </DropdownMenuItem>
                                     <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-yellow-500/20 focus:to-orange-500/20 focus:text-yellow-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-yellow-400/30" onClick={() => goToCategory('sparklers')}>
                                         <div className="flex items-center gap-1">
                                             <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
@@ -143,6 +149,12 @@ export function Navbar() {
                       Special Celebration Function
                                         </div>
                                     </DropdownMenuItem>
+                                    <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-orange-500/20 focus:to-yellow-500/20 focus:text-orange-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-orange-400/30" onClick={() => goToCategory('sound-crackers')}>
+                                        <div className="flex items-center gap-1">
+                                            <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                      Sound Crackers
+                                        </div>
+                                    </DropdownMenuItem>
                                     <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-cyan-500/20 focus:to-teal-500/20 focus:text-cyan-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-cyan-400/30" onClick={() => goToCategory('twinkling-stars')}>
                                         <div className="flex items-center gap-1">
                                             <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
@@ -153,12 +165,6 @@ export function Navbar() {
                                         <div className="flex items-center gap-1">
                                             <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
                       Bombs
-                                        </div>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-orange-500/20 focus:to-yellow-500/20 focus:text-orange-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-orange-400/30" onClick={() => goToCategory('sound-crackers')}>
-                                        <div className="flex items-center gap-1">
-                                            <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                      Sound Crackers
                                         </div>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-cyan-500/20 focus:to-blue-500/20 focus:text-cyan-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-cyan-400/30" onClick={() => goToCategory('rockets')}>
@@ -345,6 +351,7 @@ export function Navbar() {
                             </button>
                             {categoriesExpanded && (
                                 <div className="grid grid-cols-2 gap-1">
+                                    <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('diwali-combo-offer'); setIsOpen(false); }}>Diwali Combo</button>
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('sparklers'); setIsOpen(false); }}>Sparklers</button>
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('flower-pots'); setIsOpen(false); }}>Flower Pots</button>
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('ground-chakkar'); setIsOpen(false); }}>Ground Chakkar</button>
@@ -353,6 +360,7 @@ export function Navbar() {
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('twinkling-stars'); setIsOpen(false); }}>Twinkling Star</button>
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('pencil'); setIsOpen(false); }}>Pencil Shots</button>
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('bombs'); setIsOpen(false); }}>Bombs</button>
+                                    <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('special-celebration-function'); setIsOpen(false); }}>Special Celebration</button>
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('sound-crackers'); setIsOpen(false); }}>Sound Crackers</button>
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('rockets'); setIsOpen(false); }}>Rockets</button>
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('aerial-shots'); setIsOpen(false); }}>Aerial Shot</button>

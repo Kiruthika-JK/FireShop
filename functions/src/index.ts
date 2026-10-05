@@ -58,62 +58,24 @@ export const onOrderCreated = functions
 
             console.log(`New order created: ${context.params.orderId}`)
 
-            // Get admin emails from Firestore
-            const adminEmails = await getAdminEmails()
-
             // Generate email content
             const adminEmailContent = generateAdminEmailContent(orderData)
 
-            // TODO: Change to Admin mail group to save costs. For now, sending to all admins
-            for (const adminEmail of adminEmails) {
-                await sendEmail({
-                    to: adminEmail,
-                    subject: `New Order Received - Order #${orderData.id}`,
-                    html: adminEmailContent,
-                })
-            }
+            // Send only to the main admin email
+            await sendEmail({
+                to: 'ganishkhasricrackers@gmail.com',
+                subject: `New Order Received - Order #${orderData.id}`,
+                html: adminEmailContent,
+            })
 
-            console.log(`Order notifications sent to ${adminEmails.length} admins`)
+            console.log(`Order notification sent to ganishkhasricrackers@gmail.com`)
 
         } catch (error) {
             console.error('Error processing order notification:', error)
         }
     })
 
-// Get admin emails from Firestore.
-// Preferred scheme: each admin is a document in `admins/{email}` (matches frontend admin check).
-// Legacy scheme: `admins/config` doc with an `emails` array (kept for backward compatibility).
-async function getAdminEmails(): Promise<string[]> {
-    try {
-        const snapshot = await admin.firestore().collection('admins').get()
-        const emails = new Set<string>()
 
-        snapshot.forEach((docSnap: admin.firestore.QueryDocumentSnapshot) => {
-            // Legacy: admins/config with an `emails` array
-            if (docSnap.id === 'config') {
-                const data = docSnap.data() as { emails?: unknown }
-                if (Array.isArray(data?.emails)) {
-                    data.emails.forEach(e => {
-                        if (typeof e === 'string' && isValidEmail(e)) emails.add(e)
-                    })
-                }
-                return
-            }
-            // Preferred: doc id is the admin's email
-            if (isValidEmail(docSnap.id)) emails.add(docSnap.id)
-        })
-
-        return Array.from(emails)
-    } catch (error) {
-        console.error('Failed to get admin emails:', error)
-        return []
-    }
-}
-
-function isValidEmail(email: string | undefined): boolean {
-    if (!email) return false
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-}
 
 function escapeHtml(value: string): string {
     return value

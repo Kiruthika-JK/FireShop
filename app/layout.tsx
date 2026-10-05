@@ -41,15 +41,7 @@ export default function RootLayout({
         "@type": "WebSite",
         "name": "Ganishkha Sri Crackers",
         "alternateName": ["GANISHKHA SRI CRACKERS", "Ganishkha Sri Traders", "Ganishka Sri Crackers", "Ganishka Crackers", "Ganisika Crackers", "Ganiskha Crackers", "Ganis Crackers", "Ganishka Traders", "Ganishkhasri Crackers", "Ganishka Sri Traders"],
-        "url": "https://www.ganishkhasricrackers.in",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-                "@type": "EntryPoint",
-                "urlTemplate": "https://www.ganishkhasricrackers.in/?search={search_term_string}"
-            },
-            "query-input": "required name=search_term_string"
-        }
+        "url": "https://www.ganishkhasricrackers.in"
     };
 
     const organizationJsonLd = {

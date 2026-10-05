@@ -42,6 +42,9 @@ export async function generateMetadata({ params, searchParams }: ProductPageProp
     const previewUrl = resolveSearchParam(searchParamsResolved.url);
     const imageUrl = previewUrl || product.thumbnail || '/logo.png';
 
+    // Noindex out-of-stock products to prevent indexing unavailable items
+    const noIndex = product.outOfStock === true;
+
     return {
         title,
         description,
@@ -54,6 +57,14 @@ export async function generateMetadata({ params, searchParams }: ProductPageProp
             images: imageUrl ? [{ url: imageUrl }] : undefined,
         },
         twitter: imageUrl ? { card: 'summary_large_image', title, description, images: [imageUrl] } : undefined,
+        robots: {
+            index: !noIndex,
+            follow: true,
+            googleBot: {
+                index: !noIndex,
+                follow: true,
+            },
+        },
     };
 }
 
