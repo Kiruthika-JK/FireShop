@@ -30,6 +30,7 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
             'twinklingstars': 'Twinkling Stars',
             'specialcelebrationfunction': 'Special Celebration Function',
             'digitalwala': 'Sound Crackers',
+            'wala': 'Wala',
             'bombs': 'Bombs',
             'soundcrackers': 'Sound Crackers',
             'rockets': 'Rockets',
@@ -85,6 +86,7 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
         'twinklingstars',
         'specialcelebrationfunction',
         'digitalwala',
+        'wala',
         'bombs',
         'rockets',
         'fancyfountain',
@@ -149,7 +151,8 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
                                                             category === 'Bijili' ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-orange-300/50' :
                                                                 category === 'Twinkling Stars' ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white border-red-300/50' :
                                                                     category === 'Special Celebration Function' ? 'bg-gradient-to-r from-yellow-500 to-red-500 text-white border-yellow-300/50' :
-                                                                        category === 'Bombs' ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white border-orange-300/50' :
+                                                                        category === 'Wala' ? 'bg-gradient-to-r from-violet-500 to-purple-500 text-white border-violet-300/50' :
+                                        category === 'Bombs' ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white border-orange-300/50' :
                                                                             category === 'Sound Crackers' ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white border-red-300/50' :
                                                                                 category === 'Rockets' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white border-orange-300/50' :
                                                                                     category === 'Aerial Shots' ? 'bg-gradient-to-r from-red-500 to-yellow-500 text-white border-red-300/50' :

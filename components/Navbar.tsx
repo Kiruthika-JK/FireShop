@@ -155,6 +155,12 @@ export function Navbar() {
                       Sound Crackers
                                         </div>
                                     </DropdownMenuItem>
+                                    <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-violet-500/20 focus:to-purple-500/20 focus:text-violet-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-violet-400/30" onClick={() => goToCategory('wala')}>
+                                        <div className="flex items-center gap-1">
+                                            <div className="w-2 h-2 bg-violet-400 rounded-full"></div>
+                      Wala
+                                        </div>
+                                    </DropdownMenuItem>
                                     <DropdownMenuItem className="focus:bg-gradient-to-r focus:from-cyan-500/20 focus:to-teal-500/20 focus:text-cyan-300 cursor-pointer text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg border border-transparent hover:border-cyan-400/30" onClick={() => goToCategory('twinkling-stars')}>
                                         <div className="flex items-center gap-1">
                                             <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
@@ -362,6 +368,7 @@ export function Navbar() {
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('bombs'); setIsOpen(false); }}>Bombs</button>
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('special-celebration-function'); setIsOpen(false); }}>Special Celebration</button>
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('sound-crackers'); setIsOpen(false); }}>Sound Crackers</button>
+                                    <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('wala'); setIsOpen(false); }}>Wala</button>
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('rockets'); setIsOpen(false); }}>Rockets</button>
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('aerial-shots'); setIsOpen(false); }}>Aerial Shot</button>
                                     <button className="text-white hover:text-yellow-400 text-sm py-1 text-left" onClick={() => { goToCategory('whistling-fountains'); setIsOpen(false); }}>Whistling Fountain</button>

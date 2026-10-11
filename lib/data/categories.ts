@@ -28,6 +28,7 @@ export const categories: Category[] = [
     { slug: 'tin-series', name: 'Tin Series' },
     { slug: 'colour-match-box', name: 'Colour Match Box' },
     { slug: 'flower-pot-bombs', name: 'Flower Pot Bombs' },
+    { slug: 'wala', name: 'Wala' },
     { slug: 'gift-boxes', name: 'Gift Boxes' },
     { slug: 'special-celebration-function', name: 'Special Celebration Function' },
 ];

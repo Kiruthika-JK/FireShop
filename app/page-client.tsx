@@ -30,6 +30,7 @@ export default function ProductListPageClient({ products, homeFaqs }: ProductLis
         { id: 'peacocks', name: 'Peacocks', count: 4 },
         { id: 'bijili', name: 'Bijili Crackers', count: 2 },
         { id: 'twinklingstar', name: 'Twinkling Star', count: 2 },
+        { id: 'wala', name: 'Wala', count: 8 },
         { id: 'pencil', name: 'Pencil Shots', count: 12 },
         { id: 'bombs', name: 'Bombs', count: 11 },
         { id: 'rockets', name: 'Rockets', count: 3 },
