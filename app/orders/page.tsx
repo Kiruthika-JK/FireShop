@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/card'
+import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { formatPrice } from '@/lib/utils'
 import { ChevronRight, Search, Loader2 } from 'lucide-react'
@@ -271,38 +272,43 @@ export default function OrdersPage() {
                     ) : (
                         <div className="space-y-4">
                         {orders.map((order) => (
-                            <Card
+                            <Link
                                 key={order.id}
-                                className="p-6 hover:shadow-lg transition-shadow cursor-pointer bg-white"
-                                onClick={() => router.push(`/orders/${order.id}`)}
+                                href={`/orders/${order.id}`}
+                                prefetch={true}
+                                className="block"
                             >
-                                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                                    {/* Order Info */}
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-3 mb-2">
-                                            <h3 className="font-semibold text-lg text-slate-900">{order.id}</h3>
-                                            <Badge className={getStatusColor(order.status)}>
-                                                {order.status}
-                                            </Badge>
+                                <Card
+                                    className="p-6 hover:shadow-lg transition-shadow cursor-pointer bg-white"
+                                >
+                                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                        {/* Order Info */}
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-3 mb-2">
+                                                <h3 className="font-semibold text-lg text-slate-900">{order.id}</h3>
+                                                <Badge className={getStatusColor(order.status)}>
+                                                    {order.status}
+                                                </Badge>
+                                            </div>
+
+                                            <div className="space-y-1 text-sm text-gray-600">
+                                                <p>Order Date: <span className="text-slate-900">{formatDate(order.createdAt)}</span></p>
+                                                <p>Customer: <span className="text-slate-900">{order.customerInfo.name}</span></p>
+                                                <p>Items: <span className="text-slate-900">{order.products.reduce((sum, item) => sum + item.quantity, 0)}</span></p>
+                                            </div>
                                         </div>
 
-                                        <div className="space-y-1 text-sm text-gray-600">
-                                            <p>Order Date: <span className="text-slate-900">{formatDate(order.createdAt)}</span></p>
-                                            <p>Customer: <span className="text-slate-900">{order.customerInfo.name}</span></p>
-                                            <p>Items: <span className="text-slate-900">{order.products.reduce((sum, item) => sum + item.quantity, 0)}</span></p>
+                                        {/* Price and Arrow */}
+                                        <div className="flex items-center gap-4">
+                                            <div className="text-right">
+                                                <p className="text-sm text-gray-600 mb-1">Total Amount</p>
+                                                <p className="text-2xl font-bold text-green-600">₹{formatPrice(order.totalPrice)}</p>
+                                            </div>
+                                            <ChevronRight className="h-6 w-6 text-gray-400" />
                                         </div>
                                     </div>
-
-                                    {/* Price and Arrow */}
-                                    <div className="flex items-center gap-4">
-                                        <div className="text-right">
-                                            <p className="text-sm text-gray-600 mb-1">Total Amount</p>
-                                            <p className="text-2xl font-bold text-green-600">₹{formatPrice(order.totalPrice)}</p>
-                                        </div>
-                                        <ChevronRight className="h-6 w-6 text-gray-400" />
-                                    </div>
-                                </div>
-                            </Card>
+                                </Card>
+                            </Link>
                         ))}
 
                         {/* Pagination Loader */}

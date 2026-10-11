@@ -136,7 +136,7 @@ export function SinglePageProductGrid({ products, activeCategory }: SinglePagePr
                 const categoryId = category.toLowerCase().replace(/\s+/g, '-');
 
                 return (
-                    <div key={category} id={`category-${categoryId}`} className="mb-8 scroll-mt-[160px]">
+                    <div key={category} id={`category-${categoryId}`} className="mb-8 scroll-mt-20 sm:scroll-mt-[160px]">
                         <div 
                             onClick={() => toggleCategory(category)}
                             className={`relative overflow-hidden rounded-2xl shadow-2xl border-2 cursor-pointer transition-all duration-300 hover:shadow-3xl ${
