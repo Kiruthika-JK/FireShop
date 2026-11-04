@@ -38,10 +38,6 @@ interface MailPayload {
 // Cloud Function that triggers when a new order is created
 export const onOrderCreated = functions
     .runWith({
-        secrets: [
-            'GMAIL_USER',
-            'GMAIL_PASS',
-        ],
         timeoutSeconds: 60,
     })
     .region('asia-south1')

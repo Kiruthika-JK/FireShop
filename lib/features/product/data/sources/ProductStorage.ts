@@ -45,7 +45,9 @@ export const uploadProductImage = async (file: File, productName: string): Promi
         
         // Upload the optimized file
         console.log('Starting upload to Firebase Storage...');
-        const snapshot = await uploadBytes(storageRef, optimizedFile);
+        const snapshot = await uploadBytes(storageRef, optimizedFile, {
+            cacheControl: 'public, max-age=2592000'
+        });
         console.log('Upload completed, metadata:', snapshot.metadata);
         
         // Get the download URL
@@ -161,7 +163,9 @@ export async function uploadProductPreview(
         
         // Upload the file
         console.log('Starting preview upload to Firebase Storage...');
-        const snapshot = await uploadBytes(storageRef, file);
+        const snapshot = await uploadBytes(storageRef, file, {
+            cacheControl: 'public, max-age=2592000'
+        });
         console.log('Preview upload completed, metadata:', snapshot.metadata);
         
         // Get the download URL

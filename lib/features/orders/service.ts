@@ -70,10 +70,7 @@ export const OrderService = {
         }
         constraints.push(limit(PAGE_LIMIT));
 
-        const q = query(ordersRef, ...constraints);
-        const snapshot = await getDocs(q);
-
-        const orders: Order[] = snapshot.docs.map(doc => {
+        const mapDoc = (doc: { id: string; data: () => Record<string, unknown> }): Order => {
             const data = doc.data();
             return {
                 id: doc.id,
@@ -82,13 +79,46 @@ export const OrderService = {
                     ? data.createdAt.toDate().toISOString()
                     : data.createdAt || new Date().toISOString()
             } as Order;
-        });
-
-        return {
-            orders,
-            lastDoc: snapshot.docs[snapshot.docs.length - 1] || null,
-            hasMore: snapshot.docs.length === PAGE_LIMIT
         };
+
+        try {
+            const q = query(ordersRef, ...constraints);
+            const snapshot = await getDocs(q);
+            const orders: Order[] = snapshot.docs.map(mapDoc);
+
+            return {
+                orders,
+                lastDoc: snapshot.docs[snapshot.docs.length - 1] || null,
+                hasMore: snapshot.docs.length === PAGE_LIMIT
+            };
+        } catch (error) {
+            // Composite index may not exist yet — fetch recent orders and filter client-side
+            console.error("Filtered orders query failed, using client-side fallback:", error);
+            const fallbackQ = query(ordersRef, orderBy("createdAt", "desc"), limit(PAGE_LIMIT * 4));
+            const snapshot = await getDocs(fallbackQ);
+            let orders: Order[] = snapshot.docs.map(mapDoc);
+
+            if (!isAdmin) {
+                orders = orders.filter(o => o.customerInfo.emailId === userEmail);
+            }
+            if (isAdmin && filters?.status && filters.status !== 'All') {
+                orders = orders.filter(o => o.status === filters.status);
+            }
+            if (isAdmin && filters?.search?.trim()) {
+                const term = filters.search.trim().toLowerCase();
+                orders = orders.filter(o =>
+                    o.customerInfo.name?.toLowerCase().includes(term) ||
+                    o.customerInfo.mobileNo?.includes(term) ||
+                    o.customerInfo.emailId?.toLowerCase().includes(term)
+                );
+            }
+
+            return {
+                orders: orders.slice(0, PAGE_LIMIT),
+                lastDoc: null,
+                hasMore: false
+            };
+        }
     },
 
     async fetchOrdersByPhone(phone: string): Promise<Order[]> {
