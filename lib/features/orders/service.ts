@@ -23,54 +23,27 @@ export const OrderService = {
             return { orders: [], lastDoc: null, hasMore: false };
         }
 
-        const constraints: QueryConstraint[] = [];
         const ordersRef = collection(firestore, ORDERS_COLLECTION);
+        const constraints: QueryConstraint[] = [];
 
         if (!isAdmin) {
-            // Customer: fetch only their orders by email, latest first.
+            // Customer: filter by email only (single-field index), sort client-side.
             constraints.push(where("customerInfo.emailId", "==", userEmail));
-            constraints.push(orderBy("createdAt", "desc"));
         } else {
-            // Admin: apply status filter if selected (backed by composite index)
-            if (filters?.status && filters.status !== 'All') {
-                constraints.push(where("status", "==", filters.status));
-            }
-
-            // Admin Search Logic
-            if (filters?.search) {
-                const term = filters.search.trim();
-                if (term) {
-                    // Determine search field from the term shape
-                    let searchField = "customerInfo.name";
-                    if (/^\d+$/.test(term)) {
-                        searchField = "customerInfo.mobileNo";
-                    } else if (term.includes('@')) {
-                        searchField = "customerInfo.emailId";
-                    }
-
-                    // Prefix search — orderBy on searched field must come first,
-                    // then secondary sort by createdAt desc (backed by composite index)
-                    constraints.push(orderBy(searchField));
-                    constraints.push(where(searchField, ">=", term));
-                    constraints.push(where(searchField, "<=", term + '\uf8ff'));
-                    constraints.push(orderBy("createdAt", "desc"));
-                } else {
-                    // No search term — sort by creation time desc
-                    constraints.push(orderBy("createdAt", "desc"));
-                }
-            } else {
-                // No search — sort by creation time desc
-                constraints.push(orderBy("createdAt", "desc"));
-            }
+            // Admin: fetch recent orders by createdAt (single-field index),
+            // then apply status/search filters client-side — no composite index needed.
+            constraints.push(orderBy("createdAt", "desc"));
         }
 
-        // Pagination — startAfter MUST come before limit
         if (lastDoc) {
             constraints.push(startAfter(lastDoc));
         }
-        constraints.push(limit(PAGE_LIMIT));
+        constraints.push(limit(isAdmin ? PAGE_LIMIT * 4 : PAGE_LIMIT));
 
-        const mapDoc = (doc: { id: string; data: () => Record<string, unknown> }): Order => {
+        const q = query(ordersRef, ...constraints);
+        const snapshot = await getDocs(q);
+
+        let orders: Order[] = snapshot.docs.map(doc => {
             const data = doc.data();
             return {
                 id: doc.id,
@@ -79,46 +52,28 @@ export const OrderService = {
                     ? data.createdAt.toDate().toISOString()
                     : data.createdAt || new Date().toISOString()
             } as Order;
-        };
+        });
 
-        try {
-            const q = query(ordersRef, ...constraints);
-            const snapshot = await getDocs(q);
-            const orders: Order[] = snapshot.docs.map(mapDoc);
-
-            return {
-                orders,
-                lastDoc: snapshot.docs[snapshot.docs.length - 1] || null,
-                hasMore: snapshot.docs.length === PAGE_LIMIT
-            };
-        } catch (error) {
-            // Composite index may not exist yet — fetch recent orders and filter client-side
-            console.error("Filtered orders query failed, using client-side fallback:", error);
-            const fallbackQ = query(ordersRef, orderBy("createdAt", "desc"), limit(PAGE_LIMIT * 4));
-            const snapshot = await getDocs(fallbackQ);
-            let orders: Order[] = snapshot.docs.map(mapDoc);
-
-            if (!isAdmin) {
-                orders = orders.filter(o => o.customerInfo.emailId === userEmail);
-            }
-            if (isAdmin && filters?.status && filters.status !== 'All') {
-                orders = orders.filter(o => o.status === filters.status);
-            }
-            if (isAdmin && filters?.search?.trim()) {
-                const term = filters.search.trim().toLowerCase();
-                orders = orders.filter(o =>
-                    o.customerInfo.name?.toLowerCase().includes(term) ||
-                    o.customerInfo.mobileNo?.includes(term) ||
-                    o.customerInfo.emailId?.toLowerCase().includes(term)
-                );
-            }
-
-            return {
-                orders: orders.slice(0, PAGE_LIMIT),
-                lastDoc: null,
-                hasMore: false
-            };
+        if (!isAdmin) {
+            orders = orders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         }
+        if (isAdmin && filters?.status && filters.status !== 'All') {
+            orders = orders.filter(o => o.status === filters.status);
+        }
+        if (isAdmin && filters?.search?.trim()) {
+            const term = filters.search.trim().toLowerCase();
+            orders = orders.filter(o =>
+                o.customerInfo.name?.toLowerCase().includes(term) ||
+                o.customerInfo.mobileNo?.includes(term) ||
+                o.customerInfo.emailId?.toLowerCase().includes(term)
+            );
+        }
+
+        return {
+            orders: orders.slice(0, PAGE_LIMIT),
+            lastDoc: snapshot.docs[snapshot.docs.length - 1] || null,
+            hasMore: snapshot.docs.length === (isAdmin ? PAGE_LIMIT * 4 : PAGE_LIMIT)
+        };
     },
 
     async fetchOrdersByPhone(phone: string): Promise<Order[]> {

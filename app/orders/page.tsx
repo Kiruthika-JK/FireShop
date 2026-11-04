@@ -5,11 +5,12 @@ import { useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
-import { formatPrice } from '@/lib/utils'
+import { formatPrice, normalizePhoneNumber } from '@/lib/utils'
 import { ChevronRight, Search, Loader2 } from 'lucide-react'
 import { useAuth } from '@/lib/auth-context'
 import { useCustomerInfoStore } from '@/lib/features/checkout/customer-info-store'
 import { OrderService } from '@/lib/features/orders/service'
+import { useOrdersCache } from '@/lib/features/orders/orders-cache-store'
 import { Order, OrderStatus, ORDER_STATUSES } from '@/lib/features/orders/types'
 import { DocumentSnapshot } from 'firebase/firestore'
 import { Input } from '@/components/ui/input'
@@ -58,10 +59,12 @@ export default function OrdersPage() {
     ) => {
         if (!user || (!isAdmin && !user.email)) return
 
+        const cacheKey = isAdmin ? 'admin' : `user:${user.email}`
+
         try {
             if (isLoadMore) {
                 setFetchingMore(true)
-            } else {
+            } else if (useOrdersCache.getState().key !== cacheKey || useOrdersCache.getState().orders.length === 0) {
                 setLoading(true)
             }
 
@@ -79,6 +82,7 @@ export default function OrdersPage() {
                 setOrders(prev => [...prev, ...result.orders])
             } else {
                 setOrders(result.orders)
+                useOrdersCache.getState().setCache(cacheKey, result.orders)
             }
 
             setLastDoc(result.lastDoc)
@@ -93,10 +97,14 @@ export default function OrdersPage() {
     }, [user, isAdmin])
 
     const fetchByPhone = useCallback(async (phone: string) => {
-        setLoading(true)
+        const cacheKey = `phone:${normalizePhoneNumber(phone)}`
+        if (useOrdersCache.getState().key !== cacheKey || useOrdersCache.getState().orders.length === 0) {
+            setLoading(true)
+        }
         try {
             const result = await OrderService.fetchOrdersByPhone(phone.trim())
             setOrders(result)
+            useOrdersCache.getState().setCache(cacheKey, result)
         } catch (error) {
             console.error("Failed to fetch orders by phone", error)
         } finally {
@@ -108,6 +116,11 @@ export default function OrdersPage() {
     useEffect(() => {
         if (!authLoading && user) {
             if (isAdmin || user.email) {
+                const cacheKey = isAdmin ? 'admin' : `user:${user.email}`
+                const cached = useOrdersCache.getState()
+                if (cached.key === cacheKey && cached.orders.length > 0) {
+                    setOrders(cached.orders)
+                }
                 setLastDoc(null)
                 loadOrders(false, null, debouncedSearch, statusFilter)
             } else {
@@ -116,6 +129,10 @@ export default function OrdersPage() {
                 const recentPhone = customerInfo.mobileNumber || ''
                 const phoneToUse = savedPhone || recentPhone
                 if (phoneToUse && (savedSubmitted || recentPhone)) {
+                    const cached = useOrdersCache.getState()
+                    if (cached.key === `phone:${normalizePhoneNumber(phoneToUse)}` && cached.orders.length > 0) {
+                        setOrders(cached.orders)
+                    }
                     setPhoneNumber(phoneToUse)
                     setPhoneSubmitted(true)
                     if (typeof window !== 'undefined') {
