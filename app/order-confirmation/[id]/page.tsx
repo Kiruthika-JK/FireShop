@@ -126,7 +126,7 @@ export default function OrderConfirmationPage() {
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500 text-white rounded-full shadow-lg mb-4 animate-bounce">
                         <PartyPopper className="w-10 h-10" />
                     </div>
-                    <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">Order Confirmed!</h1>
+                    <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">Order Placed!</h1>
                     <p className="text-lg text-gray-700">
                         Thank you, <span className="font-semibold text-orange-700">{order.customerInfo.name}</span>! Your Diwali crackers order is in.
                     </p>

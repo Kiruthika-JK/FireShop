@@ -8,7 +8,7 @@ import { OptimizedImage } from '@/components/ui/OptimizedImage'
 import { ChevronDown, ChevronUp, Plus, Minus, Trash2 } from 'lucide-react'
 import { formatPrice } from '@/lib/utils'
 
-export function OrderItemsSection() {
+export function OrderItemsSection({ bare = false }: { bare?: boolean }) {
     const { items, updateQuantity, removeItem, total } = useCartStore()
     const { customerInfo } = useCustomerInfoStore()
     const [isExpanded, setIsExpanded] = useState(true)
@@ -33,10 +33,10 @@ export function OrderItemsSection() {
     const gstAmount = calculateGST()
     const grandTotal = total + gstAmount
 
-    return (
-        <Card className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="p-4">
-                <h2 className="text-base font-semibold text-slate-800 mb-3">Order Summary</h2>
+    const content = (
+        <>
+            <div className={bare ? 'px-4 pt-4 pb-2' : 'p-4'}>
+                <h2 className="text-base font-semibold text-slate-800 mb-3">Order and Payment</h2>
 
                 {/* Order Summary */}
                 <div className="space-y-2">
@@ -77,6 +77,14 @@ export function OrderItemsSection() {
                     )}
                 </div>
             </div>
+        </>
+    )
+
+    if (bare) return content
+
+    return (
+        <Card className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            {content}
         </Card>
     )
 }

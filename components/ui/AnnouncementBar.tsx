@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 
 export function AnnouncementBar() {
     const items = [
-        'Tamil Nadu / Pondicherry: Min order ₹3000, No GST, delivery paid to courier',
+        'Tamil Nadu / Pondicherry: Min order ₹3000, No GST, courier charges to be paid on delivery',
         'Other States: Min order ₹6000, Flat 18% GST, delivery fee to be paid along with order',
         'Need help? WhatsApp +91 8248817401'
     ];
