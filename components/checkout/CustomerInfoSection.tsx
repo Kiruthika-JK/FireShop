@@ -200,9 +200,6 @@ export function CustomerInfoSection() {
                                 <option value="Other">Other</option>
                             </select>
                             {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
-                            {formData.state && formData.state !== 'Tamil Nadu' && formData.state !== 'Pondicherry' && (
-                                <p className="text-amber-600 text-xs mt-1 font-medium">⚠️ 18% GST will be added to your order</p>
-                            )}
                         </div>
                     </div>
 

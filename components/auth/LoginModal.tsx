@@ -14,11 +14,19 @@ import { Loader2 } from "lucide-react";
 import { useState } from "react";
 // import Image from "next/image"; // Verify if Image is needed, or just use text/SVG
 
-export function LoginModal({ children }: { children?: React.ReactNode }) {
+interface LoginModalProps {
+    children?: React.ReactNode;
+    open?: boolean;
+    onOpenChange?: (open: boolean) => void;
+}
+
+export function LoginModal({ children, open: controlledOpen, onOpenChange }: LoginModalProps) {
     const { loginWithGoogle, loginAsGuest, user } = useAuth();
     const [loading, setLoading] = useState(false);
     const [guestLoading, setGuestLoading] = useState(false);
-    const [open, setOpen] = useState(false);
+    const [internalOpen, setInternalOpen] = useState(false);
+    const open = controlledOpen ?? internalOpen;
+    const setOpen = onOpenChange ?? setInternalOpen;
     const [error, setError] = useState<string | null>(null);
 
     const handleGoogleLogin = async () => {
@@ -73,9 +81,9 @@ export function LoginModal({ children }: { children?: React.ReactNode }) {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                {children || <Button variant="default">Login</Button>}
-            </DialogTrigger>
+            {children && (
+                <DialogTrigger asChild>{children}</DialogTrigger>
+            )}
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle className="text-center text-2xl">Welcome Back</DialogTitle>

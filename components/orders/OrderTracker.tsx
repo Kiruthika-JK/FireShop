@@ -11,9 +11,9 @@ interface OrderTrackerProps {
 export function OrderTracker({ status }: OrderTrackerProps) {
     const isCanceled = status === OrderStatus.Canceled
 
-    // Define the timeline steps
+    // Define the timeline steps — canceled orders show only the canceled step
     const steps = isCanceled
-        ? [OrderStatus.Ordered, OrderStatus.Canceled]
+        ? [OrderStatus.Canceled]
         : [OrderStatus.Ordered, OrderStatus.Processing, OrderStatus.ReadyToShip, OrderStatus.Shipped, OrderStatus.Delivered]
 
     // Determine current index
@@ -29,7 +29,7 @@ export function OrderTracker({ status }: OrderTrackerProps) {
         <div className="w-full pt-1 pb-2">
             <h3 className="text-sm font-semibold text-slate-800 mb-3">Order Status</h3>
 
-            <div className="relative flex justify-between items-start w-full">
+            <div className={`relative flex ${steps.length === 1 ? 'justify-center' : 'justify-between'} items-start w-full`}>
                 {/* Connecting Lines */}
                 <div
                     className="absolute top-3 sm:top-4 -translate-y-1/2 h-1 bg-gray-200 -z-10 rounded-full"
@@ -50,7 +50,7 @@ export function OrderTracker({ status }: OrderTrackerProps) {
                 {/* Steps */}
                 {steps.map((step, index) => {
                     const isCompleted = index <= currentIndex;
-                    const isLastStepCanceled = isCanceled && index === 1;
+                    const isLastStepCanceled = isCanceled && index === steps.length - 1;
 
                     return (
                         <div key={step} className={`flex flex-col items-center gap-2 z-10 ${steps.length === 5 ? 'px-0.5 sm:px-1' : 'px-1 sm:px-2'}`} title={step}>
@@ -64,9 +64,9 @@ export function OrderTracker({ status }: OrderTrackerProps) {
                             >
                                 {isLastStepCanceled ? <X className="h-3 w-3 sm:h-4 sm:w-4" /> : <Check className="h-3 w-3 sm:h-4 sm:w-4" />}
                             </div>
-                            <span className={`text-[9px] sm:text-xs font-medium text-center whitespace-nowrap overflow-hidden text-ellipsis w-full ${isCompleted ? 'text-slate-800' : 'text-gray-400'
+                            <span className={`text-[9px] sm:text-xs font-medium text-center leading-tight w-full break-words ${isCompleted ? 'text-slate-800' : 'text-gray-400'
                             }`}>
-                                {step.length > 10 ? step.substring(0, 8) + '...' : step}
+                                {step}
                             </span>
                         </div>
                     )

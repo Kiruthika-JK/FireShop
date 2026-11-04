@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCartStore } from "@/lib/features/cart/store";
 import { LoginModal } from "@/components/auth/LoginModal";
 import {
@@ -15,7 +15,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Home, Menu, ShoppingCart, LogOut } from "lucide-react";
+import { Home, Menu, ShoppingCart, LogOut, Package } from "lucide-react";
 import Image from "next/image";
 import { useBestSellers } from "@/lib/best-sellers-context";
 import { AnnouncementBar } from "@/components/ui/AnnouncementBar";
@@ -25,6 +25,7 @@ export function Navbar() {
     const [categoriesExpanded, setCategoriesExpanded] = useState(false);
     const { user, isAdmin, logout } = useAuth();
     const pathname = usePathname();
+    const router = useRouter();
 
     const goToCategory = (id: string) => {
         const element = document.getElementById(`category-${id}`);
@@ -49,8 +50,15 @@ export function Navbar() {
         <nav className="bg-black text-white border-b border-yellow-400/20 sticky top-0 z-50">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16 sm:h-20 lg:h-24">
-                    {/* Logo Section - Mobile Optimized */}
-                    <Link href="/" className="flex items-center gap-2 sm:gap-3 lg:gap-4 shrink-0">
+                    <div className="flex items-center gap-2 shrink-0">
+                        {/* Mobile Hamburger - Left */}
+                        <button onClick={toggleMenu} className="sm:hidden text-white focus:outline-none cursor-pointer p-1">
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+                            </svg>
+                        </button>
+                        {/* Logo Section - Mobile Optimized */}
+                        <Link href="/" className="flex items-center gap-2 sm:gap-3 lg:gap-4 shrink-0">
                         <div className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 shrink-0">
                             <Image
                                 src="/logo.png"
@@ -69,7 +77,8 @@ export function Navbar() {
                 Crackers - Sivakasi
                             </span>
                         </div>
-                    </Link>
+                        </Link>
+                    </div>
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center gap-4 lg:gap-8">
@@ -288,7 +297,32 @@ export function Navbar() {
                     </div>
 
                     {/* Mobile Right Section */}
-                    <div className="sm:hidden flex items-center gap-2">
+                    <div className="sm:hidden flex items-center gap-3">
+                        {/* Cart + Orders - Mobile */}
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <button className="text-white focus:outline-none cursor-pointer p-1 relative">
+                                    <ShoppingCart className="h-5 w-5" />
+                                    {hasCartItems && (
+                                        <span className="absolute -top-1 -right-1 bg-yellow-400 text-black text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                                            {items.length}
+                                        </span>
+                                    )}
+                                </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-40 bg-black text-white border-gray-800 z-50">
+                                <DropdownMenuItem className="focus:bg-gray-800 focus:text-white cursor-pointer" onClick={() => router.push('/cart')}>
+                                    <ShoppingCart className="mr-2 h-4 w-4" />
+                                    Cart
+                                </DropdownMenuItem>
+                                {user && (
+                                    <DropdownMenuItem className="focus:bg-gray-800 focus:text-white cursor-pointer" onClick={() => router.push('/orders')}>
+                                        <Package className="mr-2 h-4 w-4" />
+                                        Orders
+                                    </DropdownMenuItem>
+                                )}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                         {/* User Profile - Mobile Only (not tablet) */}
                         {user && (
                             <div className="flex items-center gap-2">
@@ -308,12 +342,6 @@ export function Navbar() {
                                 </button>
                             </LoginModal>
                         )}
-                        {/* Mobile Menu Button - Optimized */}
-                        <button onClick={toggleMenu} className="text-white focus:outline-none cursor-pointer p-1">
-                            <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-                            </svg>
-                        </button>
                     </div>
                 </div>
             </div>

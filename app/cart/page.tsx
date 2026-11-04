@@ -371,8 +371,14 @@ export default function CartPage() {
                 </div>
 
                 {items.length === 0 ? (
-                    <div className="text-center py-12 text-gray-500">
-                        Your cart is empty
+                    <div className="text-center py-16">
+                        <p className="text-lg text-gray-500 mb-6">Your cart is empty</p>
+                        <Button
+                            onClick={() => router.push('/')}
+                            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8"
+                        >
+                            Continue Shopping
+                        </Button>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
